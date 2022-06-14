@@ -1,0 +1,11 @@
+{
+  "title": "Change Distribution Model",
+  "description": "Will change the distribution model",
+  "model": 0,
+  "deposit": [
+    {
+      "denom": "okt",
+      "amount": "100.000000000000000000"
+    }
+  ]
+}
