@@ -15,21 +15,8 @@ class CaseDistrProposal:
     def __init__(self, configObj):
         self.config = configObj
         self.okcli = rpc.OKCli("exchaind", "exchaincli")
-    
-        #读取主链合约
-        # logging.info("CaseWasm...")
-        # file = open(self.config["contract_path"], 'rb')
-        # raw_code = base64.b64encode(file.read())
-        # self.contract_code = str(raw_code,'utf-8')
-        # print(self.config["contract_path"])
-        #s = 'abcr34r344r'
-        #a = base64.b64encode(s.encode('utf-8'))
-        #print(str(self.contract_code,'utf-8'))
-        #print(a)
-        #exit()
-        #file.close()
-
         return
+
     def test(self):
         # result = self.okcli.version("exchaincli")
         # logging.info("version: " + result)
@@ -113,17 +100,26 @@ class CaseDistrProposal:
         result = self.okcli.run_cmd("cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.sh")
         # logging.info("run_tx: " + result)
 
+    def all(self):
+        self.init_chain()
+        self.init_staking()
+        self.upgrate_bin_staking()
+        self.upgrate_ledger_staking()
+        self.after_distr_proposal()
+        self.change_to_off_chain()
+        self.change_to_on_chain()
+
     def init_chain(self):
         logging.info("------------------------initChain start--------------------------------")
-        # self.okcli.run_cmd("cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.sh")
-        # time.sleep(2)
-        # self.okcli.wait_ledger(1)
-        # self.okcli.kill_process("exchaind")
+        self.okcli.run_cmd("cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.sh")
+        time.sleep(2)
+        self.okcli.wait_ledger(1)
+        self.okcli.kill_process("exchaind")
 
-        # # 迁移命令行和迁移文件夹，重新启动
-        # self.okcli.run_cmd("rm -rf /Users/oker/workspace/nodes/*; cp -rf /Users/oker/workspace/exchain-raw/dev/testnet/cache/* /Users/oker/workspace/nodes/")
-        # self.okcli.run_all_node()
-        # assert self.okcli.version("exchaind") == "v1.6.0"
+        # 迁移命令行和迁移文件夹，重新启动
+        self.okcli.run_cmd("rm -rf /Users/oker/workspace/nodes/*; cp -rf /Users/oker/workspace/exchain-raw/dev/testnet/cache/* /Users/oker/workspace/nodes/")
+        self.okcli.run_all_node()
+        assert self.okcli.version("exchaind") == "v1.6.0"
 
         # 导入委托人账户和代理人账户
         self.okcli.recover("delegator1", self.config["mnemonicdelegator1"])
@@ -175,396 +171,431 @@ class CaseDistrProposal:
         self.okcli.transfer(self.config["captain"], self.config["proxydelegator4"], 1000000)
         self.okcli.transfer(self.config["captain"], self.config["proxydelegator5"], 1000000)
         self.okcli.transfer(self.config["captain"], self.config["proxydelegator6"], 1000000)
-
-
-   
- 
-        
-
+        self.okcli.query_account(self.config["delegator1"])
+        self.okcli.query_account(self.config["delegator2"])
+        self.okcli.query_account(self.config["delegator3"])
+        self.okcli.query_account(self.config["delegator4"])
+        self.okcli.query_account(self.config["delegator5"])
+        self.okcli.query_account(self.config["delegator6"])
+        self.okcli.query_account(self.config["delegator7"])
+        self.okcli.query_account(self.config["delegator8"])
+        self.okcli.query_account(self.config["delegator9"])
+        self.okcli.query_account(self.config["delegator10"])
+        self.okcli.query_account(self.config["proxy1"])
+        self.okcli.query_account(self.config["proxy2"])
+        self.okcli.query_account(self.config["proxy3"])
+        self.okcli.query_account(self.config["proxy4"])
+        self.okcli.query_account(self.config["proxy5"])
+        self.okcli.query_account(self.config["proxy6"])
+        self.okcli.query_account(self.config["proxydelegator1"])
+        self.okcli.query_account(self.config["proxydelegator2"])
+        self.okcli.query_account(self.config["proxydelegator3"])
+        self.okcli.query_account(self.config["proxydelegator4"])
+        self.okcli.query_account(self.config["proxydelegator5"])
+        self.okcli.query_account(self.config["proxydelegator6"])
 
         logging.info("------------------------initChain end--------------------------------")
         return
+    def init_staking(self):
+        self.okcli.kill_process("exchaind")
+        self.okcli.run_all_node()
+        time.sleep(3)
 
-#   common-send $captain $proxydelegator1 1000000 
-#   common-send $captain $proxydelegator2 1000000 
-#   common-send $captain $proxydelegator3 1000000 
-#   common-send $captain $proxydelegator4 1000000 
-#   common-send $captain $proxydelegator5 1000000 
-#   common-send $captain $proxydelegator6 1000000 
+        logging.info("------------------------initStaking start--------------------------------")
+        self.okcli.query_staking_validators()
+        self.okcli.deposit(10000, self.config["delegator1"])
+        self.okcli.add_shares(self.config["va1"], self.config["delegator1"])
+        self.okcli.deposit(10000, self.config["proxydelegator1"])
+        self.okcli.query_shares(self.config["delegator1"])
+        self.okcli.query_shares(self.config["proxydelegator1"])
 
-#   common-query-account $delegator1
-#   common-query-account $delegator2
-#   common-query-account $delegator3
-#   common-query-account $delegator4
-#   common-query-account $delegator5
-#   common-query-account $delegator6
-#   common-query-account $delegator7
-#   common-query-account $delegator8
-#   common-query-account $delegator9
-#   common-query-account $delegator10
-#   common-query-account $proxy1
-#   common-query-account $proxy2
-#   echo '------------------------initChain end--------------------------------'
-# }
+        self.okcli.query_commission(self.config["va1"])
+        self.okcli.query_commission(self.config["va2"])
+        self.okcli.query_commission(self.config["va3"])
+        self.okcli.query_commission(self.config["va4"])
 
+        # 注册代理1,绑定委托人2
+        self.okcli.deposit(10000, self.config["proxy1"])
+        vals = self.config["va1"] + "," + self.config["va2"] + "," + self.config["va3"] + "," + self.config["va4"]
+        self.okcli.add_shares(vals, self.config["proxy1"])
+        self.okcli.proxy_reg(self.config["proxy1"])
+        self.okcli.proxy_bind(self.config["proxy1"], self.config["proxydelegator1"])
 
-    def all_contract(self):
-        #创建合约
-        address = self.deploy_contract()
+        logging.info("------------------------initStaking end--------------------------------")
+    def upgrate_bin_staking(self):
+        self.okcli.kill_process("exchaind")
+        self.okcli.run_all_node()
+        time.sleep(3)
 
-        #chainload
-        input_obj = {}
-        input_obj["method"] = "chainload"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        logging.info("------------------------upgrate_bin_staking start--------------------------------")
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
-        
+        # 编译新的的4个节点，运行
+        self.okcli.run_cmd("cd /Users/oker/workspace/exchain/dev/testnet/;./run4v1r.sh")
+        time.sleep(2)
+        self.okcli.wait_ledger(1)
+        self.okcli.kill_process("exchaind")
 
-        #chainstore
-        input_obj = {}
-        input_obj["method"] = "chainstore"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.run_all_node()
+        assert self.okcli.version("exchaind") == "v1.6.1"
+        time.sleep(5)
+        # 使用新的程序，1个委托人 + 1个代理1（1个委托人）
+        self.okcli.query_staking_validators()
+        self.okcli.deposit(10000, self.config["delegator2"])
+        self.okcli.add_shares(self.config["va1"], self.config["delegator2"])
+        self.okcli.deposit(10000, self.config["proxydelegator2"])
+        self.okcli.query_shares(self.config["delegator2"])
+        self.okcli.query_shares(self.config["proxydelegator2"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.add_shares(self.config["va1"], self.config["delegator2"])
 
-        #chaindel
-        input_obj = {}
-        input_obj["method"] = "chaindel"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 注册代理2,绑定委托人2
+        self.okcli.deposit(10000, self.config["proxy2"])
+        vals = self.config["va1"] + "," + self.config["va2"] + "," + self.config["va3"] + "," + self.config["va4"]
+        self.okcli.add_shares(vals, self.config["proxy2"])
+        self.okcli.proxy_reg(self.config["proxy2"])
+        self.okcli.proxy_bind(self.config["proxy2"], self.config["proxydelegator2"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        logging.info("------------------------upgrate_bin_staking end--------------------------------")
+    def upgrate_ledger_staking(self):
+        self.okcli.kill_process("exchaind")
+        self.okcli.run_all_node()
+        time.sleep(3)
+        assert self.okcli.version("exchaind") == "v1.6.1"
 
-        #blockhash
-        input_obj = {}
-        input_obj["method"] = "blockhash"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        logging.info("------------------------upgrate_ledger_staking start--------------------------------")
+        # 新的程序启动，区块升级之后，没有投票提案，仍然按照佣金100%提成计算，查询验证节点投票仍然可用，验证节点取款仍然有效
+        self.okcli.wait_ledger(50)
+        self.okcli.query_commission(self.config["va1"])
+        self.okcli.query_commission(self.config["va2"])
+        self.okcli.query_commission(self.config["va3"])
+        self.okcli.query_commission(self.config["va4"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.query_staking_validators()
+        self.okcli.deposit(10000, self.config["delegator3"])
+        self.okcli.add_shares(self.config["va1"], self.config["delegator3"])
 
-        #chaintlog
-        input_obj = {}
-        input_obj["method"] = "chaintlog"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.deposit(10000, self.config["proxydelegator3"])
+        self.okcli.query_shares(self.config["delegator3"])
+        self.okcli.query_shares(self.config["proxydelegator3"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.add_shares(self.config["va1"], self.config["delegator2"])
 
-        #chainstore
-        input_obj = {}
-        input_obj["method"] = "chainstore"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 注册代理2,绑定委托人2
+        self.okcli.deposit(10000, self.config["proxy3"])
+        vals = self.config["va1"] + "," + self.config["va2"] + "," + self.config["va3"] + "," + self.config["va4"]
+        self.okcli.add_shares(vals, self.config["proxy3"])
+        self.okcli.proxy_reg(self.config["proxy3"])
+        self.okcli.proxy_bind(self.config["proxy3"], self.config["proxydelegator3"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        logging.info("------------------------upgrate_ledger_staking end--------------------------------")
 
-        #metadata
-        input_obj = {}
-        input_obj["method"] = "metadata"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+    def after_distr_proposal(self):
+        self.okcli.kill_process("exchaind")
+        self.okcli.run_all_node()
+        assert self.okcli.version("exchaind") == "v1.6.1"
+        time.sleep(5)
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        logging.info("------------------------after_distr_proposal start--------------------------------")
+        # 发起投票提案，修改提案，此时分红比例默认为100%，各个接口可以使用，验证节点查询抽成，提取抽成正常；委托人查询分红为0；代理人查询为0，无法提取抽成；
+        self.okcli.wait_ledger(65)
+        self.okcli.submit_change_type_proposal_onchain(self.config["delegator1"])
+        proposal_num=1
+        self.okcli.query_proposal(proposal_num)
+        self.okcli.vote(self.config["delegator1"], proposal_num)
+        self.okcli.vote(self.config["delegator2"], proposal_num)
+        self.okcli.vote(self.config["delegator3"], proposal_num)
+        self.okcli.vote(self.config["proxy1"], proposal_num)
+        self.okcli.vote(self.config["proxy2"], proposal_num)
+        self.okcli.vote(self.config["proxy3"], proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
+        # 查询抽成
+        self.okcli.query_commission(self.config["va1"])
+        self.okcli.query_commission(self.config["va2"])
+        self.okcli.query_commission(self.config["va3"])
+        self.okcli.query_commission(self.config["va4"])
 
-        #balance
-        input_obj = {}
-        input_obj["method"] = "balance"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.query_outstanding(self.config["va1"])
+        self.okcli.query_outstanding(self.config["va2"])
+        self.okcli.query_outstanding(self.config["va3"])
+        self.okcli.query_outstanding(self.config["va4"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        # 查询奖励
+        self.okcli.query_rewards(self.config["proxy1"], "")
+        self.okcli.query_rewards(self.config["proxy2"], "")
+        self.okcli.query_rewards(self.config["proxy3"], "")
 
-        #paycoin
-        input_obj = {}
-        input_obj["method"] = "paycoin"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.query_rewards(self.config["delegator1"], "")
+        self.okcli.query_rewards(self.config["delegator2"], "")
+        self.okcli.query_rewards(self.config["delegator3"], "")
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        # 验证节点提取奖励
+        self.okcli.withdraw_commission(self.config["va1"], "va1")
+        self.okcli.withdraw_commission(self.config["va2"], "va2")
 
-        #timestamp
-        input_obj = {}
-        input_obj["method"] = "timestamp"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 代理人提取分红
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy1"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["delegator1"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        # 验证节点1 设置分红比例30%
+        self.okcli.edit_validator("0.1", "va1")
+        time.sleep(15)
 
-        #number
-        input_obj = {}
-        input_obj["method"] = "number"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.query_rewards(self.config["proxy1"], "")
+        self.okcli.query_rewards(self.config["proxy2"], "")
+        self.okcli.query_rewards(self.config["proxy3"], "")
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.query_rewards(self.config["delegator1"], "")
+        self.okcli.query_rewards(self.config["delegator2"], "")
+        self.okcli.query_rewards(self.config["delegator3"], "")
 
-        #txinitiator
-        input_obj = {}
-        input_obj["method"] = "txinitiator"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 验证节点提取奖励
+        self.okcli.withdraw_commission(self.config["va1"], "va1")
+        self.okcli.withdraw_commission(self.config["va2"], "va1")
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        # 提取分红
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy1"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["delegator1"])
 
-        #txsender
-        input_obj = {}
-        input_obj["method"] = "txsender"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 投票分红
+        self.okcli.query_staking_validators()
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        # 查询抽成
+        self.okcli.query_commission(self.config["va1"])
+        self.okcli.query_commission(self.config["va2"])
+        self.okcli.query_commission(self.config["va3"])
+        self.okcli.query_commission(self.config["va4"])
 
-        #txgasprice
-        input_obj = {}
-        input_obj["method"] = "txgasprice"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.query_outstanding(self.config["va1"])
+        self.okcli.query_outstanding(self.config["va2"])
+        self.okcli.query_outstanding(self.config["va3"])
+        self.okcli.query_outstanding(self.config["va4"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        # 验证节点提取奖励
+        self.okcli.withdraw_commission(self.config["va1"], "va1")
+        self.okcli.withdraw_commission(self.config["va2"], "va2")
+        self.okcli.withdraw_commission(self.config["va3"], "va3")
+        self.okcli.withdraw_commission(self.config["va4"], "va4")
 
+        # 取出所有分红
+        self.okcli.withdraw_all_rewards(self.config["proxy1"])
+        self.okcli.withdraw_all_rewards(self.config["proxy2"])
+        self.okcli.withdraw_all_rewards(self.config["proxy3"])
+        self.okcli.withdraw_all_rewards(self.config["delegator1"])
+        self.okcli.withdraw_all_rewards(self.config["delegator2"])
+        self.okcli.withdraw_all_rewards(self.config["delegator3"])
 
-        #txhash
-        input_obj = {}
-        input_obj["method"] = "txhash"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 重新质押，继续以上所有操作，可正常使用 + 委托人5 + 代理3（绑定委托人6），出到100个区块暂停
+        self.okcli.query_staking_validators()
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.deposit(10000, self.config["proxy4"])
+        self.okcli.add_shares(self.config["va1"], self.config["proxy4"])
 
-        #txfeelimit
-        input_obj = {}
-        input_obj["method"] = "txfeelimit"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.deposit(10000, self.config["delegator4"])
+        self.okcli.add_shares(self.config["va1"], self.config["delegator4"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.deposit(10000, self.config["proxydelegator4"])
 
-        #msginitiator
-        input_obj = {}
-        input_obj["method"] = "msginitiator"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.query_shares( self.config["proxydelegator4"])
+        self.okcli.query_shares( self.config["delegator4"])
+        self.okcli.query_shares( self.config["proxy4"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        vals = self.config["va1"] + "," + self.config["va2"] + "," + self.config["va3"] + "," + self.config["va4"]
+        self.okcli.add_shares(vals, self.config["proxy4"])
+        self.okcli.proxy_reg(self.config["proxy4"])
+        self.okcli.proxy_bind(self.config["proxy4"], self.config["proxydelegator4"])
 
-        #msgsender
-        input_obj = {}
-        input_obj["method"] = "msgsender"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        logging.info("------------------------after_distr_proposal end--------------------------------")
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+    def change_to_off_chain(self):
+        self.okcli.kill_process("exchaind")
+        self.okcli.run_all_node()
+        assert self.okcli.version("exchaind") == "v1.6.1"
+        time.sleep(5)
 
-        #coinamount
-        input_obj = {}
-        input_obj["method"] = "coinamount"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        logging.info("------------------------change_to_off_chain start--------------------------------")
+        # 修改成链下分红
+        self.okcli.submit_change_type_proposal_offchain(self.config["delegator1"])
+        proposal_num=2
+        self.okcli.query_proposal(proposal_num)
+        self.okcli.vote(self.config["delegator1"], proposal_num)
+        self.okcli.vote(self.config["delegator2"], proposal_num)
+        self.okcli.vote(self.config["delegator3"], proposal_num)
+        self.okcli.vote(self.config["delegator4"], proposal_num)
+        self.okcli.vote(self.config["proxy1"], proposal_num)
+        self.okcli.vote(self.config["proxy2"], proposal_num)
+        self.okcli.vote(self.config["proxy3"], proposal_num)
+        self.okcli.vote(self.config["proxy4"], proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        # 正常提取分红
+        self.okcli.withdraw_all_rewards(self.config["proxy1"])
+        self.okcli.withdraw_all_rewards(self.config["proxy2"])
+        self.okcli.withdraw_all_rewards(self.config["proxy3"])
+        self.okcli.withdraw_all_rewards(self.config["delegator1"])
+        self.okcli.withdraw_all_rewards(self.config["delegator2"])
+        self.okcli.withdraw_all_rewards(self.config["delegator3"])
 
-        #msgnonce
-        input_obj = {}
-        input_obj["method"] = "msgnonce"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 重新质押，继续以上所有操作，可正常使用 + 委托人5 + 代理3（绑定委托人6），出到100个区块暂停
+        self.okcli.query_staking_validators()
+        self.okcli.deposit(10000, self.config["delegator5"])
+        self.okcli.add_shares(self.config["va1"], self.config["delegator5"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.deposit(10000, self.config["proxydelegator5"])
 
-        #operationidx
-        input_obj = {}
-        input_obj["method"] = "operationidx"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.query_shares( self.config["proxydelegator5"])
+        self.okcli.query_shares( self.config["delegator5"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        # 验证节点提取奖励
+        self.okcli.withdraw_commission(self.config["va1"], "va1")
+        self.okcli.withdraw_commission(self.config["va2"], "va2")
+        self.okcli.withdraw_commission(self.config["va3"], "va3")
+        self.okcli.withdraw_commission(self.config["va4"], "va4")
 
-        #thisaddress
-        input_obj = {}
-        input_obj["method"] = "thisaddress"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 注册代理3,绑定委托人6
+        self.okcli.deposit(10000, self.config["proxy5"])
+        vals = self.config["va1"] + "," + self.config["va2"] + "," + self.config["va3"] + "," + self.config["va4"]
+        self.okcli.add_shares(vals, self.config["proxy5"])
+        self.okcli.proxy_reg(self.config["proxy5"])
+        self.okcli.proxy_bind(self.config["proxy5"], self.config["proxydelegator5"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        # 查询抽成
+        self.okcli.query_commission(self.config["va1"])
+        self.okcli.query_commission(self.config["va2"])
+        self.okcli.query_commission(self.config["va3"])
+        self.okcli.query_commission(self.config["va4"])
 
-        #utilslog
-        input_obj = {}
-        input_obj["method"] = "utilslog"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.query_outstanding(self.config["va1"])
+        self.okcli.query_outstanding(self.config["va2"])
+        self.okcli.query_outstanding(self.config["va3"])
+        self.okcli.query_outstanding(self.config["va4"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
-        
-        #intadd
-        input_obj = {}
-        input_obj["method"] = "intadd"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.query_rewards(self.config["proxy1"], "")
+        self.okcli.query_rewards(self.config["proxy2"], "")
+        self.okcli.query_rewards(self.config["proxy3"], "")
+        self.okcli.query_rewards(self.config["proxy4"], "")
+        self.okcli.query_rewards(self.config["proxy5"], "")
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.query_rewards(self.config["delegator1"], "")
+        self.okcli.query_rewards(self.config["delegator2"], "")
+        self.okcli.query_rewards(self.config["delegator3"], "")
+        self.okcli.query_rewards(self.config["delegator4"], "")
+        self.okcli.query_rewards(self.config["delegator5"], "")
 
-        #intsub
-        input_obj = {}
-        input_obj["method"] = "intsub"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 取出所有分红
+        self.okcli.withdraw_all_rewards(self.config["delegator1"])
+        self.okcli.withdraw_all_rewards(self.config["delegator2"])
+        self.okcli.withdraw_all_rewards(self.config["delegator3"])
+        self.okcli.withdraw_all_rewards(self.config["delegator4"])
+        self.okcli.withdraw_all_rewards(self.config["delegator5"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy1"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy2"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy3"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy4"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy5"])
 
-        #intmul
-        input_obj = {}
-        input_obj["method"] = "intmul"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.query_distr_params()
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        logging.info("------------------------change_to_off_chain end--------------------------------")
 
-        #intmod
-        input_obj = {}
-        input_obj["method"] = "intmod"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+    def change_to_on_chain(self):
+        self.okcli.run_all_node()
+        assert self.okcli.version("exchaind") == "v1.6.1"
+        time.sleep(5)
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        logging.info("------------------------change_to_on_chain end--------------------------------")
+        # 发起投票提案，修改提案链上分红
+        self.okcli.submit_change_type_proposal_onchain(self.config["delegator1"])
+        proposal_num=3
+        self.okcli.query_proposal(proposal_num)
+        self.okcli.vote(self.config["delegator1"], proposal_num)
+        self.okcli.vote(self.config["delegator2"], proposal_num)
+        self.okcli.vote(self.config["delegator3"], proposal_num)
+        self.okcli.vote(self.config["delegator4"], proposal_num)
+        self.okcli.vote(self.config["delegator5"], proposal_num)
+        self.okcli.vote(self.config["proxy1"], proposal_num)
+        self.okcli.vote(self.config["proxy2"], proposal_num)
+        self.okcli.vote(self.config["proxy3"], proposal_num)
+        self.okcli.vote(self.config["proxy4"], proposal_num)
+        # self.okcli.vote(self.config["proxy5"], proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
-        #intdiv
-        input_obj = {}
-        input_obj["method"] = "intdiv"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        # 正常提取分红
+        self.okcli.withdraw_all_rewards(self.config["proxy1"])
+        self.okcli.withdraw_all_rewards(self.config["proxy2"])
+        self.okcli.withdraw_all_rewards(self.config["proxy3"])
+        self.okcli.withdraw_all_rewards(self.config["delegator1"])
+        self.okcli.withdraw_all_rewards(self.config["delegator2"])
+        self.okcli.withdraw_all_rewards(self.config["delegator3"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.query_staking_validators()
+        self.okcli.deposit(10000, self.config["delegator6"])
+        self.okcli.add_shares(self.config["va1"], self.config["delegator6"])
 
-        #addresscheck
-        input_obj = {}
-        input_obj["method"] = "addresscheck"
-        input_obj["params"] = {}
-        input_obj["params"]["a"] = 1
-        input_obj["params"]["b"] = 2
-        input = json.dumps(input_obj)
+        self.okcli.deposit(10000, self.config["proxydelegator6"])
 
-        tx_hash = self.rpc_genesis_address.pay(address, input, 0, 0, 0)
-        logging.info(self.rpc_genesis_address.get_rpc() + "/getTransactionHistory?hash=" + tx_hash)
-        assert self.rpc_genesis_address.is_success(tx_hash)
+        self.okcli.query_shares( self.config["proxydelegator6"])
+        self.okcli.query_shares( self.config["delegator6"])
+
+        self.okcli.deposit(10000, self.config["proxy6"])
+        vals = self.config["va1"] + "," + self.config["va2"] + "," + self.config["va3"] + "," + self.config["va4"]
+        self.okcli.add_shares(vals, self.config["proxy6"])
+        self.okcli.proxy_reg(self.config["proxy6"])
+        self.okcli.proxy_bind(self.config["proxy6"], self.config["proxydelegator6"])
+
+        # 查询抽成
+        self.okcli.query_commission(self.config["va1"])
+        self.okcli.query_commission(self.config["va2"])
+        self.okcli.query_commission(self.config["va3"])
+        self.okcli.query_commission(self.config["va4"])
+
+        self.okcli.query_outstanding(self.config["va1"])
+        self.okcli.query_outstanding(self.config["va2"])
+        self.okcli.query_outstanding(self.config["va3"])
+        self.okcli.query_outstanding(self.config["va4"])
+
+        self.okcli.query_rewards(self.config["proxy1"], "")
+        self.okcli.query_rewards(self.config["proxy2"], "")
+        self.okcli.query_rewards(self.config["proxy3"], "")
+        self.okcli.query_rewards(self.config["proxy4"], "")
+        self.okcli.query_rewards(self.config["proxy5"], "")
+        self.okcli.query_rewards(self.config["proxy6"], "")
+
+        self.okcli.query_rewards(self.config["delegator1"], "")
+        self.okcli.query_rewards(self.config["delegator2"], "")
+        self.okcli.query_rewards(self.config["delegator3"], "")
+        self.okcli.query_rewards(self.config["delegator4"], "")
+        self.okcli.query_rewards(self.config["delegator5"], "")
+        self.okcli.query_rewards(self.config["delegator6"], "")
+
+        # 取出所有分红
+        self.okcli.withdraw_all_rewards(self.config["delegator1"])
+        self.okcli.withdraw_all_rewards(self.config["delegator2"])
+        self.okcli.withdraw_all_rewards(self.config["delegator3"])
+        self.okcli.withdraw_all_rewards(self.config["delegator4"])
+        self.okcli.withdraw_all_rewards(self.config["delegator5"])
+        self.okcli.withdraw_all_rewards(self.config["delegator6"])
+
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy1"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy2"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy3"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy4"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy5"])
+        self.okcli.withdraw_rewards(self.config["va1"], self.config["proxy6"])
+
+        # 验证节点提取奖励
+        self.okcli.withdraw_commission(self.config["va1"], "va1")
+        self.okcli.withdraw_commission(self.config["va2"], "va2")
+        self.okcli.withdraw_commission(self.config["va3"], "va3")
+        self.okcli.withdraw_commission(self.config["va4"], "va4")
+
+        self.okcli.query_distr_params()
+
+        logging.info("------------------------change_to_on_chain end--------------------------------")
 
 def exit():
-    logging.info("Please use arg eg:  deploy do all")
+    logging.info("Please use arg eg:  test | all")
     sys.exit()
 
 if __name__ == '__main__':
@@ -581,6 +612,10 @@ if __name__ == '__main__':
     if opt == "test":
         case.test()
     elif opt == "all":
-        case.init_chain()
+        case.all()
+    elif opt == "stop":
+        case.okcli.kill_process("exchaind")
+    elif opt == "ledger":
+        logging.info(case.okcli.get_ledger_seq())
     else:
         exit()

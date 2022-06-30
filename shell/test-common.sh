@@ -54,12 +54,12 @@ function getJsonValuesByAwk() {
 }
 
 common-echorunwait() {
-  sleep 1
+  sleep 2
   beginHeight=`exchaincli status | grep "latest_block_height" | sed -r 's/.*"(.*)".*/\1/'`
   #echo "Waiting..."
   for((i=1;i<=10;i++));
   do
-      sleep 1
+      sleep 2
       curHeight=`exchaincli status | grep "latest_block_height" | sed -r 's/.*"(.*)".*/\1/'`
       if [ $curHeight -gt $beginHeight ]
       then
@@ -94,7 +94,7 @@ common-echorun() {
 
 common-killwaitblock(){
   while true;do
-      sleep 1
+      sleep 2
       curHeight=`exchaincli status | grep "latest_block_height" | sed -r 's/.*"(.*)".*/\1/'`
       echo $curHeight
       if [ "$curHeight"x == ""x ];then
@@ -112,7 +112,7 @@ common-killwaitblock(){
 
 common-waitblock(){
   while true;do
-      sleep 1
+      sleep 2
       curHeight=`exchaincli status | grep "latest_block_height" | sed -r 's/.*"(.*)".*/\1/'`
       if [ "$curHeight"x == ""x ];then
         echo "error..."
@@ -136,7 +136,7 @@ common-runallnodes(){
   common-runnode2 $1 $2
   common-runnode3 $1 $2
   common-runnode4 $1 $2
-  sleep 3
+  sleep 2
 }
 
 common-runnode0(){
