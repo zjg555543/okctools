@@ -1,0 +1,11 @@
+{
+  "title": "Change Distribution to onchain",
+  "description": "Will change the distribution model",
+  "type": 0,
+  "deposit": [
+    {
+      "denom": "okt",
+      "amount": "100.000000000000000000"
+    }
+  ]
+}

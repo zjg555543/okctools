@@ -1,0 +1,1801 @@
+2022-06-29 23:11:41 - case_distr_proposal.py[line:410](exit) - INFO: Please use arg eg:  deploy do all
+2022-06-29 23:11:56 - rpc.py[line:16](create_rpc) - INFO: bif rpc:http://192.168.7.21:37002, account:did:bid:efqhQu9YWEWpUKQYkAyGevPGtAdD1N6p
+2022-06-29 23:11:56 - case_distr_proposal.py[line:17](__init__) - INFO: CaseWasm...
+2022-06-29 23:48:50 - rpc.py[line:19](version) - INFO: exchaincli version:
+2022-06-29 23:48:50 - rpc.py[line:19](version) - INFO: exchaincli version:
+2022-06-29 23:51:24 - rpc.py[line:20](version) - INFO: ['v1.6.1\n']
+2022-06-29 23:51:24 - rpc.py[line:20](version) - INFO: ['v1.6.1\n']
+2022-06-29 23:52:07 - rpc.py[line:20](version) - INFO: ['{\n', '  "height": "0",\n', '  "txhash": "33ABFEFCF5FB4A0E9B701983B278B10151930E413D03AD1CEBD2ED3D3772A68C",\n', '  "raw_log": "[]"\n', '}\n']
+2022-06-29 23:52:07 - rpc.py[line:20](version) - INFO: ['{\n', '  "height": "0",\n', '  "txhash": "33ABFEFCF5FB4A0E9B701983B278B10151930E413D03AD1CEBD2ED3D3772A68C",\n', '  "code": 19\n', '}\n']
+2022-06-29 23:53:58 - rpc.py[line:22](version) - INFO: {
+
+2022-06-29 23:53:58 - rpc.py[line:22](version) - INFO: {
+
+2022-06-29 23:54:16 - rpc.py[line:22](version) - INFO:   "height": "0",
+
+2022-06-29 23:54:16 - rpc.py[line:22](version) - INFO:   "height": "0",
+
+2022-06-29 23:56:43 - rpc.py[line:22](version) - INFO: 
+
+2022-06-29 23:56:43 - rpc.py[line:22](version) - INFO: 
+
+2022-06-29 23:56:56 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "A90068112DE9AC7F9A478451310B8B4EDAD1329BBE40C2131EEA035622B89169",
+  "raw_log": "[]"
+}
+
+2022-06-29 23:56:56 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "A90068112DE9AC7F9A478451310B8B4EDAD1329BBE40C2131EEA035622B89169",
+  "code": 19
+}
+
+2022-06-29 23:57:29 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "F7DE9AAEA035D499FEFC385BBE1AC757FE6B59349EB12BDDEFFF5801FEBB4102",
+  "raw_log": "[]"
+}
+
+2022-06-29 23:57:29 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "F7DE9AAEA035D499FEFC385BBE1AC757FE6B59349EB12BDDEFFF5801FEBB4102",
+  "code": 19
+}
+
+2022-06-29 23:57:32 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "F7DE9AAEA035D499FEFC385BBE1AC757FE6B59349EB12BDDEFFF5801FEBB4102",
+  "code": 19
+}
+
+2022-06-29 23:57:32 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "F7DE9AAEA035D499FEFC385BBE1AC757FE6B59349EB12BDDEFFF5801FEBB4102",
+  "code": 19
+}
+
+2022-06-29 23:57:49 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "28CBF121F9556915B43B28DF8EFDBA0C45F3A5275BA994DD72AEC00EB98DDD55",
+  "raw_log": "[]"
+}
+
+2022-06-29 23:57:49 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "28CBF121F9556915B43B28DF8EFDBA0C45F3A5275BA994DD72AEC00EB98DDD55",
+  "code": 19
+}
+
+2022-06-29 23:57:54 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "D653666BD6A9F8C93EA52292B43DA7AA6217A3BB9B9FB3C863581E53E6136AAE",
+  "raw_log": "[]"
+}
+
+2022-06-29 23:57:54 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "D653666BD6A9F8C93EA52292B43DA7AA6217A3BB9B9FB3C863581E53E6136AAE",
+  "code": 19
+}
+
+2022-06-29 23:57:55 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "D653666BD6A9F8C93EA52292B43DA7AA6217A3BB9B9FB3C863581E53E6136AAE",
+  "code": 19
+}
+
+2022-06-29 23:57:55 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "D653666BD6A9F8C93EA52292B43DA7AA6217A3BB9B9FB3C863581E53E6136AAE",
+  "code": 19
+}
+
+2022-06-29 23:57:57 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "D653666BD6A9F8C93EA52292B43DA7AA6217A3BB9B9FB3C863581E53E6136AAE",
+  "code": 19
+}
+
+2022-06-29 23:57:57 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "D653666BD6A9F8C93EA52292B43DA7AA6217A3BB9B9FB3C863581E53E6136AAE",
+  "code": 19
+}
+
+2022-06-29 23:57:58 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "D653666BD6A9F8C93EA52292B43DA7AA6217A3BB9B9FB3C863581E53E6136AAE",
+  "code": 19
+}
+
+2022-06-29 23:57:58 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "D653666BD6A9F8C93EA52292B43DA7AA6217A3BB9B9FB3C863581E53E6136AAE",
+  "code": 19
+}
+
+2022-06-29 23:57:59 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "raw_log": "[]"
+}
+
+2022-06-29 23:57:59 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:00 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:00 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:01 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:01 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:02 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:02 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:03 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:03 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:05 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:05 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "9D778B8BBA828E97DE6565A694315B604F727AEC09262A58EABCEC1DA82B0412",
+  "code": 19
+}
+
+2022-06-29 23:58:23 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "652ECC29952D51EF9EB56788E5E6CC05609425BB81CC1FDE47FD82861E3EF266",
+  "raw_log": "[]"
+}
+
+2022-06-29 23:58:23 - rpc.py[line:20](version) - INFO: {
+  "height": "0",
+  "txhash": "652ECC29952D51EF9EB56788E5E6CC05609425BB81CC1FDE47FD82861E3EF266",
+  "code": 19
+}
+
+2022-06-29 23:59:00 - rpc.py[line:24](version) - INFO: {
+  "height": "0",
+  "txhash": "97DAE0569C54DD7FAE8187A1F23A107225F164CC9D15480D2094AC7DBFBB6D7F",
+  "raw_log": "[]"
+}
+
+2022-06-29 23:59:00 - rpc.py[line:24](version) - INFO: {
+  "height": "0",
+  "txhash": "97DAE0569C54DD7FAE8187A1F23A107225F164CC9D15480D2094AC7DBFBB6D7F",
+  "code": 19
+}
+
+2022-06-29 23:59:07 - rpc.py[line:20](version) - INFO: v1.6.1
+
+2022-06-29 23:59:07 - rpc.py[line:20](version) - INFO: v1.6.1
+
+2022-06-30 00:01:16 - rpc.py[line:20](version) - INFO: v1.6.1
+
+2022-06-30 00:02:17 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+
+2022-06-30 00:02:45 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+
+2022-06-30 00:03:15 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+
+2022-06-30 00:03:15 - case_distr_proposal.py[line:35](test_version) - INFO: version: v1.6.1
+
+2022-06-30 00:04:19 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+2022-06-30 00:04:19 - case_distr_proposal.py[line:35](test_version) - INFO: version: v1.6.1
+2022-06-30 00:09:47 - case_distr_proposal.py[line:418](exit) - INFO: Please use arg eg:  deploy do all
+2022-06-30 00:09:53 - case_distr_proposal.py[line:418](exit) - INFO: Please use arg eg:  deploy do all
+2022-06-30 00:10:03 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+2022-06-30 00:10:03 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:10:36 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+2022-06-30 00:10:36 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:10:55 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+2022-06-30 00:10:55 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:10:55 - rpc.py[line:26](getledger) - INFO: result, cmd:exchaincli statusresult:{
+  "node_info": {
+    "protocol_version": {
+      "p2p": "7",
+      "block": "10",
+      "app": "0"
+    },
+    "id": "0b066ca0790f27a6595560b23bf1a1193f100797",
+    "listen_addr": "tcp://127.0.0.1:26656",
+    "network": "exchain-67",
+    "version": "0.33.9",
+    "channels": "4020212223243038",
+    "moniker": "node0",
+    "other": {
+      "tx_index": "on",
+      "rpc_address": "tcp://127.0.0.1:26657"
+    }
+  },
+  "sync_info": {
+    "latest_block_hash": "CFD17A58AA820D30ADBF3C930BA46FAE230F7CFB48CA4076D6DB5C076B076546",
+    "latest_app_hash": "FAEDD4682E71ECD4028B294A9AC985E6CDB78C0A4EF469C4F56270ED90CDA0ED",
+    "latest_block_height": "605",
+    "latest_block_time": "2022-06-29T16:10:47.219204Z",
+    "earliest_block_hash": "385F0F53074942DA6F98FB1D6B547F1F8A92BB21753A69FD79628008ED7706EC",
+    "earliest_app_hash": "",
+    "earliest_block_height": "1",
+    "earliest_block_time": "2022-06-29T14:50:53.002954Z",
+    "catching_up": false
+  },
+  "validator_info": {
+    "address": "FED74B7FE494A20B7CC2855C9F8BD6E4F80EEBC9",
+    "pub_key": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "MiZR1wxaQaNPn88WGcIfNBj5q4N0W+Xst61mjH8Cz18="
+    },
+    "voting_power": "1111257033250"
+  }
+}
+2022-06-30 00:11:09 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+2022-06-30 00:11:09 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:11:09 - rpc.py[line:26](getledger) - INFO: result, cmd:exchaincli statusresult:{
+  "node_info": {
+    "protocol_version": {
+      "p2p": "7",
+      "block": "10",
+      "app": "0"
+    },
+    "id": "0b066ca0790f27a6595560b23bf1a1193f100797",
+    "listen_addr": "tcp://127.0.0.1:26656",
+    "network": "exchain-67",
+    "version": "0.33.9",
+    "channels": "4020212223243038",
+    "moniker": "node0",
+    "other": {
+      "tx_index": "on",
+      "rpc_address": "tcp://127.0.0.1:26657"
+    }
+  },
+  "sync_info": {
+    "latest_block_hash": "C00F866860052E8EC00ADA2BC5EFF3788265204187E9E96FD9635EBC294E8CF8",
+    "latest_app_hash": "23714380BB498011AD60D637B45CB0618E2FF8C9C435E701C0023525BB08FD3E",
+    "latest_block_height": "607",
+    "latest_block_time": "2022-06-29T16:10:59.108738Z",
+    "earliest_block_hash": "385F0F53074942DA6F98FB1D6B547F1F8A92BB21753A69FD79628008ED7706EC",
+    "earliest_app_hash": "",
+    "earliest_block_height": "1",
+    "earliest_block_time": "2022-06-29T14:50:53.002954Z",
+    "catching_up": false
+  },
+  "validator_info": {
+    "address": "FED74B7FE494A20B7CC2855C9F8BD6E4F80EEBC9",
+    "pub_key": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "MiZR1wxaQaNPn88WGcIfNBj5q4N0W+Xst61mjH8Cz18="
+    },
+    "voting_power": "1111257033250"
+  }
+}
+2022-06-30 00:11:09 - case_distr_proposal.py[line:38](test) - INFO: version: {
+  "node_info": {
+    "protocol_version": {
+      "p2p": "7",
+      "block": "10",
+      "app": "0"
+    },
+    "id": "0b066ca0790f27a6595560b23bf1a1193f100797",
+    "listen_addr": "tcp://127.0.0.1:26656",
+    "network": "exchain-67",
+    "version": "0.33.9",
+    "channels": "4020212223243038",
+    "moniker": "node0",
+    "other": {
+      "tx_index": "on",
+      "rpc_address": "tcp://127.0.0.1:26657"
+    }
+  },
+  "sync_info": {
+    "latest_block_hash": "C00F866860052E8EC00ADA2BC5EFF3788265204187E9E96FD9635EBC294E8CF8",
+    "latest_app_hash": "23714380BB498011AD60D637B45CB0618E2FF8C9C435E701C0023525BB08FD3E",
+    "latest_block_height": "607",
+    "latest_block_time": "2022-06-29T16:10:59.108738Z",
+    "earliest_block_hash": "385F0F53074942DA6F98FB1D6B547F1F8A92BB21753A69FD79628008ED7706EC",
+    "earliest_app_hash": "",
+    "earliest_block_height": "1",
+    "earliest_block_time": "2022-06-29T14:50:53.002954Z",
+    "catching_up": false
+  },
+  "validator_info": {
+    "address": "FED74B7FE494A20B7CC2855C9F8BD6E4F80EEBC9",
+    "pub_key": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "MiZR1wxaQaNPn88WGcIfNBj5q4N0W+Xst61mjH8Cz18="
+    },
+    "voting_power": "1111257033250"
+  }
+}
+2022-06-30 00:11:13 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+2022-06-30 00:11:13 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:11:13 - rpc.py[line:26](getledger) - INFO: result, cmd:exchaincli statusresult:{
+  "node_info": {
+    "protocol_version": {
+      "p2p": "7",
+      "block": "10",
+      "app": "0"
+    },
+    "id": "0b066ca0790f27a6595560b23bf1a1193f100797",
+    "listen_addr": "tcp://127.0.0.1:26656",
+    "network": "exchain-67",
+    "version": "0.33.9",
+    "channels": "4020212223243038",
+    "moniker": "node0",
+    "other": {
+      "tx_index": "on",
+      "rpc_address": "tcp://127.0.0.1:26657"
+    }
+  },
+  "sync_info": {
+    "latest_block_hash": "E5FE13E61EB01182C48052DCF7AD943DACF6C7FDF98911766FB6375DBCF81037",
+    "latest_app_hash": "5695E3B1AAA7063C9321535D1E24FFC3EE3CF5167A1543835DFAEB272FAB4C73",
+    "latest_block_height": "608",
+    "latest_block_time": "2022-06-29T16:11:05.330343Z",
+    "earliest_block_hash": "385F0F53074942DA6F98FB1D6B547F1F8A92BB21753A69FD79628008ED7706EC",
+    "earliest_app_hash": "",
+    "earliest_block_height": "1",
+    "earliest_block_time": "2022-06-29T14:50:53.002954Z",
+    "catching_up": false
+  },
+  "validator_info": {
+    "address": "FED74B7FE494A20B7CC2855C9F8BD6E4F80EEBC9",
+    "pub_key": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "MiZR1wxaQaNPn88WGcIfNBj5q4N0W+Xst61mjH8Cz18="
+    },
+    "voting_power": "1111257033250"
+  }
+}
+2022-06-30 00:11:13 - case_distr_proposal.py[line:38](test) - INFO: version: {
+  "node_info": {
+    "protocol_version": {
+      "p2p": "7",
+      "block": "10",
+      "app": "0"
+    },
+    "id": "0b066ca0790f27a6595560b23bf1a1193f100797",
+    "listen_addr": "tcp://127.0.0.1:26656",
+    "network": "exchain-67",
+    "version": "0.33.9",
+    "channels": "4020212223243038",
+    "moniker": "node0",
+    "other": {
+      "tx_index": "on",
+      "rpc_address": "tcp://127.0.0.1:26657"
+    }
+  },
+  "sync_info": {
+    "latest_block_hash": "E5FE13E61EB01182C48052DCF7AD943DACF6C7FDF98911766FB6375DBCF81037",
+    "latest_app_hash": "5695E3B1AAA7063C9321535D1E24FFC3EE3CF5167A1543835DFAEB272FAB4C73",
+    "latest_block_height": "608",
+    "latest_block_time": "2022-06-29T16:11:05.330343Z",
+    "earliest_block_hash": "385F0F53074942DA6F98FB1D6B547F1F8A92BB21753A69FD79628008ED7706EC",
+    "earliest_app_hash": "",
+    "earliest_block_height": "1",
+    "earliest_block_time": "2022-06-29T14:50:53.002954Z",
+    "catching_up": false
+  },
+  "validator_info": {
+    "address": "FED74B7FE494A20B7CC2855C9F8BD6E4F80EEBC9",
+    "pub_key": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "MiZR1wxaQaNPn88WGcIfNBj5q4N0W+Xst61mjH8Cz18="
+    },
+    "voting_power": "1111257033250"
+  }
+}
+2022-06-30 00:12:26 - rpc.py[line:21](version) - INFO: version, cmd:exchaincli versionresult:v1.6.1
+2022-06-30 00:12:26 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:12:26 - rpc.py[line:26](get_ledger_seq) - INFO: result, cmd:exchaincli statusresult:{
+  "node_info": {
+    "protocol_version": {
+      "p2p": "7",
+      "block": "10",
+      "app": "0"
+    },
+    "id": "0b066ca0790f27a6595560b23bf1a1193f100797",
+    "listen_addr": "tcp://127.0.0.1:26656",
+    "network": "exchain-67",
+    "version": "0.33.9",
+    "channels": "4020212223243038",
+    "moniker": "node0",
+    "other": {
+      "tx_index": "on",
+      "rpc_address": "tcp://127.0.0.1:26657"
+    }
+  },
+  "sync_info": {
+    "latest_block_hash": "C2E0ACEC52A2993B3869EEEEECBD8C504485C03D561569C1BBF97706ED4B9FDF",
+    "latest_app_hash": "74681DD218ECD653C5CD72F5CD2E2C3B4FC10942B9153286FA7F2D0F3FD42B3D",
+    "latest_block_height": "620",
+    "latest_block_time": "2022-06-29T16:12:17.341045Z",
+    "earliest_block_hash": "385F0F53074942DA6F98FB1D6B547F1F8A92BB21753A69FD79628008ED7706EC",
+    "earliest_app_hash": "",
+    "earliest_block_height": "1",
+    "earliest_block_time": "2022-06-29T14:50:53.002954Z",
+    "catching_up": false
+  },
+  "validator_info": {
+    "address": "FED74B7FE494A20B7CC2855C9F8BD6E4F80EEBC9",
+    "pub_key": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "MiZR1wxaQaNPn88WGcIfNBj5q4N0W+Xst61mjH8Cz18="
+    },
+    "voting_power": "1111257033250"
+  }
+}
+2022-06-30 00:12:26 - case_distr_proposal.py[line:38](test) - INFO: version: {
+  "node_info": {
+    "protocol_version": {
+      "p2p": "7",
+      "block": "10",
+      "app": "0"
+    },
+    "id": "0b066ca0790f27a6595560b23bf1a1193f100797",
+    "listen_addr": "tcp://127.0.0.1:26656",
+    "network": "exchain-67",
+    "version": "0.33.9",
+    "channels": "4020212223243038",
+    "moniker": "node0",
+    "other": {
+      "tx_index": "on",
+      "rpc_address": "tcp://127.0.0.1:26657"
+    }
+  },
+  "sync_info": {
+    "latest_block_hash": "C2E0ACEC52A2993B3869EEEEECBD8C504485C03D561569C1BBF97706ED4B9FDF",
+    "latest_app_hash": "74681DD218ECD653C5CD72F5CD2E2C3B4FC10942B9153286FA7F2D0F3FD42B3D",
+    "latest_block_height": "620",
+    "latest_block_time": "2022-06-29T16:12:17.341045Z",
+    "earliest_block_hash": "385F0F53074942DA6F98FB1D6B547F1F8A92BB21753A69FD79628008ED7706EC",
+    "earliest_app_hash": "",
+    "earliest_block_height": "1",
+    "earliest_block_time": "2022-06-29T14:50:53.002954Z",
+    "catching_up": false
+  },
+  "validator_info": {
+    "address": "FED74B7FE494A20B7CC2855C9F8BD6E4F80EEBC9",
+    "pub_key": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "MiZR1wxaQaNPn88WGcIfNBj5q4N0W+Xst61mjH8Cz18="
+    },
+    "voting_power": "1111257033250"
+  }
+}
+2022-06-30 00:14:00 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:14:00 - case_distr_proposal.py[line:38](test) - INFO: version: 636
+2022-06-30 00:14:19 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:14:19 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 639
+2022-06-30 00:21:15 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:21:15 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 708
+2022-06-30 00:22:15 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:22:15 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 718
+2022-06-30 00:22:44 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:22:45 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 723
+2022-06-30 00:23:45 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:23:45 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 733
+2022-06-30 00:23:45 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:733, target seq:100
+2022-06-30 00:23:56 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:23:56 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 735
+2022-06-30 00:24:10 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:24:10 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 737
+2022-06-30 00:24:10 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:737, target seq:10000
+2022-06-30 00:24:10 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:737, target seq:10000
+2022-06-30 00:24:10 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:737, target seq:10000
+2022-06-30 00:24:10 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:737, target seq:10000
+2022-06-30 00:24:11 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:737, target seq:10000
+2022-06-30 00:24:11 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:737, target seq:10000
+2022-06-30 00:24:11 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:737, target seq:10000
+2022-06-30 00:24:11 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:737, target seq:10000
+2022-06-30 00:24:11 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:737, target seq:10000
+2022-06-30 00:24:11 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:738, target seq:10000
+2022-06-30 00:24:11 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:738, target seq:10000
+2022-06-30 00:24:11 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:738, target seq:10000
+2022-06-30 00:24:11 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:738, target seq:10000
+2022-06-30 00:24:12 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:738, target seq:10000
+2022-06-30 00:24:12 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:738, target seq:10000
+2022-06-30 00:24:12 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:738, target seq:10000
+2022-06-30 00:24:12 - rpc.py[line:45](wait_ledger) - INFO: waiting.. cur ledger seq:738, target seq:10000
+2022-06-30 00:24:26 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:24:26 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 740
+2022-06-30 00:24:27 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:740, target seq:10000
+2022-06-30 00:24:28 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:740, target seq:10000
+2022-06-30 00:24:29 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:740, target seq:10000
+2022-06-30 00:24:30 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:741, target seq:10000
+2022-06-30 00:24:31 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:741, target seq:10000
+2022-06-30 00:24:32 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:741, target seq:10000
+2022-06-30 00:33:41 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:33:57 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:33:57 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 835
+2022-06-30 00:33:58 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:835, target seq:10000
+2022-06-30 00:33:59 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:835, target seq:10000
+2022-06-30 00:34:00 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:836, target seq:10000
+2022-06-30 00:34:01 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:836, target seq:10000
+2022-06-30 00:34:02 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:836, target seq:10000
+2022-06-30 00:34:03 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:836, target seq:10000
+2022-06-30 00:34:10 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:34:10 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 837
+2022-06-30 00:34:10 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:837, target seq:100
+2022-06-30 00:34:11 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:837, target seq:838
+2022-06-30 00:34:12 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:837, target seq:838
+2022-06-30 00:34:13 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:838, target seq:838
+2022-06-30 00:34:15 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:838, target seq:838
+2022-06-30 00:34:16 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:838, target seq:838
+2022-06-30 00:34:17 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:838, target seq:838
+2022-06-30 00:34:18 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:838, target seq:838
+2022-06-30 00:34:18 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:839, target seq:838
+2022-06-30 00:34:55 - case_distr_proposal.py[line:35](test) - INFO: version: v1.6.1
+2022-06-30 00:34:55 - case_distr_proposal.py[line:38](test) - INFO: get_ledger_seq: 845
+2022-06-30 00:34:55 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:845, target seq:100
+2022-06-30 00:34:56 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:845, target seq:846
+2022-06-30 00:34:57 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:845, target seq:846
+2022-06-30 00:34:58 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:845, target seq:846
+2022-06-30 00:34:59 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:845, target seq:846
+2022-06-30 00:34:59 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:846, target seq:846
+2022-06-30 00:34:59 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking add-shares exvaloper1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sle8094k --from admin16 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 00:35:14 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:848, target seq:849
+2022-06-30 00:35:15 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:848, target seq:849
+2022-06-30 00:35:16 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:848, target seq:849
+2022-06-30 00:35:17 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:848, target seq:849
+2022-06-30 00:35:18 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:848, target seq:849
+2022-06-30 00:35:18 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:849, target seq:849
+2022-06-30 00:35:18 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking add-shares exvaloper1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sle8094k --from admin16 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 00:39:38 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:892, target seq:893
+2022-06-30 00:39:39 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:892, target seq:893
+2022-06-30 00:39:41 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:892, target seq:893
+2022-06-30 00:39:42 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:892, target seq:893
+2022-06-30 00:39:42 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:893, target seq:893
+2022-06-30 00:40:30 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:900, target seq:901
+2022-06-30 00:40:30 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:901, target seq:901
+2022-06-30 00:40:30 - rpc.py[line:55](run_tx) - INFO: 
+2022-06-30 00:40:52 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:904, target seq:905
+2022-06-30 00:40:53 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:904, target seq:905
+2022-06-30 00:40:54 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:905, target seq:905
+2022-06-30 00:40:54 - rpc.py[line:55](run_tx) - INFO: 
+2022-06-30 00:41:33 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:911, target seq:912
+2022-06-30 00:41:34 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:911, target seq:912
+2022-06-30 00:41:35 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:911, target seq:912
+2022-06-30 00:41:35 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:912, target seq:912
+2022-06-30 00:41:35 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking add-shares exvaloper1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sle8094k --from admin16 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 00:41:35 - rpc.py[line:55](run_tx) - INFO: 
+2022-06-30 00:41:51 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:914, target seq:915
+2022-06-30 00:41:52 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:914, target seq:915
+2022-06-30 00:41:53 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:914, target seq:915
+2022-06-30 00:41:53 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:915, target seq:915
+2022-06-30 00:41:53 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking add-shares exvaloper1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sle8094k --from admin16 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 00:41:53 - rpc.py[line:55](run_tx) - INFO: 
+2022-06-30 00:42:29 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:920, target seq:921
+2022-06-30 00:42:30 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:921, target seq:921
+2022-06-30 00:42:30 - rpc.py[line:55](run_tx) - INFO: 
+2022-06-30 00:43:04 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:926, target seq:927
+2022-06-30 00:43:05 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:926, target seq:927
+2022-06-30 00:43:06 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:926, target seq:927
+2022-06-30 00:43:06 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:927, target seq:927
+2022-06-30 00:43:30 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:931, target seq:932
+2022-06-30 00:43:31 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:931, target seq:932
+2022-06-30 00:43:33 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:931, target seq:932
+2022-06-30 00:43:34 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:931, target seq:932
+2022-06-30 00:43:35 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:931, target seq:932
+2022-06-30 00:43:36 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:931, target seq:932
+2022-06-30 00:43:36 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:932, target seq:932
+2022-06-30 00:43:36 - rpc.py[line:55](run_tx) - INFO: 
+2022-06-30 00:43:39 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:932, target seq:933
+2022-06-30 00:43:41 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:932, target seq:933
+2022-06-30 00:43:42 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:932, target seq:933
+2022-06-30 00:43:42 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:933, target seq:933
+2022-06-30 00:43:42 - rpc.py[line:55](run_tx) - INFO: 0
+2022-06-30 00:44:01 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:936, target seq:937
+2022-06-30 00:44:02 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:936, target seq:937
+2022-06-30 00:44:03 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:936, target seq:937
+2022-06-30 00:44:04 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:936, target seq:937
+2022-06-30 00:44:06 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:936, target seq:937
+2022-06-30 00:44:06 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:937, target seq:937
+2022-06-30 00:44:06 - rpc.py[line:55](run_tx) - INFO: 0
+2022-06-30 00:44:49 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:944, target seq:945
+2022-06-30 00:44:50 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:944, target seq:945
+2022-06-30 00:44:51 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:944, target seq:945
+2022-06-30 00:44:52 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:944, target seq:945
+2022-06-30 00:44:53 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:944, target seq:945
+2022-06-30 00:44:54 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:944, target seq:945
+2022-06-30 00:44:54 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:945, target seq:945
+2022-06-30 00:44:54 - rpc.py[line:55](run_tx) - INFO: 119
+2022-06-30 00:45:57 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:955, target seq:956
+2022-06-30 00:45:58 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:955, target seq:956
+2022-06-30 00:45:59 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:955, target seq:956
+2022-06-30 00:45:59 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:956, target seq:956
+2022-06-30 00:46:00 - case_distr_proposal.py[line:44](test) - INFO: run_tx: B35C0A96AC28E9DA83914A77BF46CF3E05D124A3263CEE7B57F6F9D3CC023A2B
+2022-06-30 00:46:27 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:960, target seq:961
+2022-06-30 00:46:28 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:960, target seq:961
+2022-06-30 00:46:29 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:960, target seq:961
+2022-06-30 00:46:29 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:961, target seq:961
+2022-06-30 00:47:34 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:971, target seq:972
+2022-06-30 00:47:35 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:971, target seq:972
+2022-06-30 00:47:36 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:971, target seq:972
+2022-06-30 00:47:36 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:972, target seq:972
+2022-06-30 00:47:36 - case_distr_proposal.py[line:44](test) - INFO: run_tx: F9AC33DB7F3F051251B26C139941B16EDAC6B77100382DFB65DEE4861C653309
+2022-06-30 00:50:21 - rpc.py[line:62](kill_process) - INFO: result, cmd:killall exchaindresult:
+2022-06-30 00:53:35 - rpc.py[line:66](run_node) - INFO: result, cmd:exchaind-my start --home /Users/oker/workspace/nodes/node0/exchaind --p2p.seed_mode=true --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.laddr tcp://127.0.0.1:26656 --rpc.laddr tcp://127.0.0.1:26657 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8545 --enable-preruntx=false --consensus-role=v0 --rpc.enable-multi-call --keyring-backend test >/Users/oker/workspace/nodes/val0.log 2>&1 &result:
+2022-06-30 01:00:50 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:2, target seq:3
+2022-06-30 01:00:51 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:2, target seq:3
+2022-06-30 01:00:52 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:2, target seq:3
+2022-06-30 01:00:53 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:2, target seq:3
+2022-06-30 01:00:53 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:3, target seq:3
+2022-06-30 01:00:53 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking deposit 100okt --from admin16 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "734144205F90320969FDA7C391AB86B6B3E4D7009621666001F90E0C03F1BF30",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:01:39 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:10, target seq:11
+2022-06-30 01:01:40 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:10, target seq:11
+2022-06-30 01:01:41 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:10, target seq:11
+2022-06-30 01:01:42 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:10, target seq:11
+2022-06-30 01:01:42 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:11, target seq:11
+2022-06-30 01:01:42 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking deposit 100okt --from admin16 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "E174210B86DD1E1E1DE518BCBD4778587DA7CFDD88643D018ACC97223418E6C6",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:01:42 - case_distr_proposal.py[line:51](test) - INFO: run_tx: E174210B86DD1E1E1DE518BCBD4778587DA7CFDD88643D018ACC97223418E6C6
+2022-06-30 01:04:51 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:16, target seq:17
+2022-06-30 01:04:52 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:16, target seq:17
+2022-06-30 01:04:53 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:16, target seq:17
+2022-06-30 01:04:53 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:17, target seq:17
+2022-06-30 01:04:53 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking deposit 100okt --from admin16 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "734144205F90320969FDA7C391AB86B6B3E4D7009621666001F90E0C03F1BF30",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:04:53 - case_distr_proposal.py[line:51](test) - INFO: run_tx: 734144205F90320969FDA7C391AB86B6B3E4D7009621666001F90E0C03F1BF30
+2022-06-30 01:04:55 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:17, target seq:18
+2022-06-30 01:04:56 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:17, target seq:18
+2022-06-30 01:04:57 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:17, target seq:18
+2022-06-30 01:04:58 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:17, target seq:18
+2022-06-30 01:04:59 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:17, target seq:18
+2022-06-30 01:04:59 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:18, target seq:18
+2022-06-30 01:04:59 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking add-shares exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7 --from admin16 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "5291B9AF71C6E0B979BDF67EA538BA2CD5C438AC2DA4B46BBE4A265EE73A2DF5",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:04:59 - case_distr_proposal.py[line:54](test) - INFO: run_tx: 5291B9AF71C6E0B979BDF67EA538BA2CD5C438AC2DA4B46BBE4A265EE73A2DF5
+2022-06-30 01:08:29 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:49, target seq:50
+2022-06-30 01:08:31 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:49, target seq:50
+2022-06-30 01:08:32 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:49, target seq:50
+2022-06-30 01:08:33 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:49, target seq:50
+2022-06-30 01:08:34 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:49, target seq:50
+2022-06-30 01:08:34 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:50, target seq:50
+2022-06-30 01:08:34 - rpc.py[line:52](run_tx) - INFO: result, cmd:eexchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1x8y59yxhk64mh0ct4h73fad2w5xap2zgq4f4kz 100 --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:09:17 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1x8y59yxhk64mh0ct4h73fad2w5xap2zgq4f4kz 100 --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:09:43 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1x8y59yxhk64mh0ct4h73fad2w5xap2zgq4f4kz 100okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "76BBD1722942148D29DE4936F977CEE8A31AD8D0EEDC96C6A988CEB63A82E67E",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:09:43 - case_distr_proposal.py[line:57](test) - INFO: run_tx: 76BBD1722942148D29DE4936F977CEE8A31AD8D0EEDC96C6A988CEB63A82E67E
+2022-06-30 01:11:34 - rpc.py[line:52](run_tx) - INFO: result, cmd:eexchaincli tx staking proxy reg --from ex10t7hhfjya9k7yn9ymdg79n68zeuk224xn27fx8 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:11:47 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking proxy reg --from ex10t7hhfjya9k7yn9ymdg79n68zeuk224xn27fx8 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:12:24 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking proxy reg --from ex10t7hhfjya9k7yn9ymdg79n68zeuk224xn27fx8 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:14:47 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking proxy reg --from ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "D689A5B56E76F8ACDA2DA32AA272A550A3C89A186E2DE729FA3DC7F6B98996A8",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:14:47 - case_distr_proposal.py[line:60](test) - INFO: run_tx: D689A5B56E76F8ACDA2DA32AA272A550A3C89A186E2DE729FA3DC7F6B98996A8
+2022-06-30 01:15:25 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking proxy bind ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --from ex1dyxj3q9tzfkwrryejygqsfh7jj7cp4yuetcz3n --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:17:54 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-0.json --from ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:18:31 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-0.json --from ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "B6DC1FB771F2BFF2D0291F975BD01AF0434781143C90E37DC9599DCE7A7E5345",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:18:31 - case_distr_proposal.py[line:66](test) - INFO: run_tx: B6DC1FB771F2BFF2D0291F975BD01AF0434781143C90E37DC9599DCE7A7E5345
+2022-06-30 01:19:27 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-1.json --from ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "2975E2181E9A8B0567C91312A6C65F9A0B648E65A1FFD9129FC4110E18B85A0F",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:19:27 - case_distr_proposal.py[line:69](test) - INFO: run_tx: 2975E2181E9A8B0567C91312A6C65F9A0B648E65A1FFD9129FC4110E18B85A0F
+2022-06-30 01:21:20 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx gov vote 1 yes --from ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:23:31 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx distr withdraw-rewards exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7 --commission --from va1 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "B71A63A373B87B2E3EB2CC4A1CA8793BD0E01140DD26AE28951366086AD9A95F",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:23:31 - case_distr_proposal.py[line:75](test) - INFO: run_tx: B71A63A373B87B2E3EB2CC4A1CA8793BD0E01140DD26AE28951366086AD9A95F
+2022-06-30 01:25:04 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx distr withdraw-rewards ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --from ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:25:30 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx distr withdraw-rewards exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7 --from ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "55031E96A8B3AEC59C8FDC957417D54330F01173BF4B63FFFBDB75DB5C555CC9",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:25:30 - case_distr_proposal.py[line:78](test) - INFO: run_tx: 55031E96A8B3AEC59C8FDC957417D54330F01173BF4B63FFFBDB75DB5C555CC9
+2022-06-30 01:26:54 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx distr withdraw-all-reward --from ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:27:11 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx distr withdraw-all-rewards --from ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "1B1DCAB1E94E83FCFDD5C844A0A5DCB56F09C11C5A167A3D134BAB980EBF3E3B",
+  "raw_log": "[]"
+}
+
+2022-06-30 01:27:11 - case_distr_proposal.py[line:81](test) - INFO: run_tx: 1B1DCAB1E94E83FCFDD5C844A0A5DCB56F09C11C5A167A3D134BAB980EBF3E3B
+2022-06-30 01:30:28 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx staking edit-validator-commission-rate 0.1 --from va1 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:
+2022-06-30 01:31:55 - rpc.py[line:123](query_shares) - INFO: result, cmd: exchaincli query staking delegator ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3yresult:{
+  "delegator_address": "ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y",
+  "validator_address": [
+    "exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7"
+  ],
+  "shares": "61736501847.202535718679430000",
+  "tokens": "10000.000000000000000000",
+  "unbonded_tokens": "0.000000000000000000",
+  "completion_time": "1970-01-01T00:00:00Z",
+  "is_proxy": true,
+  "total_delegated_tokens": "0.000000000000000000",
+  "proxy_address": ""
+}
+
+2022-06-30 01:33:58 - rpc.py[line:123](query_shares) - INFO: result, cmd: exchaincli query staking delegator ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3yresult:{
+  "delegator_address": "ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y",
+  "validator_address": [
+    "exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7"
+  ],
+  "shares": "61736501847.202535718679430000",
+  "tokens": "10000.000000000000000000",
+  "unbonded_tokens": "0.000000000000000000",
+  "completion_time": "1970-01-01T00:00:00Z",
+  "is_proxy": true,
+  "total_delegated_tokens": "0.000000000000000000",
+  "proxy_address": ""
+}
+
+2022-06-30 01:34:27 - rpc.py[line:123](query_shares) - INFO: result, cmd: exchaincli query staking delegator ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3yresult:{
+  "delegator_address": "ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y",
+  "validator_address": [
+    "exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7"
+  ],
+  "shares": "61736501847.202535718679430000",
+  "tokens": "10000.000000000000000000",
+  "unbonded_tokens": "0.000000000000000000",
+  "completion_time": "1970-01-01T00:00:00Z",
+  "is_proxy": true,
+  "total_delegated_tokens": "0.000000000000000000",
+  "proxy_address": ""
+}
+
+2022-06-30 01:34:27 - case_distr_proposal.py[line:87](test) - INFO: run_tx: {"delegator_address": "ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y", "validator_address": ["exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7"], "shares": "61736501847.202535718679430000", "tokens": "10000.000000000000000000", "unbonded_tokens": "0.000000000000000000", "completion_time": "1970-01-01T00:00:00Z", "is_proxy": true, "total_delegated_tokens": "0.000000000000000000", "proxy_address": ""}
+2022-06-30 01:36:27 - rpc.py[line:132](query_account) - INFO: result, cmd: exchaincli query account  ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3yresult:{
+  "type": "okexchain/EthAccount",
+  "value": {
+    "address": "ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y",
+    "eth_address": "0x9536354AE32852A7E7C4BFe7415b104016d5Fb04",
+    "coins": [
+      {
+        "denom": "okt",
+        "amount": "989699.999794055100000000"
+      }
+    ],
+    "public_key": "expub17weu6qepq05uwfs4lfxqytr7trvz8kpqdsr8zkp73f5nxzzvtq9vkycynr0qxgjglrk",
+    "account_number": 19,
+    "sequence": 15,
+    "code_hash": "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+  }
+}
+
+2022-06-30 01:36:27 - case_distr_proposal.py[line:90](test) - INFO: run_tx: 989699.999794055100000000
+2022-06-30 01:37:45 - rpc.py[line:141](query_commission) - INFO: result, cmd: exchaincli query distr commission   exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7result:[
+  {
+    "denom": "okt",
+    "amount": "20.429663472722870123"
+  }
+]
+
+2022-06-30 01:38:12 - rpc.py[line:141](query_commission) - INFO: result, cmd: exchaincli query distr commission   exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7result:[
+  {
+    "denom": "okt",
+    "amount": "21.134252811999557898"
+  }
+]
+
+2022-06-30 01:38:12 - case_distr_proposal.py[line:93](test) - INFO: run_tx: 21.134252811999557898
+2022-06-30 01:41:56 - rpc.py[line:150](query_rewards) - INFO: result, cmd: exchaincli query distr rewards   ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y result:{
+  "rewards": [
+    {
+      "validator_address": "exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7",
+      "reward": []
+    }
+  ],
+  "total": []
+}
+
+2022-06-30 01:45:06 - rpc.py[line:160](query_withdraw) - INFO: result, cmd: exchaincli query distr withdraw-addr   ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3yresult:"ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y"
+
+2022-06-30 01:45:06 - case_distr_proposal.py[line:99](test) - INFO: run_tx: "ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y"
+
+2022-06-30 01:46:11 - rpc.py[line:167](query_staking_validators) - INFO: result, cmd: exchaincli query staking validators   result:[
+  {
+    "operator_address": "exvaloper1q6ls3h64gkxq0r73u2eqwwr7d5mp583fm325zu",
+    "consensus_pubkey": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "NjYGx/PFYO3vYN5gbRUCaFlv7ddFp4pE6zj9hClD2EQ="
+    },
+    "jailed": false,
+    "status": 2,
+    "delegator_shares": "802574524014.632964342832590000",
+    "description": {
+      "moniker": "node1",
+      "identity": "",
+      "website": "",
+      "details": ""
+    },
+    "unbonding_height": "0",
+    "unbonding_time": "1970-01-01T00:00:00Z",
+    "min_self_delegation": "10000.000000000000000000",
+    "commission": {
+      "commission_rates": {
+        "rate": "1.000000000000000000",
+        "max_rate": "1.000000000000000000",
+        "max_change_rate": "0.000000000000000000"
+      },
+      "update_time": "1970-01-01T00:00:00Z"
+    },
+    "tokens": "0"
+  },
+  {
+    "operator_address": "exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7",
+    "consensus_pubkey": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "OTJ4F1phtXUOrXWwRAWMW83Xm6aU0KhgjL4tuPtIpKw="
+    },
+    "jailed": false,
+    "status": 2,
+    "delegator_shares": "1111874398269.117668293416534300",
+    "description": {
+      "moniker": "node0",
+      "identity": "",
+      "website": "",
+      "details": ""
+    },
+    "unbonding_height": "0",
+    "unbonding_time": "1970-01-01T00:00:00Z",
+    "min_self_delegation": "10000.000000000000000000",
+    "commission": {
+      "commission_rates": {
+        "rate": "0.300000000000000000",
+        "max_rate": "1.000000000000000000",
+        "max_change_rate": "0.000000000000000000"
+      },
+      "update_time": "2022-06-29T17:11:27.898864Z"
+    },
+    "tokens": "0"
+  },
+  {
+    "operator_address": "exvaloper1gd6avvrg0jp5wxpfyfa4c84fygtl6cn9dage6d",
+    "consensus_pubkey": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "VBPfb087vkAYVqUkq61JTV4lbkUJBsCoX+CqoNzH4lg="
+    },
+    "jailed": false,
+    "status": 2,
+    "delegator_shares": "926047527709.038035780191450000",
+    "description": {
+      "moniker": "node3",
+      "identity": "",
+      "website": "",
+      "details": ""
+    },
+    "unbonding_height": "0",
+    "unbonding_time": "1970-01-01T00:00:00Z",
+    "min_self_delegation": "10000.000000000000000000",
+    "commission": {
+      "commission_rates": {
+        "rate": "1.000000000000000000",
+        "max_rate": "1.000000000000000000",
+        "max_change_rate": "0.000000000000000000"
+      },
+      "update_time": "1970-01-01T00:00:00Z"
+    },
+    "tokens": "0"
+  },
+  {
+    "operator_address": "exvaloper1ve4mwgq9967gk338yptsg2fheur4ke322gzynt",
+    "consensus_pubkey": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "qI7EHoY0jVc16YsNW6PEC0jyNmPtj/9FaoftdX+Dxo0="
+    },
+    "jailed": false,
+    "status": 2,
+    "delegator_shares": "864311025861.835500061512020000",
+    "description": {
+      "moniker": "node2",
+      "identity": "",
+      "website": "",
+      "details": ""
+    },
+    "unbonding_height": "0",
+    "unbonding_time": "1970-01-01T00:00:00Z",
+    "min_self_delegation": "10000.000000000000000000",
+    "commission": {
+      "commission_rates": {
+        "rate": "1.000000000000000000",
+        "max_rate": "1.000000000000000000",
+        "max_change_rate": "0.000000000000000000"
+      },
+      "update_time": "1970-01-01T00:00:00Z"
+    },
+    "tokens": "0"
+  }
+]
+
+2022-06-30 01:46:11 - case_distr_proposal.py[line:102](test) - INFO: run_tx: [
+  {
+    "operator_address": "exvaloper1q6ls3h64gkxq0r73u2eqwwr7d5mp583fm325zu",
+    "consensus_pubkey": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "NjYGx/PFYO3vYN5gbRUCaFlv7ddFp4pE6zj9hClD2EQ="
+    },
+    "jailed": false,
+    "status": 2,
+    "delegator_shares": "802574524014.632964342832590000",
+    "description": {
+      "moniker": "node1",
+      "identity": "",
+      "website": "",
+      "details": ""
+    },
+    "unbonding_height": "0",
+    "unbonding_time": "1970-01-01T00:00:00Z",
+    "min_self_delegation": "10000.000000000000000000",
+    "commission": {
+      "commission_rates": {
+        "rate": "1.000000000000000000",
+        "max_rate": "1.000000000000000000",
+        "max_change_rate": "0.000000000000000000"
+      },
+      "update_time": "1970-01-01T00:00:00Z"
+    },
+    "tokens": "0"
+  },
+  {
+    "operator_address": "exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7",
+    "consensus_pubkey": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "OTJ4F1phtXUOrXWwRAWMW83Xm6aU0KhgjL4tuPtIpKw="
+    },
+    "jailed": false,
+    "status": 2,
+    "delegator_shares": "1111874398269.117668293416534300",
+    "description": {
+      "moniker": "node0",
+      "identity": "",
+      "website": "",
+      "details": ""
+    },
+    "unbonding_height": "0",
+    "unbonding_time": "1970-01-01T00:00:00Z",
+    "min_self_delegation": "10000.000000000000000000",
+    "commission": {
+      "commission_rates": {
+        "rate": "0.300000000000000000",
+        "max_rate": "1.000000000000000000",
+        "max_change_rate": "0.000000000000000000"
+      },
+      "update_time": "2022-06-29T17:11:27.898864Z"
+    },
+    "tokens": "0"
+  },
+  {
+    "operator_address": "exvaloper1gd6avvrg0jp5wxpfyfa4c84fygtl6cn9dage6d",
+    "consensus_pubkey": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "VBPfb087vkAYVqUkq61JTV4lbkUJBsCoX+CqoNzH4lg="
+    },
+    "jailed": false,
+    "status": 2,
+    "delegator_shares": "926047527709.038035780191450000",
+    "description": {
+      "moniker": "node3",
+      "identity": "",
+      "website": "",
+      "details": ""
+    },
+    "unbonding_height": "0",
+    "unbonding_time": "1970-01-01T00:00:00Z",
+    "min_self_delegation": "10000.000000000000000000",
+    "commission": {
+      "commission_rates": {
+        "rate": "1.000000000000000000",
+        "max_rate": "1.000000000000000000",
+        "max_change_rate": "0.000000000000000000"
+      },
+      "update_time": "1970-01-01T00:00:00Z"
+    },
+    "tokens": "0"
+  },
+  {
+    "operator_address": "exvaloper1ve4mwgq9967gk338yptsg2fheur4ke322gzynt",
+    "consensus_pubkey": {
+      "type": "tendermint/PubKeyEd25519",
+      "value": "qI7EHoY0jVc16YsNW6PEC0jyNmPtj/9FaoftdX+Dxo0="
+    },
+    "jailed": false,
+    "status": 2,
+    "delegator_shares": "864311025861.835500061512020000",
+    "description": {
+      "moniker": "node2",
+      "identity": "",
+      "website": "",
+      "details": ""
+    },
+    "unbonding_height": "0",
+    "unbonding_time": "1970-01-01T00:00:00Z",
+    "min_self_delegation": "10000.000000000000000000",
+    "commission": {
+      "commission_rates": {
+        "rate": "1.000000000000000000",
+        "max_rate": "1.000000000000000000",
+        "max_change_rate": "0.000000000000000000"
+      },
+      "update_time": "1970-01-01T00:00:00Z"
+    },
+    "tokens": "0"
+  }
+]
+
+2022-06-30 01:47:15 - rpc.py[line:174](query_proposal) - INFO: result, cmd: exchaincli query gov proposal   1result:{
+  "content": {
+    "type": "okexchain/distribution/ChangeDistributionTypeProposal",
+    "value": {
+      "title": "Change Distribution to onchain",
+      "description": "Will change the distribution model",
+      "type": 1
+    }
+  },
+  "id": "1",
+  "proposal_status": "Passed",
+  "final_tally_result": {
+    "total_power": "2037921925980.155704073607984300",
+    "total_voted_power": "1419939542485.658321529626890000",
+    "yes": "1419939542485.658321529626890000",
+    "abstain": "0.000000000000000000",
+    "no": "0.000000000000000000",
+    "no_with_veto": "0.000000000000000000"
+  },
+  "submit_time": "2022-06-29T17:10:10.309255Z",
+  "deposit_end_time": "2022-06-29T17:10:10.309255Z",
+  "total_deposit": [
+    {
+      "denom": "okt",
+      "amount": "100.000000000000000000"
+    }
+  ],
+  "voting_start_time": "2022-06-29T17:10:10.309255Z",
+  "voting_end_time": "2022-06-29T17:10:52.167575Z"
+}
+
+2022-06-30 01:47:15 - case_distr_proposal.py[line:105](test) - INFO: run_tx: {
+  "content": {
+    "type": "okexchain/distribution/ChangeDistributionTypeProposal",
+    "value": {
+      "title": "Change Distribution to onchain",
+      "description": "Will change the distribution model",
+      "type": 1
+    }
+  },
+  "id": "1",
+  "proposal_status": "Passed",
+  "final_tally_result": {
+    "total_power": "2037921925980.155704073607984300",
+    "total_voted_power": "1419939542485.658321529626890000",
+    "yes": "1419939542485.658321529626890000",
+    "abstain": "0.000000000000000000",
+    "no": "0.000000000000000000",
+    "no_with_veto": "0.000000000000000000"
+  },
+  "submit_time": "2022-06-29T17:10:10.309255Z",
+  "deposit_end_time": "2022-06-29T17:10:10.309255Z",
+  "total_deposit": [
+    {
+      "denom": "okt",
+      "amount": "100.000000000000000000"
+    }
+  ],
+  "voting_start_time": "2022-06-29T17:10:10.309255Z",
+  "voting_end_time": "2022-06-29T17:10:52.167575Z"
+}
+
+2022-06-30 01:47:48 - rpc.py[line:174](query_proposal) - INFO: result, cmd: exchaincli query gov proposal   1result:{
+  "content": {
+    "type": "okexchain/distribution/ChangeDistributionTypeProposal",
+    "value": {
+      "title": "Change Distribution to onchain",
+      "description": "Will change the distribution model",
+      "type": 1
+    }
+  },
+  "id": "1",
+  "proposal_status": "Passed",
+  "final_tally_result": {
+    "total_power": "2037921925980.155704073607984300",
+    "total_voted_power": "1419939542485.658321529626890000",
+    "yes": "1419939542485.658321529626890000",
+    "abstain": "0.000000000000000000",
+    "no": "0.000000000000000000",
+    "no_with_veto": "0.000000000000000000"
+  },
+  "submit_time": "2022-06-29T17:10:10.309255Z",
+  "deposit_end_time": "2022-06-29T17:10:10.309255Z",
+  "total_deposit": [
+    {
+      "denom": "okt",
+      "amount": "100.000000000000000000"
+    }
+  ],
+  "voting_start_time": "2022-06-29T17:10:10.309255Z",
+  "voting_end_time": "2022-06-29T17:10:52.167575Z"
+}
+
+2022-06-30 01:47:48 - case_distr_proposal.py[line:105](test) - INFO: run_tx: {"content": {"type": "okexchain/distribution/ChangeDistributionTypeProposal", "value": {"title": "Change Distribution to onchain", "description": "Will change the distribution model", "type": 1}}, "id": "1", "proposal_status": "Passed", "final_tally_result": {"total_power": "2037921925980.155704073607984300", "total_voted_power": "1419939542485.658321529626890000", "yes": "1419939542485.658321529626890000", "abstain": "0.000000000000000000", "no": "0.000000000000000000", "no_with_veto": "0.000000000000000000"}, "submit_time": "2022-06-29T17:10:10.309255Z", "deposit_end_time": "2022-06-29T17:10:10.309255Z", "total_deposit": [{"denom": "okt", "amount": "100.000000000000000000"}], "voting_start_time": "2022-06-29T17:10:10.309255Z", "voting_end_time": "2022-06-29T17:10:52.167575Z"}
+2022-06-30 01:48:46 - rpc.py[line:183](query_outstanding) - INFO: result, cmd: exchaincli query distr outstanding-rewards   exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7result:[
+  {
+    "denom": "okt",
+    "amount": "38.288628174731462480"
+  }
+]
+
+2022-06-30 01:48:46 - case_distr_proposal.py[line:108](test) - INFO: run_tx: "[\n  {\n    \"denom\": \"okt\",\n    \"amount\": \"38.288628174731462480\"\n  }\n]\n"
+2022-06-30 01:49:18 - rpc.py[line:183](query_outstanding) - INFO: result, cmd: exchaincli query distr outstanding-rewards   exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7result:[
+  {
+    "denom": "okt",
+    "amount": "38.993217514008150255"
+  }
+]
+
+2022-06-30 01:49:30 - rpc.py[line:183](query_outstanding) - INFO: result, cmd: exchaincli query distr outstanding-rewards   exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7result:[
+  {
+    "denom": "okt",
+    "amount": "39.275053249718825365"
+  }
+]
+
+2022-06-30 01:49:45 - rpc.py[line:183](query_outstanding) - INFO: result, cmd: exchaincli query distr outstanding-rewards   exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7result:[
+  {
+    "denom": "okt",
+    "amount": "39.556888985429500475"
+  }
+]
+
+2022-06-30 01:49:45 - case_distr_proposal.py[line:108](test) - INFO: run_tx: 39.556888985429500475
+2022-06-30 01:51:17 - rpc.py[line:192](query_distr_params) - INFO: result, cmd: exchaincli query distr params   result:{
+  "community_tax": "0.020000000000000000",
+  "withdraw_addr_enabled": true,
+  "distribution_type": 0
+}
+
+2022-06-30 01:51:17 - case_distr_proposal.py[line:111](test) - INFO: run_tx: {"community_tax": "0.020000000000000000", "withdraw_addr_enabled": true, "distribution_type": 0}
+2022-06-30 02:02:28 - rpc.py[line:200](run_cmd) - INFO: result, cmd:cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.shresult:OKCHAIN_START
+OKCHAIN_INIT
+NUM_NODE=5
+NUM_RPC=1
+All <exchaind> killed!
+check go and rocksdb version: 
+go check success: 1.18.1
+rocksdb version check: ignore 
+------------------------------------------------------------------------
+go install -v -ldflags '-X github.com/okex/exchain/libs/cosmos-sdk/version.Version=v1.6.0 -X github.com/okex/exchain/libs/cosmos-sdk/version.Name=exchain -X github.com/okex/exchain/libs/cosmos-sdk/version.ServerName=exchaind -X github.com/okex/exchain/libs/cosmos-sdk/version.ClientName=exchaincli -X github.com/okex/exchain/libs/cosmos-sdk/version.Commit=78ddd512fa6b47b2e252eb35a76202dec2aa26ee -X github.com/okex/exchain/libs/cosmos-sdk/version.CosmosSDK=v0.39.2 -X github.com/okex/exchain/libs/cosmos-sdk/version.Tendermint=v0.33.9 -X "github.com/okex/exchain/libs/cosmos-sdk/version.BuildTags=netgo" -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_GENESIS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS1_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MERCURY_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MARS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_SATURN_HEIGHT=0' -tags "netgo" ./cmd/exchaind
+go install -v -ldflags '-X github.com/okex/exchain/libs/cosmos-sdk/version.Version=v1.6.0 -X github.com/okex/exchain/libs/cosmos-sdk/version.Name=exchain -X github.com/okex/exchain/libs/cosmos-sdk/version.ServerName=exchaind -X github.com/okex/exchain/libs/cosmos-sdk/version.ClientName=exchaincli -X github.com/okex/exchain/libs/cosmos-sdk/version.Commit=78ddd512fa6b47b2e252eb35a76202dec2aa26ee -X github.com/okex/exchain/libs/cosmos-sdk/version.CosmosSDK=v0.39.2 -X github.com/okex/exchain/libs/cosmos-sdk/version.Tendermint=v0.33.9 -X "github.com/okex/exchain/libs/cosmos-sdk/version.BuildTags=netgo" -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_GENESIS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS1_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MERCURY_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MARS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_SATURN_HEIGHT=0' -tags "netgo" ./cmd/exchaincli
+==================================================
+===== Generate testnet configurations files...====
+------------------------------------------------------------------------------------------------
+[exchaind testnet --v 4 --r 1 -o cache -l --chain-id exchain-67 --starting-ip-address 127.0.0.1 --base-port 26656 --keyring-backend test]
+nodeDir: cache/node0/exchaincli
+nodeDirName: node0
+addr: ex1pt7xrmxul7sx54ml44lvv403r06clrdk0s8rxy
+mnenonics: puzzle glide follow cruel say burst deliver wild tragic galaxy lumber offer
+--------------------------------------
+nodeDir: cache/node1/exchaincli
+nodeDirName: node1
+addr: ex1q6ls3h64gkxq0r73u2eqwwr7d5mp583fdkqsxx
+mnenonics: palace cube bitter light woman side pave cereal donor bronze twice work
+--------------------------------------
+nodeDir: cache/node2/exchaincli
+nodeDirName: node2
+addr: ex1ve4mwgq9967gk338yptsg2fheur4ke32u0gqh3
+mnenonics: antique onion adult slot sad dizzy sure among cement demise submit scare
+--------------------------------------
+nodeDir: cache/node3/exchaincli
+nodeDirName: node3
+addr: ex1gd6avvrg0jp5wxpfyfa4c84fygtl6cn9m6za7h
+mnenonics: lazy cause kite fence gravity regret visa fuel tone clerk motor rent
+--------------------------------------
+------------------------------------------------------------------------------------------------
+All <exchaind> killed!
+============================================
+=========== Startup seed node...============
+============================================
+======== Startup validator nodes...=========
+start node done
+
+2022-06-30 02:13:14 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:13:18 - rpc.py[line:200](run_cmd) - INFO: result, cmd:cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.shresult:OKCHAIN_START
+OKCHAIN_INIT
+NUM_NODE=5
+NUM_RPC=1
+kill -9 35773, exchaind
+kill -9 35803, exchaind
+kill -9 35831, exchaind
+kill -9 35858, exchaind
+kill -9 35881, exchaind
+All <exchaind> killed!
+check go and rocksdb version: 
+go check success: 1.18.1
+rocksdb version check: ignore 
+------------------------------------------------------------------------
+go install -v -ldflags '-X github.com/okex/exchain/libs/cosmos-sdk/version.Version=v1.6.0 -X github.com/okex/exchain/libs/cosmos-sdk/version.Name=exchain -X github.com/okex/exchain/libs/cosmos-sdk/version.ServerName=exchaind -X github.com/okex/exchain/libs/cosmos-sdk/version.ClientName=exchaincli -X github.com/okex/exchain/libs/cosmos-sdk/version.Commit=78ddd512fa6b47b2e252eb35a76202dec2aa26ee -X github.com/okex/exchain/libs/cosmos-sdk/version.CosmosSDK=v0.39.2 -X github.com/okex/exchain/libs/cosmos-sdk/version.Tendermint=v0.33.9 -X "github.com/okex/exchain/libs/cosmos-sdk/version.BuildTags=netgo" -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_GENESIS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS1_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MERCURY_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MARS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_SATURN_HEIGHT=0' -tags "netgo" ./cmd/exchaind
+go install -v -ldflags '-X github.com/okex/exchain/libs/cosmos-sdk/version.Version=v1.6.0 -X github.com/okex/exchain/libs/cosmos-sdk/version.Name=exchain -X github.com/okex/exchain/libs/cosmos-sdk/version.ServerName=exchaind -X github.com/okex/exchain/libs/cosmos-sdk/version.ClientName=exchaincli -X github.com/okex/exchain/libs/cosmos-sdk/version.Commit=78ddd512fa6b47b2e252eb35a76202dec2aa26ee -X github.com/okex/exchain/libs/cosmos-sdk/version.CosmosSDK=v0.39.2 -X github.com/okex/exchain/libs/cosmos-sdk/version.Tendermint=v0.33.9 -X "github.com/okex/exchain/libs/cosmos-sdk/version.BuildTags=netgo" -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_GENESIS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS1_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MERCURY_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MARS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_SATURN_HEIGHT=0' -tags "netgo" ./cmd/exchaincli
+==================================================
+===== Generate testnet configurations files...====
+------------------------------------------------------------------------------------------------
+[exchaind testnet --v 4 --r 1 -o cache -l --chain-id exchain-67 --starting-ip-address 127.0.0.1 --base-port 26656 --keyring-backend test]
+nodeDir: cache/node0/exchaincli
+nodeDirName: node0
+addr: ex1pt7xrmxul7sx54ml44lvv403r06clrdk0s8rxy
+mnenonics: puzzle glide follow cruel say burst deliver wild tragic galaxy lumber offer
+--------------------------------------
+nodeDir: cache/node1/exchaincli
+nodeDirName: node1
+addr: ex1q6ls3h64gkxq0r73u2eqwwr7d5mp583fdkqsxx
+mnenonics: palace cube bitter light woman side pave cereal donor bronze twice work
+--------------------------------------
+nodeDir: cache/node2/exchaincli
+nodeDirName: node2
+addr: ex1ve4mwgq9967gk338yptsg2fheur4ke32u0gqh3
+mnenonics: antique onion adult slot sad dizzy sure among cement demise submit scare
+--------------------------------------
+nodeDir: cache/node3/exchaincli
+nodeDirName: node3
+addr: ex1gd6avvrg0jp5wxpfyfa4c84fygtl6cn9m6za7h
+mnenonics: lazy cause kite fence gravity regret visa fuel tone clerk motor rent
+--------------------------------------
+------------------------------------------------------------------------------------------------
+All <exchaind> killed!
+============================================
+=========== Startup seed node...============
+============================================
+======== Startup validator nodes...=========
+start node done
+
+2022-06-30 02:13:21 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:1, target seq:1
+2022-06-30 02:13:21 - rpc.py[line:62](kill_process) - INFO: result, cmd:killall exchaindresult:
+2022-06-30 02:13:21 - rpc.py[line:200](run_cmd) - INFO: result, cmd:rm -rf /Users/oker/workspace/nodes/*; cp -rf /Users/oker/workspace/exchain-raw/dev/testnet/cache/* /Users/oker/workspace/nodes/result:
+2022-06-30 02:13:21 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node0/exchaind --p2p.seed_mode=true --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.laddr tcp://127.0.0.1:26656 --rpc.laddr tcp://127.0.0.1:26657 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8545 --enable-preruntx=false --consensus-role=v0 --keyring-backend test >/Users/oker/workspace/nodes/val0.log 2>&1 &result:
+2022-06-30 02:13:21 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node1/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:26756 --rpc.laddr tcp://127.0.0.1:26757 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8645 --enable-preruntx=false --consensus-role=v1 --keyring-backend test >/Users/oker/workspace/nodes/val1.log 2>&1 &result:
+2022-06-30 02:13:21 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node2/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:26856 --rpc.laddr tcp://127.0.0.1:26857 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8745 --enable-preruntx=false --consensus-role=v2 --keyring-backend test  >/Users/oker/workspace/nodes/val2.log 2>&1 &result:
+2022-06-30 02:13:21 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node3/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:26956 --rpc.laddr tcp://127.0.0.1:26957 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8845 --enable-preruntx=false --consensus-role=v3 --keyring-backend test >/Users/oker/workspace/nodes/val3.log 2>&1 &result:
+2022-06-30 02:13:21 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node4/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:27056 --rpc.laddr tcp://127.0.0.1:27057 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8945 --enable-preruntx=false --consensus-role=v4 --keyring-backend test >/Users/oker/workspace/nodes/val4.log 2>&1 &result:
+2022-06-30 02:13:21 - case_distr_proposal.py[line:131](init_chain) - INFO: ------------------------initChain end--------------------------------
+2022-06-30 02:13:39 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:13:43 - rpc.py[line:200](run_cmd) - INFO: result, cmd:cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.shresult:OKCHAIN_START
+OKCHAIN_INIT
+NUM_NODE=5
+NUM_RPC=1
+All <exchaind> killed!
+check go and rocksdb version: 
+go check success: 1.18.1
+rocksdb version check: ignore 
+------------------------------------------------------------------------
+go install -v -ldflags '-X github.com/okex/exchain/libs/cosmos-sdk/version.Version=v1.6.0 -X github.com/okex/exchain/libs/cosmos-sdk/version.Name=exchain -X github.com/okex/exchain/libs/cosmos-sdk/version.ServerName=exchaind -X github.com/okex/exchain/libs/cosmos-sdk/version.ClientName=exchaincli -X github.com/okex/exchain/libs/cosmos-sdk/version.Commit=78ddd512fa6b47b2e252eb35a76202dec2aa26ee -X github.com/okex/exchain/libs/cosmos-sdk/version.CosmosSDK=v0.39.2 -X github.com/okex/exchain/libs/cosmos-sdk/version.Tendermint=v0.33.9 -X "github.com/okex/exchain/libs/cosmos-sdk/version.BuildTags=netgo" -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_GENESIS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS1_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MERCURY_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MARS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_SATURN_HEIGHT=0' -tags "netgo" ./cmd/exchaind
+go install -v -ldflags '-X github.com/okex/exchain/libs/cosmos-sdk/version.Version=v1.6.0 -X github.com/okex/exchain/libs/cosmos-sdk/version.Name=exchain -X github.com/okex/exchain/libs/cosmos-sdk/version.ServerName=exchaind -X github.com/okex/exchain/libs/cosmos-sdk/version.ClientName=exchaincli -X github.com/okex/exchain/libs/cosmos-sdk/version.Commit=78ddd512fa6b47b2e252eb35a76202dec2aa26ee -X github.com/okex/exchain/libs/cosmos-sdk/version.CosmosSDK=v0.39.2 -X github.com/okex/exchain/libs/cosmos-sdk/version.Tendermint=v0.33.9 -X "github.com/okex/exchain/libs/cosmos-sdk/version.BuildTags=netgo" -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_GENESIS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS1_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MERCURY_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MARS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_SATURN_HEIGHT=0' -tags "netgo" ./cmd/exchaincli
+==================================================
+===== Generate testnet configurations files...====
+------------------------------------------------------------------------------------------------
+[exchaind testnet --v 4 --r 1 -o cache -l --chain-id exchain-67 --starting-ip-address 127.0.0.1 --base-port 26656 --keyring-backend test]
+nodeDir: cache/node0/exchaincli
+nodeDirName: node0
+addr: ex1pt7xrmxul7sx54ml44lvv403r06clrdk0s8rxy
+mnenonics: puzzle glide follow cruel say burst deliver wild tragic galaxy lumber offer
+--------------------------------------
+nodeDir: cache/node1/exchaincli
+nodeDirName: node1
+addr: ex1q6ls3h64gkxq0r73u2eqwwr7d5mp583fdkqsxx
+mnenonics: palace cube bitter light woman side pave cereal donor bronze twice work
+--------------------------------------
+nodeDir: cache/node2/exchaincli
+nodeDirName: node2
+addr: ex1ve4mwgq9967gk338yptsg2fheur4ke32u0gqh3
+mnenonics: antique onion adult slot sad dizzy sure among cement demise submit scare
+--------------------------------------
+nodeDir: cache/node3/exchaincli
+nodeDirName: node3
+addr: ex1gd6avvrg0jp5wxpfyfa4c84fygtl6cn9m6za7h
+mnenonics: lazy cause kite fence gravity regret visa fuel tone clerk motor rent
+--------------------------------------
+------------------------------------------------------------------------------------------------
+All <exchaind> killed!
+============================================
+=========== Startup seed node...============
+============================================
+======== Startup validator nodes...=========
+start node done
+
+2022-06-30 02:13:47 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:0, target seq:1
+2022-06-30 02:13:47 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:1, target seq:1
+2022-06-30 02:13:47 - rpc.py[line:62](kill_process) - INFO: result, cmd:killall exchaindresult:
+2022-06-30 02:13:47 - rpc.py[line:200](run_cmd) - INFO: result, cmd:rm -rf /Users/oker/workspace/nodes/*; cp -rf /Users/oker/workspace/exchain-raw/dev/testnet/cache/* /Users/oker/workspace/nodes/result:
+2022-06-30 02:13:47 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node0/exchaind --p2p.seed_mode=true --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.laddr tcp://127.0.0.1:26656 --rpc.laddr tcp://127.0.0.1:26657 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8545 --enable-preruntx=false --consensus-role=v0 --keyring-backend test >/Users/oker/workspace/nodes/val0.log 2>&1 &result:
+2022-06-30 02:13:47 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node1/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:26756 --rpc.laddr tcp://127.0.0.1:26757 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8645 --enable-preruntx=false --consensus-role=v1 --keyring-backend test >/Users/oker/workspace/nodes/val1.log 2>&1 &result:
+2022-06-30 02:13:47 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node2/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:26856 --rpc.laddr tcp://127.0.0.1:26857 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8745 --enable-preruntx=false --consensus-role=v2 --keyring-backend test  >/Users/oker/workspace/nodes/val2.log 2>&1 &result:
+2022-06-30 02:13:47 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node3/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:26956 --rpc.laddr tcp://127.0.0.1:26957 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8845 --enable-preruntx=false --consensus-role=v3 --keyring-backend test >/Users/oker/workspace/nodes/val3.log 2>&1 &result:
+2022-06-30 02:13:47 - rpc.py[line:66](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node4/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:27056 --rpc.laddr tcp://127.0.0.1:27057 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8945 --enable-preruntx=false --consensus-role=v4 --keyring-backend test >/Users/oker/workspace/nodes/val4.log 2>&1 &result:
+2022-06-30 02:13:47 - case_distr_proposal.py[line:131](init_chain) - INFO: ------------------------initChain end--------------------------------
+2022-06-30 02:16:07 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:16:11 - rpc.py[line:207](run_cmd) - INFO: result, cmd:cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.shresult:OKCHAIN_START
+OKCHAIN_INIT
+NUM_NODE=5
+NUM_RPC=1
+kill -9 36520, exchaind
+kill -9 36522, exchaind
+kill -9 36524, exchaind
+kill -9 36526, exchaind
+kill -9 36528, exchaind
+All <exchaind> killed!
+check go and rocksdb version: 
+go check success: 1.18.1
+rocksdb version check: ignore 
+------------------------------------------------------------------------
+go install -v -ldflags '-X github.com/okex/exchain/libs/cosmos-sdk/version.Version=v1.6.0 -X github.com/okex/exchain/libs/cosmos-sdk/version.Name=exchain -X github.com/okex/exchain/libs/cosmos-sdk/version.ServerName=exchaind -X github.com/okex/exchain/libs/cosmos-sdk/version.ClientName=exchaincli -X github.com/okex/exchain/libs/cosmos-sdk/version.Commit=78ddd512fa6b47b2e252eb35a76202dec2aa26ee -X github.com/okex/exchain/libs/cosmos-sdk/version.CosmosSDK=v0.39.2 -X github.com/okex/exchain/libs/cosmos-sdk/version.Tendermint=v0.33.9 -X "github.com/okex/exchain/libs/cosmos-sdk/version.BuildTags=netgo" -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_GENESIS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS1_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MERCURY_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MARS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_SATURN_HEIGHT=0' -tags "netgo" ./cmd/exchaind
+go install -v -ldflags '-X github.com/okex/exchain/libs/cosmos-sdk/version.Version=v1.6.0 -X github.com/okex/exchain/libs/cosmos-sdk/version.Name=exchain -X github.com/okex/exchain/libs/cosmos-sdk/version.ServerName=exchaind -X github.com/okex/exchain/libs/cosmos-sdk/version.ClientName=exchaincli -X github.com/okex/exchain/libs/cosmos-sdk/version.Commit=78ddd512fa6b47b2e252eb35a76202dec2aa26ee -X github.com/okex/exchain/libs/cosmos-sdk/version.CosmosSDK=v0.39.2 -X github.com/okex/exchain/libs/cosmos-sdk/version.Tendermint=v0.33.9 -X "github.com/okex/exchain/libs/cosmos-sdk/version.BuildTags=netgo" -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_GENESIS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS1_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MERCURY_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_VENUS_HEIGHT=1 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_MARS_HEIGHT=0 -X github.com/okex/exchain/libs/tendermint/types.MILESTONE_SATURN_HEIGHT=0' -tags "netgo" ./cmd/exchaincli
+==================================================
+===== Generate testnet configurations files...====
+------------------------------------------------------------------------------------------------
+[exchaind testnet --v 4 --r 1 -o cache -l --chain-id exchain-67 --starting-ip-address 127.0.0.1 --base-port 26656 --keyring-backend test]
+nodeDir: cache/node0/exchaincli
+nodeDirName: node0
+addr: ex1pt7xrmxul7sx54ml44lvv403r06clrdk0s8rxy
+mnenonics: puzzle glide follow cruel say burst deliver wild tragic galaxy lumber offer
+--------------------------------------
+nodeDir: cache/node1/exchaincli
+nodeDirName: node1
+addr: ex1q6ls3h64gkxq0r73u2eqwwr7d5mp583fdkqsxx
+mnenonics: palace cube bitter light woman side pave cereal donor bronze twice work
+--------------------------------------
+nodeDir: cache/node2/exchaincli
+nodeDirName: node2
+addr: ex1ve4mwgq9967gk338yptsg2fheur4ke32u0gqh3
+mnenonics: antique onion adult slot sad dizzy sure among cement demise submit scare
+--------------------------------------
+nodeDir: cache/node3/exchaincli
+nodeDirName: node3
+addr: ex1gd6avvrg0jp5wxpfyfa4c84fygtl6cn9m6za7h
+mnenonics: lazy cause kite fence gravity regret visa fuel tone clerk motor rent
+--------------------------------------
+------------------------------------------------------------------------------------------------
+All <exchaind> killed!
+============================================
+=========== Startup seed node...============
+============================================
+======== Startup validator nodes...=========
+start node done
+
+2022-06-30 02:16:15 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:0, target seq:1
+2022-06-30 02:16:15 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:1, target seq:1
+2022-06-30 02:16:15 - rpc.py[line:62](kill_process) - INFO: result, cmd:killall exchaindresult:
+2022-06-30 02:16:15 - rpc.py[line:207](run_cmd) - INFO: result, cmd:rm -rf /Users/oker/workspace/nodes/*; cp -rf /Users/oker/workspace/exchain-raw/dev/testnet/cache/* /Users/oker/workspace/nodes/result:
+2022-06-30 02:16:15 - rpc.py[line:73](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node0/exchaind --p2p.seed_mode=true --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.laddr tcp://127.0.0.1:26656 --rpc.laddr tcp://127.0.0.1:26657 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8545 --enable-preruntx=false --consensus-role=v0 --keyring-backend test >/Users/oker/workspace/nodes/val0.log 2>&1 &result:
+2022-06-30 02:16:15 - rpc.py[line:73](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node1/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:26756 --rpc.laddr tcp://127.0.0.1:26757 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8645 --enable-preruntx=false --consensus-role=v1 --keyring-backend test >/Users/oker/workspace/nodes/val1.log 2>&1 &result:
+2022-06-30 02:16:15 - rpc.py[line:73](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node2/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:26856 --rpc.laddr tcp://127.0.0.1:26857 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8745 --enable-preruntx=false --consensus-role=v2 --keyring-backend test  >/Users/oker/workspace/nodes/val2.log 2>&1 &result:
+2022-06-30 02:16:15 - rpc.py[line:73](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node3/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:26956 --rpc.laddr tcp://127.0.0.1:26957 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8845 --enable-preruntx=false --consensus-role=v3 --keyring-backend test >/Users/oker/workspace/nodes/val3.log 2>&1 &result:
+2022-06-30 02:16:15 - rpc.py[line:73](run_node) - INFO: result, cmd:nohup exchaind start --home /Users/oker/workspace/nodes/node4/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:27056 --rpc.laddr tcp://127.0.0.1:27057 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8945 --enable-preruntx=false --consensus-role=v4 --keyring-backend test >/Users/oker/workspace/nodes/val4.log 2>&1 &result:
+2022-06-30 02:16:15 - case_distr_proposal.py[line:129](init_chain) - INFO: ------------------------initChain end--------------------------------
+2022-06-30 02:18:46 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:18:46 - rpc.py[line:212](recover) - INFO: result, cmd:xchaincli keys add --recover delegator1 -m "chest control issue mention team green shrimp derive expect dust spy mail" -yresult:
+2022-06-30 02:18:46 - case_distr_proposal.py[line:131](init_chain) - INFO: ------------------------initChain end--------------------------------
+2022-06-30 02:19:10 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:19:10 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator1 -m "chest control issue mention team green shrimp derive expect dust spy mail" -yresult:
+2022-06-30 02:19:10 - case_distr_proposal.py[line:131](init_chain) - INFO: ------------------------initChain end--------------------------------
+2022-06-30 02:20:29 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:20:29 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover mnemonicdelegator1 -m "chest control issue mention team green shrimp derive expect dust spy mail" -yresult:
+2022-06-30 02:22:02 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:22:02 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator1 -m "chest control issue mention team green shrimp derive expect dust spy mail" -yresult:
+2022-06-30 02:22:02 - case_distr_proposal.py[line:131](init_chain) - INFO: ------------------------initChain end--------------------------------
+2022-06-30 02:27:20 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:27:20 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator1 -m "chest control issue mention team green shrimp derive expect dust spy mail" -yresult:
+2022-06-30 02:27:20 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator2 -m "wrestle letter mind guard wrist keen swallow vote rally embody dragon hamster" -yresult:
+2022-06-30 02:27:20 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator3 -m "obtain uphold venue decide advice decide mystery rate bulk quarter bus camera" -yresult:
+2022-06-30 02:27:20 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator4 -m "faculty era wall initial useless float west ivory split ready foam guitar" -yresult:
+2022-06-30 02:27:20 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator5 -m "client erode double when cross vault pistol orbit cave boat ethics slender" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator6 -m "find second fault artist rude venture assume hybrid clean hazard air stuff" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator7 -m "fine furnace dress true lawsuit tray list lyrics rhythm parade kitchen dinner" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator8 -m "sibling try moment kitten estate ostrich final symptom great shine alone sword" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator9 -m "twin kingdom green tell liquid eye check symbol today stomach pencil glare" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator10 -m "gesture night genuine risk potato dinner airport net wine hire collect aerobic" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy1 -m "shrug network dry despair album vehicle distance source attack bag hybrid knee" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy2 -m "broken woman destroy hint slogan stamp genre similar idle below grab eagle" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy3 -m "output hundred credit stomach heavy swallow cry unique rail relax expand truth" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy4 -m "belt setup wealth bubble shield nerve drop expect success confirm hybrid hurt" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy5 -m "nice review thrive invest embody cement since struggle brass minimum explain lab" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy6 -m "patrol much enact shell next cube develop leopard manual present frequent fossil" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator1 -m "legend crumble garbage gun knife execute wool trim social brave swear use" -yresult:
+2022-06-30 02:27:21 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator3 -m "century tonight old vicious armed mimic sheriff practice bench gap suit search" -yresult:
+2022-06-30 02:27:22 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator4 -m "true neglect miss bitter dirt peace catalog aisle wrestle vehicle bless door" -yresult:
+2022-06-30 02:27:22 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator5 -m "tourist wool regular network digital genre drastic father year can crop entire" -yresult:
+2022-06-30 02:27:22 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator6 -m "job add suit defense wagon pave rival choice mind regret garlic home" -yresult:
+2022-06-30 02:27:22 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va1 -m "puzzle glide follow cruel say burst deliver wild tragic galaxy lumber offer" --coin-type 996 -yresult:
+2022-06-30 02:27:22 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va2 -m "palace cube bitter light woman side pave cereal donor bronze twice work" --coin-type 996 -yresult:
+2022-06-30 02:27:22 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va3 -m "antique onion adult slot sad dizzy sure among cement demise submit scare" --coin-type 996 -yresult:
+2022-06-30 02:27:22 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va4 -m "lazy cause kite fence gravity regret visa fuel tone clerk motor rent" --coin-type 996 -yresult:
+2022-06-30 02:27:22 - case_distr_proposal.py[line:159](init_chain) - INFO: ------------------------initChain end--------------------------------
+2022-06-30 02:31:05 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator1 -m "chest control issue mention team green shrimp derive expect dust spy mail" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator2 -m "wrestle letter mind guard wrist keen swallow vote rally embody dragon hamster" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator3 -m "obtain uphold venue decide advice decide mystery rate bulk quarter bus camera" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator4 -m "faculty era wall initial useless float west ivory split ready foam guitar" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator5 -m "client erode double when cross vault pistol orbit cave boat ethics slender" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator6 -m "find second fault artist rude venture assume hybrid clean hazard air stuff" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator7 -m "fine furnace dress true lawsuit tray list lyrics rhythm parade kitchen dinner" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator8 -m "sibling try moment kitten estate ostrich final symptom great shine alone sword" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator9 -m "twin kingdom green tell liquid eye check symbol today stomach pencil glare" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator10 -m "gesture night genuine risk potato dinner airport net wine hire collect aerobic" -yresult:
+2022-06-30 02:31:05 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy1 -m "shrug network dry despair album vehicle distance source attack bag hybrid knee" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy2 -m "broken woman destroy hint slogan stamp genre similar idle below grab eagle" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy3 -m "output hundred credit stomach heavy swallow cry unique rail relax expand truth" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy4 -m "belt setup wealth bubble shield nerve drop expect success confirm hybrid hurt" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy5 -m "nice review thrive invest embody cement since struggle brass minimum explain lab" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy6 -m "patrol much enact shell next cube develop leopard manual present frequent fossil" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator1 -m "legend crumble garbage gun knife execute wool trim social brave swear use" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator3 -m "century tonight old vicious armed mimic sheriff practice bench gap suit search" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator4 -m "true neglect miss bitter dirt peace catalog aisle wrestle vehicle bless door" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator5 -m "tourist wool regular network digital genre drastic father year can crop entire" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator6 -m "job add suit defense wagon pave rival choice mind regret garlic home" -yresult:
+2022-06-30 02:31:06 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va1 -m "puzzle glide follow cruel say burst deliver wild tragic galaxy lumber offer" --coin-type 996 -yresult:
+2022-06-30 02:31:06 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va2 -m "palace cube bitter light woman side pave cereal donor bronze twice work" --coin-type 996 -yresult:
+2022-06-30 02:31:06 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va3 -m "antique onion adult slot sad dizzy sure among cement demise submit scare" --coin-type 996 -yresult:
+2022-06-30 02:31:07 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va4 -m "lazy cause kite fence gravity regret visa fuel tone clerk motor rent" --coin-type 996 -yresult:
+2022-06-30 02:31:27 - case_distr_proposal.py[line:117](init_chain) - INFO: ------------------------initChain start--------------------------------
+2022-06-30 02:31:27 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator1 -m "chest control issue mention team green shrimp derive expect dust spy mail" -yresult:
+2022-06-30 02:31:27 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator2 -m "wrestle letter mind guard wrist keen swallow vote rally embody dragon hamster" -yresult:
+2022-06-30 02:31:27 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator3 -m "obtain uphold venue decide advice decide mystery rate bulk quarter bus camera" -yresult:
+2022-06-30 02:31:27 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator4 -m "faculty era wall initial useless float west ivory split ready foam guitar" -yresult:
+2022-06-30 02:31:27 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator5 -m "client erode double when cross vault pistol orbit cave boat ethics slender" -yresult:
+2022-06-30 02:31:27 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator6 -m "find second fault artist rude venture assume hybrid clean hazard air stuff" -yresult:
+2022-06-30 02:31:27 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator7 -m "fine furnace dress true lawsuit tray list lyrics rhythm parade kitchen dinner" -yresult:
+2022-06-30 02:31:27 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator8 -m "sibling try moment kitten estate ostrich final symptom great shine alone sword" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator9 -m "twin kingdom green tell liquid eye check symbol today stomach pencil glare" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover delegator10 -m "gesture night genuine risk potato dinner airport net wine hire collect aerobic" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy1 -m "shrug network dry despair album vehicle distance source attack bag hybrid knee" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy2 -m "broken woman destroy hint slogan stamp genre similar idle below grab eagle" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy3 -m "output hundred credit stomach heavy swallow cry unique rail relax expand truth" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy4 -m "belt setup wealth bubble shield nerve drop expect success confirm hybrid hurt" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy5 -m "nice review thrive invest embody cement since struggle brass minimum explain lab" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxy6 -m "patrol much enact shell next cube develop leopard manual present frequent fossil" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator1 -m "legend crumble garbage gun knife execute wool trim social brave swear use" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator3 -m "century tonight old vicious armed mimic sheriff practice bench gap suit search" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator4 -m "true neglect miss bitter dirt peace catalog aisle wrestle vehicle bless door" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator5 -m "tourist wool regular network digital genre drastic father year can crop entire" -yresult:
+2022-06-30 02:31:28 - rpc.py[line:212](recover) - INFO: result, cmd:exchaincli keys add --recover proxydelegator6 -m "job add suit defense wagon pave rival choice mind regret garlic home" -yresult:
+2022-06-30 02:31:29 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va1 -m "puzzle glide follow cruel say burst deliver wild tragic galaxy lumber offer" --coin-type 996 -yresult:
+2022-06-30 02:31:29 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va2 -m "palace cube bitter light woman side pave cereal donor bronze twice work" --coin-type 996 -yresult:
+2022-06-30 02:31:29 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va3 -m "antique onion adult slot sad dizzy sure among cement demise submit scare" --coin-type 996 -yresult:
+2022-06-30 02:31:29 - rpc.py[line:219](recover_val) - INFO: result, cmd:exchaincli keys add --recover va4 -m "lazy cause kite fence gravity regret visa fuel tone clerk motor rent" --coin-type 996 -yresult:
+2022-06-30 02:31:30 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:153, target seq:154
+2022-06-30 02:31:31 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:153, target seq:154
+2022-06-30 02:31:32 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:153, target seq:154
+2022-06-30 02:31:32 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:154, target seq:154
+2022-06-30 02:31:32 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "544BE79D9493BA778C307DD42C980DF5097C55B8D232CFA0997E2AB51745215E",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:31:33 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:154, target seq:155
+2022-06-30 02:31:35 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:154, target seq:155
+2022-06-30 02:31:36 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:154, target seq:155
+2022-06-30 02:31:37 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:154, target seq:155
+2022-06-30 02:31:38 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:154, target seq:155
+2022-06-30 02:31:39 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:154, target seq:155
+2022-06-30 02:31:39 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:155, target seq:155
+2022-06-30 02:31:39 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1dyxj3q9tzfkwrryejygqsfh7jj7cp4yuetcz3n 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "F46481793FEEC5D6BCF2697705898ECE0E971CA39F15257F5AC24BDDDAC2BD69",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:31:40 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:155, target seq:156
+2022-06-30 02:31:41 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:155, target seq:156
+2022-06-30 02:31:42 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:155, target seq:156
+2022-06-30 02:31:43 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:155, target seq:156
+2022-06-30 02:31:44 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:155, target seq:156
+2022-06-30 02:31:46 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:155, target seq:156
+2022-06-30 02:31:46 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:156, target seq:156
+2022-06-30 02:31:46 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex17kn7d20d85yymu45h79dqs5pxq9m3nyx2mdmcs 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "8C923CA14C8A32CF65398009BFAB15CFA87D39328EE77A392C65EA2C1B4606FF",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:31:47 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:156, target seq:157
+2022-06-30 02:31:48 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:156, target seq:157
+2022-06-30 02:31:49 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:156, target seq:157
+2022-06-30 02:31:50 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:156, target seq:157
+2022-06-30 02:31:50 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:157, target seq:157
+2022-06-30 02:31:51 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1fesgddl00rxzl7ye3yx32j7vwlm5xdc36vadg5 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "664AD2394194729AF8AA3F6EDEDA1ACDE0680D49BC76FEA71E47E31181DFFB25",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:31:52 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:157, target seq:158
+2022-06-30 02:31:53 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:157, target seq:158
+2022-06-30 02:31:54 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:157, target seq:158
+2022-06-30 02:31:55 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:157, target seq:158
+2022-06-30 02:31:56 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:157, target seq:158
+2022-06-30 02:31:57 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:157, target seq:158
+2022-06-30 02:31:57 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:158, target seq:158
+2022-06-30 02:31:57 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1jr9yzgu6vqpv6v639jnx8d5keq0qmvwun079l8 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "C989EEF4E0E276DDAF80B23A46CF95F7E2D38D34BB494EA0F4D632C5B6433EC6",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:31:58 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:158, target seq:159
+2022-06-30 02:31:59 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:158, target seq:159
+2022-06-30 02:32:00 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:158, target seq:159
+2022-06-30 02:32:02 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:158, target seq:159
+2022-06-30 02:32:03 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:158, target seq:159
+2022-06-30 02:32:03 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:159, target seq:159
+2022-06-30 02:32:03 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1phvp0mwdnymvrkeu7unc8tuddx8hwpggz2hrfz 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "D09473C3B0E7250396C75790DD71DF75D3F2E033ABD6ADCF35403A2023E36495",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:04 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:159, target seq:160
+2022-06-30 02:32:05 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:159, target seq:160
+2022-06-30 02:32:06 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:159, target seq:160
+2022-06-30 02:32:07 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:159, target seq:160
+2022-06-30 02:32:08 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:159, target seq:160
+2022-06-30 02:32:08 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:160, target seq:160
+2022-06-30 02:32:08 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex19j5xt2s2gpkdazhguta9vap7fu8h2s5uawf920 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "069C2900F3D6031B15FA64E29EFDB67CC2ADD4CF0998138A8BD328FDD5F1C1CF",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:10 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:160, target seq:161
+2022-06-30 02:32:11 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:160, target seq:161
+2022-06-30 02:32:12 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:160, target seq:161
+2022-06-30 02:32:13 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:160, target seq:161
+2022-06-30 02:32:14 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:160, target seq:161
+2022-06-30 02:32:15 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:160, target seq:161
+2022-06-30 02:32:15 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:161, target seq:161
+2022-06-30 02:32:15 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1hhxneawuavke7cjw58hrvcyevqjy0mp80mys8j 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "2538976FDA1AC1A1A752D77B5F2004A1376FEB08A5984D12582316E0A71E56A5",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:16 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:161, target seq:162
+2022-06-30 02:32:17 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:161, target seq:162
+2022-06-30 02:32:18 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:161, target seq:162
+2022-06-30 02:32:20 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:161, target seq:162
+2022-06-30 02:32:21 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:161, target seq:162
+2022-06-30 02:32:21 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:162, target seq:162
+2022-06-30 02:32:21 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1x9kata3p35wddjt40g2pzurya0xhfjkgupx4ll 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "D1E4B580BF154AD87B1C3F6DA867249E6C0CE0A0A637F57DA97DF9A1D726F060",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:22 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:162, target seq:163
+2022-06-30 02:32:23 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:162, target seq:163
+2022-06-30 02:32:24 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:162, target seq:163
+2022-06-30 02:32:25 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:162, target seq:163
+2022-06-30 02:32:26 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:162, target seq:163
+2022-06-30 02:32:26 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:163, target seq:163
+2022-06-30 02:32:26 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex10t7hhfjya9k7yn9ymdg79n68zeuk224xn27fx8 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "0C64509B3D8517F92598F8DC3661FC8DAFB219149B13EE28395DD4FB93900049",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:28 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:163, target seq:164
+2022-06-30 02:32:29 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:163, target seq:164
+2022-06-30 02:32:30 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:163, target seq:164
+2022-06-30 02:32:31 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:163, target seq:164
+2022-06-30 02:32:32 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:163, target seq:164
+2022-06-30 02:32:33 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:163, target seq:164
+2022-06-30 02:32:33 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:164, target seq:164
+2022-06-30 02:32:33 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1x8y59yxhk64mh0ct4h73fad2w5xap2zgq4f4kz 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "182D3C5193742A4748D68698C7D5619D44A58B93BCA3F888D5C78DB91E1CB905",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:35 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:164, target seq:165
+2022-06-30 02:32:36 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:164, target seq:165
+2022-06-30 02:32:37 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:164, target seq:165
+2022-06-30 02:32:38 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:164, target seq:165
+2022-06-30 02:32:39 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:164, target seq:165
+2022-06-30 02:32:39 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:165, target seq:165
+2022-06-30 02:32:39 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1kc3gtzwelafncg3qeqwju68flhrr4ynwehulyu 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "0E911D6E0A44EC0FF1F06E2BC2FA10CD496109EE8A3C76A3E342B5FCCA82B0C1",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:40 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:165, target seq:166
+2022-06-30 02:32:41 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:165, target seq:166
+2022-06-30 02:32:42 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:165, target seq:166
+2022-06-30 02:32:43 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:165, target seq:166
+2022-06-30 02:32:44 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:165, target seq:166
+2022-06-30 02:32:45 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:166, target seq:166
+2022-06-30 02:32:45 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex153z8qwxkqa5p2samfn8z50kr9pt8j6afs0am6e 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "948CC15E38F38A87EA97384326FFDE459F7438DF1E012FA9DBE4BE0F6036AE71",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:46 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:166, target seq:167
+2022-06-30 02:32:47 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:166, target seq:167
+2022-06-30 02:32:48 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:166, target seq:167
+2022-06-30 02:32:49 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:166, target seq:167
+2022-06-30 02:32:50 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:166, target seq:167
+2022-06-30 02:32:50 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:167, target seq:167
+2022-06-30 02:32:51 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "6B026B4FE75A3E581E533B0665A1840754BC58D6CB1DE6FE1450B305F33C6B4D",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:52 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:167, target seq:168
+2022-06-30 02:32:53 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:167, target seq:168
+2022-06-30 02:32:54 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:167, target seq:168
+2022-06-30 02:32:55 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:167, target seq:168
+2022-06-30 02:32:56 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:167, target seq:168
+2022-06-30 02:32:57 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:167, target seq:168
+2022-06-30 02:32:57 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:168, target seq:168
+2022-06-30 02:32:57 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1qllmuet9vuq9eznqva5dxput4mq0lqh482nvzx 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "BC232A55512B4ECA8EF87A241EC4299C1A288F41725B128A2A657C4D5C64F6C6",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:32:58 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:168, target seq:169
+2022-06-30 02:32:59 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:168, target seq:169
+2022-06-30 02:33:00 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:168, target seq:169
+2022-06-30 02:33:01 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:168, target seq:169
+2022-06-30 02:33:03 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:168, target seq:169
+2022-06-30 02:33:03 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:169, target seq:169
+2022-06-30 02:33:03 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex10lcvjcavvhgmduskh3kw0jlcm0w0kuyuzs57xl 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "BB14EE109769F927A6AD2EB3EA1E725D19C0C306EA9C4BEA98A9CAB024265EA0",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:33:04 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:169, target seq:170
+2022-06-30 02:33:05 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:169, target seq:170
+2022-06-30 02:33:06 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:169, target seq:170
+2022-06-30 02:33:07 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:169, target seq:170
+2022-06-30 02:33:08 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:169, target seq:170
+2022-06-30 02:33:08 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:170, target seq:170
+2022-06-30 02:33:08 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1t84e8ujr8dyjmnvjrfpwy40u8ha9x75tdlgy6y 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "3FA0439183B87D74A210C87D51B39A73C8EA4E06D709AF44A18E6A47E4FAC738",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:33:10 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:170, target seq:171
+2022-06-30 02:33:11 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:170, target seq:171
+2022-06-30 02:33:12 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:170, target seq:171
+2022-06-30 02:33:13 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:170, target seq:171
+2022-06-30 02:33:14 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:170, target seq:171
+2022-06-30 02:33:15 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:170, target seq:171
+2022-06-30 02:33:15 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:171, target seq:171
+2022-06-30 02:33:15 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1c8w3jcfagaw8s2je3kk2dqftmyypzv3mrv4tcd 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "840077C26D6D764FD561D8D1F94BF7B9C748606FA9F19AE6527E67887B517727",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:33:16 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:171, target seq:172
+2022-06-30 02:33:17 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:171, target seq:172
+2022-06-30 02:33:18 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:171, target seq:172
+2022-06-30 02:33:20 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:171, target seq:172
+2022-06-30 02:33:21 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:171, target seq:172
+2022-06-30 02:33:21 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:172, target seq:172
+2022-06-30 02:33:21 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1wfjk3yustj8zeekxdufeud978jahjxrwptxacp 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "15045B1402ACC463282A84363DC793979E4DD5D90162FFE41DD04639114770B7",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:33:22 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:172, target seq:173
+2022-06-30 02:33:23 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:172, target seq:173
+2022-06-30 02:33:24 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:172, target seq:173
+2022-06-30 02:33:25 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:172, target seq:173
+2022-06-30 02:33:26 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:172, target seq:173
+2022-06-30 02:33:27 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:173, target seq:173
+2022-06-30 02:33:27 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1t5wwm8vph36l5ntv92pezc3w0p0mwxtu200gpr 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "1AF6ECEEB8126BF148C38D8B52A14719D34DF2509D9CA67DA47A1ED07E2EC85B",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:33:28 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:173, target seq:174
+2022-06-30 02:33:29 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:173, target seq:174
+2022-06-30 02:33:30 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:173, target seq:174
+2022-06-30 02:33:31 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:173, target seq:174
+2022-06-30 02:33:32 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:173, target seq:174
+2022-06-30 02:33:32 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:174, target seq:174
+2022-06-30 02:33:32 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex1fye6qatnuxc4lprwpwzrza382dyp3xgkjqh6eh 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "91EA1B1271F91289BEFBEF44D9E1B7641DEBDED625BA6E68B9383809B555329C",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:33:34 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:174, target seq:175
+2022-06-30 02:33:35 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:174, target seq:175
+2022-06-30 02:33:36 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:174, target seq:175
+2022-06-30 02:33:37 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:174, target seq:175
+2022-06-30 02:33:38 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:174, target seq:175
+2022-06-30 02:33:39 - rpc.py[line:46](wait_ledger) - INFO: waiting.. cur ledger seq:174, target seq:175
+2022-06-30 02:33:39 - rpc.py[line:43](wait_ledger) - INFO: wait ok. cur ledger seq:175, target seq:175
+2022-06-30 02:33:39 - rpc.py[line:52](run_tx) - INFO: result, cmd:exchaincli tx send ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v ex12xs48cguk00jpq4che0zcu4pyr5xzrc2we30dd 1000000okt --from ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -yresult:{
+  "height": "0",
+  "txhash": "6A27FD3E9DB454E4DD91580E3C86AB66CCE6EB3528B252D154B09FF0CC14FDB0",
+  "raw_log": "[]"
+}
+
+2022-06-30 02:33:39 - case_distr_proposal.py[line:185](init_chain) - INFO: ------------------------initChain end--------------------------------
