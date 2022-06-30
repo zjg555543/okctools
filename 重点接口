@@ -1,0 +1,102 @@
+
+
+# 发交易
+exchaincli tx distr set-withdraw-addr ex1j0pa7dddqyt2kmpaepey0zxuw9d6ap82xgvqt5 --from delegator1 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+exchaincli tx distr withdraw-rewards exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7 --commission --from va1 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+exchaincli tx distr withdraw-rewards exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7 --from delegator1 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+exchaincli tx distr withdraw-all-rewards
+
+exchaincli tx staking edit-validator --commission-rate 0.1 --from va1 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+exchaincli query staking validator
+
+# 查询
+exchaincli query distr params
+
+exchaincli query distr rewards ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y
+exchaincli query distr outstanding-rewards
+exchaincli query distr withdraw-addr 
+exchaincli query distr commission
+exchaincli query distr community-pool
+
+
+
+exchaincli tx staking deposit 100okt --from ex1dyxj3q9tzfkwrryejygqsfh7jj7cp4yuetcz3n --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+exchaincli tx staking add-shares exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7 --from ex1dyxj3q9tzfkwrryejygqsfh7jj7cp4yuetcz3n --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+
+exchaincli tx staking deposit 100okt --from ex1kc3gtzwelafncg3qeqwju68flhrr4ynwehulyu --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+exchaincli tx staking proxy reg --from ex1kc3gtzwelafncg3qeqwju68flhrr4ynwehulyu --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+
+exchaind-my start --home /Users/oker/workspace/nodes/node0/exchaind --p2p.seed_mode=true --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.laddr tcp://127.0.0.1:26656 --rpc.laddr tcp://127.0.0.1:26657 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8545 --enable-preruntx=false --consensus-role=v0 --rpc.enable-multi-call --keyring-backend test >/Users/oker/workspace/nodes/val0.log 2>&1 &
+
+
+exchaind-dev start --home  /Users/oker/workspace/nodes/node4/exchaind --p2p.seed_mode=false --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:27056 --rpc.laddr tcp://127.0.0.1:27057 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 6000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8945 --enable-preruntx=false --consensus-role=v4 --keyring-backend test > /Users/oker/workspace/nodes/val4.log 2>&1 &
+
+
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getTransactionReceiptsByBlock","params":["0x9e","0x0","0x1f4"],"id":1}' -H "Content-Type: application/json" http://127.0.0.1:8545
+
+
+
+ exchaincli tx staking edit-validator  --commission-rate $1 --from $2 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+
+ exchaincli tx staking edit-validator --moniker 123 --from va1 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+
+exchaincli keys add --recover va1 -m 'puzzle glide follow cruel say burst deliver wild tragic galaxy lumber offer' --coin-type 996 -y
+
+
+ exchaincli tx staking edit-validator-commission-rate 0.3 --from va1 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+
+# 取出奖励
+exchaincli query distr rewards ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q
+
+exchaincli query distr  withdraw-addr ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q
+
+exchaincli query account ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q
+
+
+
+exchaincli tx distr withdraw-all-rewards --from ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+exchaincli query tx 76F214A83070A58EEB5F33ECB7FABCDC2B1FF71036AAA9934F1D57163D0C6122
+
+exchaincli query account ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q
+
+
+exchaincli tx staking create-validator --pubkey=exvalconspub1zcjduepqk0rugcnpeev6th9dvk3zr3ddusnkcs365eheudry399e3eyaqzrq8xumr5 --moniker=123 --from admin16 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+ 
+ exchaincli query tx B329384EE10B14F145EEC82779F636395104572D102EF7562AA432DE1DC6A7C7
+
+ exchaincli query staking validators
+
+ {
+    "name": "admin16",
+    "type": "local",
+    "address": "ex1s0vrf96rrsknl64jj65lhf89ltwj7lksr7m3r9",
+    "eth_address": "0x83D83497431C2D3FEab296a9fba4e5FaDD2f7eD0",
+    "oper_address": "exvaloper1s0vrf96rrsknl64jj65lhf89ltwj7lks4e348l",
+    "pubkey": "expub17weu6qepqfuv3ms9k9g6v7qf75mafcf3ydme99ma8c4gg4yec8x3d59p8gjjq8600mh"
+  },
+
+  exchaincli query account ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q
+
+  exchaincli query distr rewards ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q
+
+exchaincli query distr  withdraw-addr ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q
+
+exchaincli query account ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q
+
+
+
+exchaincli tx distr withdraw-all-rewards --from ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+exchaincli query tx 67256A09AB16527967747D03349AB5FADDD5568718C2F063A7FDC8568AB564D3
+
+exchaincli query account ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q
+
+

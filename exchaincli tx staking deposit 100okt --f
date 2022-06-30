@@ -1,0 +1,6 @@
+exchaincli tx staking deposit 100okt --from ex1fsfwwvl93qv6r56jpu084hxxzn9zphnyxhske5 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+exchaincli tx staking add-shares exvaloper1q6ls3h64gkxq0r73u2eqwwr7d5mp583fm325zu --from ex1fsfwwvl93qv6r56jpu084hxxzn9zphnyxhske5 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
+
+
+exchaincli query staking delegator ex1fsfwwvl93qv6r56jpu084hxxzn9zphnyxhske5
