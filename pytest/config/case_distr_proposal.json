@@ -1,11 +1,4 @@
 {
-	"name": "bif",
-    "contract_path": "/root/zhujianguo/samba_share/eos_project/eos-contract/pytest/tools/wasm-contract/hello.wasm",
-    "rpc_addr-": "http://127.0.0.1:37002",
-    "rpc_addr": "http://192.168.7.21:37002",
-    "chain_code": "0",
-    "genesis_address": "did:bid:efqhQu9YWEWpUKQYkAyGevPGtAdD1N6p",
-    "genesis_priv": "priSPKqru2zMzeb14XWxPNM1sassFeqyyUZotCAYcvCjhNof7t",
     "devGitPath": "/Users/oker/workspace/exchain-raw",
     "newGitPaht":"/Users/oker/workspace/exchain",
     "nodes":"/Users/oker/workspace/nodes/",

@@ -16,13 +16,6 @@ class OKCli:
         result = os.popen(cmd).read().rstrip()
         logging.info("version, cmd:" + cmd + "result:" + result)
         return result
-    def get_ledger_seq(self):
-        cmd = 'exchaincli status'
-        result = os.popen(cmd).read().rstrip()
-        logging.info("result, cmd:" + cmd + ", result:" + result)
-
-        result_obj = json.loads(result)
-        return result_obj["sync_info"]["latest_block_height"]
 
     def get_ledger_seq(self):
         cmd = 'exchaincli status'
@@ -33,13 +26,18 @@ class OKCli:
         return int(result_obj["sync_info"]["latest_block_height"])
 
     def wait_ledger(self, target):
+        cur = self.get_ledger_seq()
+        logging.info("waiting.. cur ledger seq:" + str(cur) + ", target seq:" + str(target))
         while True:
             cur = self.get_ledger_seq()
             if int(cur) >= int(target):
                 logging.info("wait ok. cur ledger seq:" + str(cur) + ", target seq:" + str(target))
                 break
             time.sleep(1)
-            logging.info("waiting.. cur ledger seq:" + str(cur) + ", target seq:" + str(target))
+            # logging.info("waiting.. cur ledger seq:" + str(cur) + ", target seq:" + str(target))
+    def wait_ledger_than(self, num):
+        self.wait_ledger(self.get_ledger_seq() + int(num))
+
     def run_tx(self, cmd):
         now = self.get_ledger_seq()
         self.wait_ledger(now + 1)
