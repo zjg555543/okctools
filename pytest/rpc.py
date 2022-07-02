@@ -5,10 +5,6 @@ import logging
 import os
 import time
 import json
-import random
-from abc import abstractmethod
-
-import requests
 
 class OKCli:
     def __init__(self, exchaind, exchaincli):
@@ -18,12 +14,12 @@ class OKCli:
     def version(self, name):
         cmd = name + ' version'
         result = os.popen(cmd).read().rstrip()
-        # logging.info("version, cmd:" + cmd + "result:" + result)
+        logging.info("version, cmd:" + cmd + "result:" + result)
         return result
     def get_ledger_seq(self):
         cmd = 'exchaincli status'
         result = os.popen(cmd).read().rstrip()
-        # logging.info("result, cmd:" + cmd + ", result:" + result)
+        logging.info("result, cmd:" + cmd + ", result:" + result)
 
         result_obj = json.loads(result)
         return result_obj["sync_info"]["latest_block_height"]
@@ -31,7 +27,7 @@ class OKCli:
     def get_ledger_seq(self):
         cmd = 'exchaincli status'
         result = os.popen(cmd).read().rstrip()
-        # logging.info("result, cmd:" + cmd + ", result:" + result)
+        #logging.info("result, cmd:" + cmd + ", result:" + result)
 
         result_obj = json.loads(result)
         return int(result_obj["sync_info"]["latest_block_height"])
@@ -51,6 +47,9 @@ class OKCli:
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 
+        if len(result) == 0:
+            return -1
+
         result_obj = json.loads(result)
         if "code" in result_obj:
             logging.error("result, cmd:" + cmd + "result:" + result)
@@ -62,6 +61,10 @@ class OKCli:
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
         time.sleep(1)
+    def ps(self, name):
+        cmd = "ps axu | grep " + name
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:" + cmd + ", result:" + result)
 
     def run_all_node(self):
         self.run_node("nohup exchaind start --home /Users/oker/workspace/nodes/node0/exchaind --p2p.seed_mode=true --p2p.allow_duplicate_ip --enable-dynamic-gp=false --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.laddr tcp://127.0.0.1:26656 --rpc.laddr tcp://127.0.0.1:26657 --log_level main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit 1000ms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://localhost:8545 --enable-preruntx=false --consensus-role=v0 --keyring-backend test >/Users/oker/workspace/nodes/val0.log 2>&1 &")
@@ -119,12 +122,25 @@ class OKCli:
         return self.run_tx(cmd)
 
     def create_validator(self, from_name):
-        cmd = 'exchaincli tx staking create-validator --pubkey='' --moniker="my nickname" --identity="logo|||http://mywebsite/pic/logo.jpg" --website="http://mywebsite" --details="my slogan" --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y'
+        cmd = 'exchaincli tx staking create-validator --pubkey=$(exchaind tendermint show-validator) --moniker="zzzzzzzz" --from ' + from_name + ' --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y'
         return self.run_tx(cmd)
     
     def edit_validator(self, rate, from_name):
         cmd = "exchaincli tx staking edit-validator-commission-rate " + str(rate) + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
         return self.run_tx(cmd)
+    
+    def destroy_validator(self, from_name):
+        cmd = "exchaincli tx staking destroy-validator --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
+        return self.run_tx(cmd)
+
+    def query_validator(self, validator):
+        cmd = " exchaincli query staking validator " + validator
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:" + cmd + ", result:" + result)
+
+        result_obj = json.loads(result)
+
+        return result_obj
 
     def query_shares(self, delegator):
         cmd = " exchaincli query staking delegator " + delegator
@@ -158,8 +174,11 @@ class OKCli:
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 
-        result_obj = json.loads(result)
-        return result_obj
+        try:
+            result_obj = json.loads(result)
+            return result_obj
+        except:
+            return -1
 
     def query_withdraw(self, address):
         cmd = " exchaincli query distr withdraw-addr   " + address
@@ -172,8 +191,8 @@ class OKCli:
         cmd = " exchaincli query staking validators   "
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
-
-        return result
+        result_obj = json.loads(result)
+        return result_obj
 
     def query_proposal(self, num):
         cmd = " exchaincli query gov proposal   " + str(num)
@@ -188,8 +207,10 @@ class OKCli:
         cmd = " exchaincli query distr outstanding-rewards   " + address
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
-
-        result_obj = json.loads(result)
+        try:
+            result_obj = json.loads(result)
+        except:
+            return -1
 
         return result_obj[0]["amount"]
 
@@ -227,10 +248,22 @@ class OKCli:
             try:
                 result_obj = json.loads(result)
                 if "gas_used" in result_obj:
-                    logging.info("result, cmd:" + cmd + ", result:" + result)
+                    #logging.info("result, cmd:" + cmd + ", result:" + result)
                     break
             except:
                 logging.info("result, cmd:" + cmd + ", result:" + result)
             time.sleep(1)
+
+    def set_withdraw_addr(self, new_addr, from_name):
+        cmd = "exchaincli tx distr set-withdraw-addr " + new_addr + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
+        return self.run_tx(cmd)
+
+    def withdraw(self, amount, from_name):
+        cmd = "exchaincli tx staking withdraw " + str(amount) + "okt --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
+        return self.run_tx(cmd)
+
+    def unreg(self, from_name):
+        cmd = "exchaincli tx staking  proxy unreg --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
+        return self.run_tx(cmd)
 
 
