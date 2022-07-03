@@ -427,7 +427,7 @@ class CaseDistrProposal:
         result = self.okcli.query_proposal(proposal_num)
         time.sleep(15)
 
-        # va1～va4查询抽成和outstanking一致，va4由于提前设置，不一致
+        # va1～va3查询抽成和outstanking一致，va4由于提前设置，不一致
         commission_va1 = self.okcli.query_commission(self.config["va1"])
         outstanding_va1 = self.okcli.query_outstanding(self.config["va1"])
         logging.info("commission_va1:" + commission_va1 + ", outstanding_va1:" + outstanding_va1)
@@ -616,11 +616,11 @@ class CaseDistrProposal:
         self.assert_compare_same(beforeAmount, afterAmount)
 
         # proxy2 取出va2的分红
-        rewards = self.okcli.query_rewards(self.config["proxy2"], "")["total"][0]["amount"]
+        rewards = self.okcli.query_rewards(self.config["proxy2"], self.config["va2"])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["proxy2"])
         result = self.okcli.withdraw_rewards(self.config["va2"], self.config["proxy2"])
         afterAmount = self.okcli.query_account(self.config["proxy2"])
-        self.assert_compare_same(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
+        self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
 
         # delegator3 取出所有的分红
         rewards = self.okcli.query_rewards(self.config["delegator3"], "")["total"][0]["amount"]
@@ -721,9 +721,8 @@ class CaseDistrProposal:
         beforeAmount = self.okcli.query_account(self.config["proxy4"])
         result = self.okcli.withdraw_all_rewards(self.config["proxy4"])
         afterAmount = self.okcli.query_account(self.config["proxy4"])
-        # self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
         addValue = self.format_decimal(afterAmount) - self.format_decimal(beforeAmount)
-        assert addValue > 0
+        assert addValue >= 0
         assert addValue < self.format_decimal(rewards)
 
         # 新增质押人5
