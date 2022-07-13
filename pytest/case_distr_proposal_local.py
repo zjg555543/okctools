@@ -1186,7 +1186,7 @@ class CaseDistrProposal:
 if __name__ == '__main__':
     pybase = pybase.Pybase()
 
-    file = open('config/case_distr_proposal.json', 'r', encoding='UTF-8')
+    file = open('config/case_distr_proposal_local.json', 'r', encoding='UTF-8')
     moduleConfig = json.loads(file.read())
     file.close()
     case = CaseDistrProposal(moduleConfig)
