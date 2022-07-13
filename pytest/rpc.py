@@ -54,6 +54,7 @@ class OKCli:
             return -1
         self.query_tx(result_obj["txhash"])
         return result_obj["txhash"]
+        
     def kill_process(self, name):
         cmd = "killall " + name
         result = os.popen(cmd).read()
@@ -97,13 +98,26 @@ class OKCli:
 
     def submit_change_type_proposal_offchain(self, from_name):
         cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-0.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
-        return self.run_tx(cmd)
+        tx = self.run_tx(cmd)
+        cmd = " exchaincli query tx " + tx
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
     def submit_change_type_proposal_onchain(self, from_name):
         cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-1.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
-        return self.run_tx(cmd)
+        tx = self.run_tx(cmd)
+        cmd = " exchaincli query tx " + tx
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
     def vote(self, from_name, num):
+        result = self.query_proposal(num)
+        if result == "Passed":
+            logging.info("passed proposal:" + num + ", from_name:" + from_name)
+            return
+
         cmd = "exchaincli tx gov vote " + str(num) + " yes --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
         return self.run_tx(cmd)
 
@@ -178,6 +192,35 @@ class OKCli:
         except:
             return -1
 
+    def query_rewards(self, delegator, validator):
+        cmd = " exchaincli query distr rewards   " + delegator +  " " + validator
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:" + cmd + ", result:" + result)
+
+        try:
+            result_obj = json.loads(result)
+            return result_obj
+        except:
+            return -1
+
+    def query_total_rewards_gt(self, delegator, amount):
+        while True:
+            cmd = " exchaincli query distr rewards   " + delegator
+            result = os.popen(cmd).read()
+            logging.info("result, cmd:" + cmd + ", result:" + result)
+            
+            try:
+                result_obj = json.loads(result)
+                a = self.format_decimal(result_obj["total"][0]["amount"])
+                b = self.format_decimal(amount)
+                logging.info("a:" + str(result_obj["total"][0]["amount"]) + ",b:" + str(amount))
+                if a > b:
+                    break
+
+            except:
+                logging.error(result)
+            time.sleep(1)
+
     def query_withdraw(self, address):
         cmd = " exchaincli query distr withdraw-addr   " + address
         result = os.popen(cmd).read()
@@ -199,7 +242,7 @@ class OKCli:
 
         result_obj = json.loads(result)
 
-        return result_obj
+        return result_obj["proposal_status"]
     
     def query_outstanding(self, address):
         cmd = " exchaincli query distr outstanding-rewards   " + address
@@ -246,10 +289,11 @@ class OKCli:
             try:
                 result_obj = json.loads(result)
                 if "gas_used" in result_obj:
-                    #logging.info("result, cmd:" + cmd + ", result:" + result)
+                    logging.info("result, cmd:" + cmd + ", result:" + result)
                     break
             except:
-                logging.info("result, cmd:" + cmd + ", result:" + result)
+                a = 1
+                # logging.info("result, cmd:" + cmd + ", result:" + result)
             time.sleep(1)
 
     def set_withdraw_addr(self, new_addr, from_name):
@@ -264,4 +308,11 @@ class OKCli:
         cmd = "exchaincli tx staking  proxy unreg --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
         return self.run_tx(cmd)
 
+    def format_decimal(self, num):
+        str_num = str(num)
+        if "." in str_num:
+            a, b = str(str_num).split('.')
+            return int(a)
+        else:
+            return int(str_num)
 

@@ -46,97 +46,30 @@ class CaseDistrProposal:
         result = str(num1) + ", " + str(num2)
         assert abs(a - b) <= 0, result
 
-    def test(self):
-        # result = self.okcli.query_staking_validators()
-        # for value in result:
-        #     assert self.format_decimal(value["delegator_shares"]) == "1", value
-        # result = self.okcli.query_account(self.config["delegator4"])
-        # logging.info(result)
-        # assert self.format_decimal(result) == self.config["initCoin"], self.format_decimal(result)
-
-        # def do():
-        #     logging.info("1111")
-        # do()
-
-        # result = self.okcli.query_commission(self.config["va1"])
-        # logging.info(result)
-        # assert self.format_decimal(result) > 0, result
-
-        # result = self.okcli.query_outstanding(self.config["va1"])
-        # assert result == -1, result
-
-        # result = self.okcli.query_shares(self.config["delegator1"])
-        # assert self.format_decimal(result["tokens"]) == 0, result
-        # assert self.format_decimal(result["shares"]) == 0, result
-
-        # result = self.okcli.query_staking_validators()
-        # result = self.okcli.query_outstanding(self.config["va4"])
-        # assert result == -1, result
-
-        # result = self.okcli.query_rewards(self.config["delegator1"], "")
-        # assert result == -1, result
-
-        # # 查询分红参数 distribution_type 为0
-        # result = self.okcli.query_distr_params()
-        # assert result["distribution_type"] == 0, result
-
-        # 支持 edit-validator-commission-rate 操作
-        # result = self.okcli.edit_validator("0.1", "va4")
-        # assert result != -1, result
-
-        # # 不支持的操作  withdraw-all-rewards、withdraw-rewards outstanding-rewards
-        # result = self.okcli.withdraw_all_rewards(self.config["delegator1"])
-        # assert result == -1, result
-        # result = self.okcli.withdraw_rewards(self.config["va1"], self.config["delegator1"])
-        # assert result == -1, result
-        # result = self.okcli.query_outstanding(self.config["va1"])
-        # assert result == -1, result
-
-        # result = self.okcli.query_commission(self.config["va1"])
-        # assert self.format_decimal(result) > 1, result
-        # result = self.okcli.query_commission(self.config["va2"])
-        # assert self.format_decimal(result) > 1, result
-        # result = self.okcli.query_commission(self.config["va3"])
-        # assert self.format_decimal(result) > 1, result
-        # result = self.okcli.query_commission(self.config["va4"])
-        # assert self.format_decimal(result) > 1, result
-        # logging.info(result)
-
-        # commission_va2 = self.okcli.query_commission(self.config["va2"])
-        # outstanding_va2 = self.okcli.query_outstanding(self.config["va2"])
-        # logging.info("commission_va2:" + commission_va2 + ", outstanding_va2:" + outstanding_va2)
-        # assert self.format_decimal(commission_va2) == self.format_decimal(outstanding_va2)
-
-        # # proxy1 查询分红为空，因为v1抽成比例为100%
-        # result = self.okcli.query_rewards(self.config["proxy1"], "")
-        # assert len(result["total"]) == 0, result
-
-        # # delegator1  查询分红为空，因为v1抽成比例为100%
-        # result = self.okcli.query_rewards(self.config["delegator1"], "")
-        # assert len(result["total"]) == 0, result
-
-        
-        logging.info(self.format_decimal("111.1"))
-        logging.info(self.format_decimal(111.1))
-        logging.info(self.assert_compare_near(1, 2))
-        logging.info(self.assert_compare_near("1.1", 2))
-
-        return
-        
-
-        
-
-    def all(self):
+    def auto(self):
+        self.init_chain_before()
         self.init_chain()
+
+        self.init_staking_before()
         self.init_staking()
+
+        self.upgrate_bin_staking_before()
         self.upgrate_bin_staking()
+
+        self.upgrate_ledger_staking_before()
         self.upgrate_ledger_staking()
+
+        self.after_distr_proposal_before()
         self.after_distr_proposal()
+
+        self.change_to_off_chain_before()
         self.change_to_off_chain()
+
+        self.change_to_on_chain_before()
         self.change_to_on_chain()
 
-    def init_chain(self):
-        logging.info("------------------------initChain start--------------------------------")
+    def init_chain_before(self):
+        logging.info("------------------------initChainBefore start--------------------------------")
         result = self.okcli.run_cmd("cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.sh")
         time.sleep(5)
         result = self.okcli.wait_ledger(1)
@@ -147,6 +80,10 @@ class CaseDistrProposal:
         result = self.okcli.run_all_node()
         result = self.okcli.version("exchaind") 
         assert result == "v1.6.0", result
+        logging.info("------------------------initChainBefore end--------------------------------")
+
+    def init_chain(self):
+        logging.info("------------------------initChain start--------------------------------")
 
         # 导入委托人账户和代理人账户
         self.okcli.recover("delegator1", self.config["mnemonicdelegator1"])
@@ -231,19 +168,20 @@ class CaseDistrProposal:
 
         logging.info("------------------------initChain end--------------------------------")
         return
-    def init_staking(self):
+    
+    def init_staking_before(self):
+        logging.info("------------------------initStakingBefore start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
             result = self.okcli.run_all_node()
             time.sleep(5)
             result = self.okcli.version("exchaind") 
             assert result == "v1.6.0", result
+        logging.info("------------------------initStakingBefore end--------------------------------")
 
+    def init_staking(self):
         logging.info("------------------------initStaking start--------------------------------")
-        result = self.okcli.query_staking_validators()
-        assert len(result) == 4, result
-        for value in result:
-            assert self.format_decimal(value["delegator_shares"]) == 1, value
+        
         # 质押delegator1 10000 okt
         self.okcli.deposit(self.config["depoistCoin"], self.config["delegator1"])
         self.okcli.add_shares(self.vals1, self.config["delegator1"])
@@ -287,13 +225,12 @@ class CaseDistrProposal:
 
         logging.info("------------------------initStaking end--------------------------------")
 
-    def upgrate_bin_staking(self):
+    def upgrate_bin_staking_before(self):
+        logging.info("------------------------upgrate_bin_staking_before start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
             result = self.okcli.run_all_node()
             time.sleep(5)
-
-        logging.info("------------------------upgrate_bin_staking start--------------------------------")
 
         # 编译新的的4个节点，运行
         result = self.okcli.run_cmd("cd /Users/oker/workspace/exchain/dev/testnet/;./run4v1r.sh")
@@ -305,8 +242,13 @@ class CaseDistrProposal:
         result = self.okcli.version("exchaind") 
         assert result == "v1.6.1", result
         time.sleep(5)
+
+        logging.info("------------------------upgrate_bin_staking_before end--------------------------------")
+
+    def upgrate_bin_staking(self):
+        logging.info("------------------------upgrate_bin_staking start--------------------------------")
+        
         # 质押delegator2 10000 okt，投票给va1
-        result = self.okcli.query_staking_validators()
         result = self.okcli.deposit(self.config["depoistCoin"], self.config["delegator2"])
         result = self.okcli.add_shares(self.vals2, self.config["delegator2"])
 
@@ -336,7 +278,8 @@ class CaseDistrProposal:
 
         logging.info("------------------------upgrate_bin_staking end--------------------------------")
 
-    def upgrate_ledger_staking(self):
+    def upgrate_ledger_staking_before(self):
+        logging.info("------------------------upgrate_ledger_staking_before start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
             result = self.okcli.run_all_node()
@@ -344,6 +287,9 @@ class CaseDistrProposal:
             result = self.okcli.version("exchaind") 
             assert result == "v1.6.1", result
 
+        logging.info("------------------------upgrate_ledger_staking_before end--------------------------------")
+
+    def upgrate_ledger_staking(self):
         logging.info("------------------------upgrate_ledger_staking start--------------------------------")
         # 新的程序启动，区块升级之后，没有投票提案，仍然按照佣金100%提成计算，查询验证节点投票仍然可用，验证节点取款仍然有效
         result = self.okcli.wait_ledger(150)
@@ -404,28 +350,34 @@ class CaseDistrProposal:
 
         logging.info("------------------------upgrate_ledger_staking end--------------------------------")
 
-    def after_distr_proposal(self):
+    def after_distr_proposal_before(self):
+        logging.info("------------------------after_distr_proposal_before start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
             result = self.okcli.run_all_node()
             result = self.okcli.version("exchaind") 
             assert result == "v1.6.1", result
             time.sleep(5)
+        logging.info("------------------------after_distr_proposal_before start--------------------------------")
+
+    def after_distr_proposal(self):
         # 11111
         logging.info("------------------------after_distr_proposal start--------------------------------")
         # 发起投票提案，修改提案，此时分红比例默认为100%，各个接口可以使用，验证节点查询抽成，提取抽成正常；委托人查询分红为0；代理人查询为0，无法提取抽成；
         # result = self.okcli.wait_ledger(65)
-        result = self.okcli.submit_change_type_proposal_onchain(self.config["delegator1"])
-        proposal_num=1
-        result = self.okcli.query_proposal(proposal_num)
+        proposal_num = self.okcli.submit_change_type_proposal_onchain(self.config["delegator1"])
         result = self.okcli.vote(self.config["delegator1"], proposal_num)
         result = self.okcli.vote(self.config["delegator2"], proposal_num)
         result = self.okcli.vote(self.config["delegator3"], proposal_num)
         result = self.okcli.vote(self.config["proxy1"], proposal_num)
         result = self.okcli.vote(self.config["proxy2"], proposal_num)
         result = self.okcli.vote(self.config["proxy3"], proposal_num)
+
+        result = self.okcli.vote(self.config["vaAdd1"], proposal_num)
+        result = self.okcli.vote(self.config["vaAdd2"], proposal_num)
+        result = self.okcli.vote(self.config["vaAdd3"], proposal_num)
+        result = self.okcli.vote(self.config["vaAdd4"], proposal_num)
         result = self.okcli.query_proposal(proposal_num)
-        time.sleep(15)
 
         # va1～va3查询抽成和outstanking一致，va4由于提前设置，不一致
         commission_va1 = self.okcli.query_commission(self.config["va1"])
@@ -632,7 +584,6 @@ class CaseDistrProposal:
         # 新增验证节点，进行质押
         result = self.okcli.create_validator(self.config["vaAddadmin16"])
         result = self.okcli.edit_validator("0.1", self.config["vaAddadmin16"])
-        result = self.okcli.query_staking_validators()
 
         result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxy4"])
         result = self.okcli.add_shares(self.valsall, self.config["proxy4"])
@@ -655,31 +606,45 @@ class CaseDistrProposal:
         assert result["is_proxy"] == True, result
         assert self.format_decimal(result["tokens"]) == self.config["depoistCoin"], result
         assert self.format_decimal(result["total_delegated_tokens"]) == self.format_decimal(resultProxydelegator4["tokens"]), result
+        
+
+        # 等待 proxy2 和 proxy4 的奖励大于1
+        self.okcli.query_total_rewards_gt(self.config["proxy2"], 1)
+        self.okcli.query_total_rewards_gt(self.config["proxy4"], 1)
 
         logging.info("------------------------after_distr_proposal end--------------------------------")
 
-    def change_to_off_chain(self):
+    def change_to_off_chain_before(self):
+        logging.info("------------------------change_to_off_chain_before start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
             result = self.okcli.run_all_node()
             result = self.okcli.version("exchaind") 
             assert result == "v1.6.1", result
             time.sleep(5)
+        logging.info("------------------------change_to_off_chain_before end--------------------------------")
 
+
+    def change_to_off_chain(self):
         logging.info("------------------------change_to_off_chain start--------------------------------")
         # 11111111
         # 修改成链下分红
-        result = self.okcli.submit_change_type_proposal_offchain(self.config["delegator1"])
-        proposal_num=2
-        result = self.okcli.query_proposal(proposal_num)
+        proposal_num = self.okcli.submit_change_type_proposal_offchain(self.config["delegator1"])
         result = self.okcli.vote(self.config["delegator1"], proposal_num)
         result = self.okcli.vote(self.config["delegator2"], proposal_num)
         result = self.okcli.vote(self.config["delegator3"], proposal_num)
         result = self.okcli.vote(self.config["delegator4"], proposal_num)
+
         result = self.okcli.vote(self.config["proxy1"], proposal_num)
         result = self.okcli.vote(self.config["proxy2"], proposal_num)
         result = self.okcli.vote(self.config["proxy3"], proposal_num)
         result = self.okcli.vote(self.config["proxy4"], proposal_num)
+
+        result = self.okcli.vote(self.config["vaAdd1"], proposal_num)
+        result = self.okcli.vote(self.config["vaAdd2"], proposal_num)
+        result = self.okcli.vote(self.config["vaAdd3"], proposal_num)
+        result = self.okcli.vote(self.config["vaAdd4"], proposal_num)
+
         result = self.okcli.query_proposal(proposal_num)
 
         # delegator1无法取出va1的分红，因为验证节点va1没有设置比例
@@ -807,7 +772,8 @@ class CaseDistrProposal:
 
         logging.info("------------------------change_to_off_chain end--------------------------------")
 
-    def change_to_on_chain(self):
+    def change_to_on_chain_before(self):
+        logging.info("------------------------change_to_on_chain_before start--------------------------------")
         if self.single_debug:
             result = self.okcli.run_all_node()
             result = self.okcli.version("exchaind") 
@@ -815,22 +781,31 @@ class CaseDistrProposal:
             time.sleep(5)
         
         
+        logging.info("------------------------change_to_on_chain_before end--------------------------------")
+
+    def change_to_on_chain(self):
         logging.info("------------------------change_to_on_chain start--------------------------------")
         # 1111111111
         # 发起投票提案，修改提案链上分红
-        result = self.okcli.submit_change_type_proposal_onchain(self.config["delegator1"])
-        proposal_num=3
+        proposal_num = self.okcli.submit_change_type_proposal_onchain(self.config["delegator1"])
         result = self.okcli.query_proposal(proposal_num)
         result = self.okcli.vote(self.config["delegator1"], proposal_num)
         result = self.okcli.vote(self.config["delegator2"], proposal_num)
         result = self.okcli.vote(self.config["delegator3"], proposal_num)
         result = self.okcli.vote(self.config["delegator4"], proposal_num)
         result = self.okcli.vote(self.config["delegator5"], proposal_num)
+
         result = self.okcli.vote(self.config["proxy1"], proposal_num)
         result = self.okcli.vote(self.config["proxy2"], proposal_num)
         result = self.okcli.vote(self.config["proxy3"], proposal_num)
         result = self.okcli.vote(self.config["proxy4"], proposal_num)
-        # result = self.okcli.vote(self.config["proxy5"], proposal_num)
+        result = self.okcli.vote(self.config["proxy5"], proposal_num)
+
+        result = self.okcli.vote(self.config["vaAdd1"], proposal_num)
+        result = self.okcli.vote(self.config["vaAdd2"], proposal_num)
+        result = self.okcli.vote(self.config["vaAdd3"], proposal_num)
+        result = self.okcli.vote(self.config["vaAdd4"], proposal_num)
+
         result = self.okcli.query_proposal(proposal_num)
         self.okcli.wait_ledger_than(20)
 
@@ -1088,7 +1063,6 @@ class CaseDistrProposal:
         # 再次申请验证节点
         result = self.okcli.create_validator(self.config["vaAddadmin16"])
         result = self.okcli.edit_validator("0.1", self.config["vaAddadmin16"])
-        result = self.okcli.query_staking_validators()
         result = self.okcli.query_commission(self.config["vaadmin16"])
         logging.info("query_commission:" + result)
         result = self.okcli.query_outstanding(self.config["vaadmin16"])
@@ -1103,7 +1077,7 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["delegator5"], self.config["vaadmin16"])
         assert len(result) > 0, result
         result = self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["delegator5"])
-        time.sleep(10)
+        self.okcli.wait_ledger_than(5)
         result = self.okcli.query_rewards(self.config["delegator5"], self.config["vaadmin16"])
         assert len(result) == 0, result
 
@@ -1180,7 +1154,7 @@ class CaseDistrProposal:
     def exit(self, stop = True):
         if stop:
             case.okcli.kill_process("exchaind")
-        logging.info("Please use arg eg:  test | all")
+        logging.info("Please use arg eg:  auto")
         sys.exit()
 
 if __name__ == '__main__':
@@ -1194,24 +1168,43 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         case.exit()
     opt = sys.argv[1]
-    if opt == "all":
-        case.all()
-    elif opt == "test":
-        case.test()
+    if opt == "auto":
+        case.auto()
+
+    elif opt == "init_chain_before":
+        case.init_chain_before()
     elif opt == "init_chain":
-        case.test()
+        case.init_chain()
+    
+    elif opt == "init_staking_before":
+        case.init_staking_before()
     elif opt == "init_staking":
-        case.test()
+        case.init_staking()
+    
+    elif opt == "upgrate_bin_staking_before":
+        case.upgrate_bin_staking_before()
     elif opt == "upgrate_bin_staking":
-        case.test()
+        case.upgrate_bin_staking()
+
+    elif opt == "upgrate_ledger_staking_before":
+        case.upgrate_ledger_staking_before()
     elif opt == "upgrate_ledger_staking":
-        case.test()
+        case.upgrate_ledger_staking()
+
+    elif opt == "after_distr_proposal_before":
+        case.after_distr_proposal_before()
     elif opt == "after_distr_proposal":
-        case.test()
+        case.after_distr_proposal()
+
+    elif opt == "change_to_off_chain_before":
+        case.change_to_off_chain_before()
     elif opt == "change_to_off_chain":
-        case.test()
+        case.change_to_off_chain()
+
+    elif opt == "change_to_on_chain_before":
+        case.change_to_on_chain_before()
     elif opt == "change_to_on_chain":
-        case.test()
+        case.change_to_on_chain()
 
     elif opt == "start":
         case.okcli.run_all_node()
