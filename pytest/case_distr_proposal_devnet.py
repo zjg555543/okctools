@@ -67,6 +67,11 @@ class CaseDistrProposal:
 
         self.change_to_on_chain_before()
         self.change_to_on_chain()
+    
+    def test(self):
+        self.okcli.kill_process("exchaind")
+        time.sleep(5)
+        self.okcli.run_all_node(22, 3000)
 
     def init_chain_before(self):
         logging.info("------------------------initChainBefore start--------------------------------")
@@ -77,7 +82,7 @@ class CaseDistrProposal:
 
         # 迁移命令行和迁移文件夹，重新启动
         result = self.okcli.run_cmd("rm -rf /Users/oker/workspace/nodes/*; cp -rf /Users/oker/workspace/exchain-raw/dev/testnet/cache/* /Users/oker/workspace/nodes/")
-        result = self.okcli.run_all_node()
+        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
         result = self.okcli.version("exchaind") 
         assert result == "v1.6.0", result
         logging.info("------------------------initChainBefore end--------------------------------")
@@ -173,7 +178,7 @@ class CaseDistrProposal:
         logging.info("------------------------initStakingBefore start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
             time.sleep(5)
             result = self.okcli.version("exchaind") 
             assert result == "v1.6.0", result
@@ -229,7 +234,7 @@ class CaseDistrProposal:
         logging.info("------------------------upgrate_bin_staking_before start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
             time.sleep(5)
 
         # 编译新的的4个节点，运行
@@ -238,7 +243,7 @@ class CaseDistrProposal:
         result = self.okcli.wait_ledger(1)
         result = self.okcli.kill_process("exchaind")
 
-        result = self.okcli.run_all_node()
+        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
         result = self.okcli.version("exchaind") 
         assert result == "v1.6.1", result
         time.sleep(5)
@@ -282,7 +287,7 @@ class CaseDistrProposal:
         logging.info("------------------------upgrate_ledger_staking_before start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
             time.sleep(5)
             result = self.okcli.version("exchaind") 
             assert result == "v1.6.1", result
@@ -354,7 +359,7 @@ class CaseDistrProposal:
         logging.info("------------------------after_distr_proposal_before start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
             result = self.okcli.version("exchaind") 
             assert result == "v1.6.1", result
             time.sleep(5)
@@ -618,7 +623,7 @@ class CaseDistrProposal:
         logging.info("------------------------change_to_off_chain_before start--------------------------------")
         if self.single_debug:
             result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
             result = self.okcli.version("exchaind") 
             assert result == "v1.6.1", result
             time.sleep(5)
@@ -775,7 +780,7 @@ class CaseDistrProposal:
     def change_to_on_chain_before(self):
         logging.info("------------------------change_to_on_chain_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.run_all_node()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
             result = self.okcli.version("exchaind") 
             assert result == "v1.6.1", result
             time.sleep(5)
@@ -1152,8 +1157,8 @@ class CaseDistrProposal:
         logging.info("------------------------change_to_on_chain end--------------------------------")
 
     def exit(self, stop = True):
-        if stop:
-            case.okcli.kill_process("exchaind")
+        #if stop:
+            #case.okcli.kill_process("exchaind")
         logging.info("Please use arg eg:  auto")
         sys.exit()
 
@@ -1168,7 +1173,11 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         case.exit()
     opt = sys.argv[1]
-    if opt == "auto":
+
+    if opt == "test":
+        case.test()
+
+    elif opt == "auto":
         case.auto()
 
     elif opt == "init_chain_before":

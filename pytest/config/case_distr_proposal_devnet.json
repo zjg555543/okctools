@@ -5,6 +5,8 @@
     "initCoin": 1000000,
     "depoistCoin": 10000,
     "addDepoistCoin": 300000,
+    "nodeCount": 4,
+    "ledgerTime":1000,
 
     "va1":"exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7",
     "va2":"exvaloper1q6ls3h64gkxq0r73u2eqwwr7d5mp583fm325zu",
