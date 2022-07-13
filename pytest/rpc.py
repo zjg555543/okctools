@@ -43,7 +43,7 @@ class OKCli:
         self.wait_ledger(now + 1)
 
         result = os.popen(cmd).read()
-        logging.info("result, cmd:" + cmd + ", result:" + result)
+        logging.info("result, cmd:  " + cmd + " , result:" + result)
 
         if len(result) == 0:
             return -1

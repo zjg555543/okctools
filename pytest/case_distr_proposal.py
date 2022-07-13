@@ -346,7 +346,7 @@ class CaseDistrProposal:
 
         logging.info("------------------------upgrate_ledger_staking start--------------------------------")
         # 新的程序启动，区块升级之后，没有投票提案，仍然按照佣金100%提成计算，查询验证节点投票仍然可用，验证节点取款仍然有效
-        result = self.okcli.wait_ledger(50)
+        result = self.okcli.wait_ledger(150)
         result = self.okcli.query_commission(self.config["va1"])
         assert self.format_decimal(result) > 0, result
         result = self.okcli.query_commission(self.config["va2"])
@@ -414,7 +414,7 @@ class CaseDistrProposal:
         # 11111
         logging.info("------------------------after_distr_proposal start--------------------------------")
         # 发起投票提案，修改提案，此时分红比例默认为100%，各个接口可以使用，验证节点查询抽成，提取抽成正常；委托人查询分红为0；代理人查询为0，无法提取抽成；
-        result = self.okcli.wait_ledger(65)
+        # result = self.okcli.wait_ledger(65)
         result = self.okcli.submit_change_type_proposal_onchain(self.config["delegator1"])
         proposal_num=1
         result = self.okcli.query_proposal(proposal_num)
@@ -808,10 +808,12 @@ class CaseDistrProposal:
         logging.info("------------------------change_to_off_chain end--------------------------------")
 
     def change_to_on_chain(self):
-        result = self.okcli.run_all_node()
-        result = self.okcli.version("exchaind") 
-        assert result == "v1.6.1", result
-        time.sleep(5)
+        if self.single_debug:
+            result = self.okcli.run_all_node()
+            result = self.okcli.version("exchaind") 
+            assert result == "v1.6.1", result
+            time.sleep(5)
+        
         
         logging.info("------------------------change_to_on_chain start--------------------------------")
         # 1111111111
@@ -1196,6 +1198,21 @@ if __name__ == '__main__':
         case.all()
     elif opt == "test":
         case.test()
+    elif opt == "init_chain":
+        case.test()
+    elif opt == "init_staking":
+        case.test()
+    elif opt == "upgrate_bin_staking":
+        case.test()
+    elif opt == "upgrate_ledger_staking":
+        case.test()
+    elif opt == "after_distr_proposal":
+        case.test()
+    elif opt == "change_to_off_chain":
+        case.test()
+    elif opt == "change_to_on_chain":
+        case.test()
+
     elif opt == "start":
         case.okcli.run_all_node()
     elif opt == "stop":
