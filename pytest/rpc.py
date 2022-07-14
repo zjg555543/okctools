@@ -185,6 +185,23 @@ class OKCli:
 
         return result_obj[0]["amount"]
 
+    def query_commission_gt(self, address, amount):
+        while True:
+            cmd = " exchaincli query distr commission   " + address  + self.node_rpc
+            result = os.popen(cmd).read()
+            logging.info("result, cmd:" + cmd + ", result:" + result)
+
+            try:
+                result_obj = json.loads(result)
+                a = self.format_decimal(result_obj[0]["amount"])
+                b = self.format_decimal(amount)
+                logging.info("a:" + str(result_obj[0]["amount"]) + ",b:" + str(amount))
+                if a > b:
+                    break
+            except:
+                logging.error(result)
+            time.sleep(1)
+
     def query_rewards(self, delegator, validator):
         cmd = " exchaincli query distr rewards   " + delegator +  " " + validator  + self.node_rpc
         result = os.popen(cmd).read()

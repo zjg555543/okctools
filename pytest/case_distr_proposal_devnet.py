@@ -81,7 +81,7 @@ class CaseDistrProposal:
         self.okcli.run_all_node(22, 3000)
 
         outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
-        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
+        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4))
         result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
         rewards = result["total"][0]["amount"]
         rewards = 0
@@ -137,10 +137,8 @@ class CaseDistrProposal:
         self.okcli.recover("proxydelegator5", self.config["proxydelegators"][4][2])
         self.okcli.recover("proxydelegator6", self.config["proxydelegators"][5][2])
 
-        self.okcli.recover_val("va1", self.config["vals"][0][2])
-        self.okcli.recover_val("va2", self.config["vals"][1][2])
-        self.okcli.recover_val("va3", self.config["vals"][2][2])
-        self.okcli.recover_val("va4", self.config["vals"][3][2])
+        for v in self.config["vals"]:
+           self.okcli.recover_val(v[0], v[2])
 
         self.okcli.transfer(self.config["captain"], self.config["delegators"][0][1], self.config["initCoin"])
         self.okcli.transfer(self.config["captain"], self.config["delegators"][1][1], self.config["initCoin"])
@@ -242,12 +240,19 @@ class CaseDistrProposal:
         assert self.format_decimal(result["total_delegated_tokens"]) == self.format_decimal(resultProxydelegator1["tokens"]), result
 
         # 验证节点 commission 有值
+        self.okcli.query_commission_gt(self.config["vals"][0][3], 0)
         result = self.okcli.query_commission(self.config["vals"][0][3])
         assert self.format_decimal(result) > 0, result
+
+        self.okcli.query_commission_gt(self.config["vals"][1][3], 0)
         result = self.okcli.query_commission(self.config["vals"][1][3])
         assert self.format_decimal(result) > 0, result
+
+        self.okcli.query_commission_gt(self.config["vals"][2][3], 0)
         result = self.okcli.query_commission(self.config["vals"][2][3])
         assert self.format_decimal(result) > 0, result
+
+        self.okcli.query_commission_gt(self.config["vals"][3][3], 0)
         result = self.okcli.query_commission(self.config["vals"][3][3])
         assert self.format_decimal(result) > 0, result
 
@@ -335,7 +340,7 @@ class CaseDistrProposal:
         assert result["distribution_type"] == 0, result
 
         # 支持 edit-validator-commission-rate 操作
-        result = self.okcli.edit_validator("0.1", "va4")
+        result = self.okcli.edit_validator("0.5", "va4")
         assert result != -1, result
 
         # 不支持的操作  withdraw-all-rewards、withdraw-rewards、outstanding-rewards、query_rewards
@@ -401,10 +406,8 @@ class CaseDistrProposal:
         result = self.okcli.vote(self.config["proxys"][1][1], proposal_num)
         result = self.okcli.vote(self.config["proxys"][2][1], proposal_num)
 
-        result = self.okcli.vote(self.config["vals"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["vals"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["vals"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["vals"][3][1], proposal_num)
+        for v in self.config["vals"]:
+            result = self.okcli.vote(v[1], proposal_num)
         result = self.okcli.query_proposal(proposal_num)
 
         # va1～va3查询抽成和outstanking一致，va4由于提前设置，不一致
@@ -428,7 +431,7 @@ class CaseDistrProposal:
 
         # 等待 outstanding_va4 增加1个奖励
         outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
-        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
+        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4))
 
         ledger = self.okcli.get_ledger_seq()
         commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
@@ -453,7 +456,7 @@ class CaseDistrProposal:
         # 取出va1的抽成，预期va1增加commission_va1，commission_va1 和 outstanding_va1为0
         #保证va1增加1个奖励
         outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
-        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1) + 1)
+        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1))
         ledger = self.okcli.get_ledger_seq()
         beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
         commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
@@ -506,7 +509,7 @@ class CaseDistrProposal:
         self.assert_compare_same(beforeAmountvaDelegator1, afterAmountvaDelegator1)
 
         # 验证节点2 设置分红比例1%，代理2查询奖励有值，委托人2查询奖励有值，其他人查询为空
-        result = self.okcli.edit_validator("0.01", "va2")
+        result = self.okcli.edit_validator("0.5", "va2")
         self.okcli.wait_ledger_than(20)
         result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
         assert len(result["rewards"]) == 2, result
@@ -548,7 +551,7 @@ class CaseDistrProposal:
         # 333333
         # 取出va1的抽成，预期va1增加commission_va1，commission_va1 和 outstanding_va1为0
         outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
-        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1) + 1)
+        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1))
         ledger = self.okcli.get_ledger_seq()
         beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
         commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
@@ -569,7 +572,7 @@ class CaseDistrProposal:
 
         # 取出va2的抽成，预期va2增加commission_va2，commission_va2 和 outstanding_va2为0
         outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3])
-        self.okcli.query_outstanding_gt(self.config["vals"][1][3], self.format_decimal(outstanding_va2) + 1)
+        self.okcli.query_outstanding_gt(self.config["vals"][1][3], self.format_decimal(outstanding_va2))
         ledger = self.okcli.get_ledger_seq()
         beforeAmountVa2 = self.okcli.query_account(self.config["vals"][1][1])
         commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
@@ -590,7 +593,7 @@ class CaseDistrProposal:
         
         # 取出va4的抽成，预期va4增加commission_va4，commission_va4 和 outstanding_va4为0
         outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
-        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
+        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4))
         ledger = self.okcli.get_ledger_seq()
         beforeAmountVa4 = self.okcli.query_account(self.config["vals"][3][1])
         commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
@@ -637,7 +640,7 @@ class CaseDistrProposal:
 
         # 新增验证节点，进行质押
         result = self.okcli.create_validator(self.config["vaAddadmin16"])
-        result = self.okcli.edit_validator("0.1", self.config["vaAddadmin16"])
+        result = self.okcli.edit_validator("0.5", self.config["vaAddadmin16"])
 
         result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][3][1])
         result = self.okcli.add_shares(self.valsall, self.config["proxys"][3][1])
@@ -723,7 +726,7 @@ class CaseDistrProposal:
 
         # 22222222
         # 验证节点1 设置分红比例1%
-        result = self.okcli.edit_validator("0.01", "va1")
+        result = self.okcli.edit_validator("0.5", "va1")
         self.okcli.wait_ledger_than(20)
 
         # proxy1 的分红仍然为0
@@ -758,7 +761,7 @@ class CaseDistrProposal:
         # 333333333
         # 取出v1的分红，预期正常
         outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
-        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1) + 1)
+        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1))
         ledger = self.okcli.get_ledger_seq()
         beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
         commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
@@ -903,8 +906,8 @@ class CaseDistrProposal:
         self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][3][1])
         self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][4][1])
 
-        # 验证节点3 设置分红比例1%
-        result = self.okcli.edit_validator("0.01", "va3")
+        # 验证节点3 设置分红比例50%
+        result = self.okcli.edit_validator("0.5", "va3")
 
         result = self.okcli.deposit(self.config["addDepoistCoin"], self.config["proxys"][2][1])
         self.okcli.wait_ledger_than(20)
@@ -992,7 +995,7 @@ class CaseDistrProposal:
         result = self.okcli.add_shares(self.vals3, self.config["proxys"][2][1])
         result = self.okcli.proxy_reg(self.config["proxys"][2][1])
         result = self.okcli.proxy_bind(self.config["proxys"][2][1], self.config["proxydelegators"][2][1])
-
+        self.okcli.wait_ledger_than(2)
         resultProxydelegator3 = self.okcli.query_shares(self.config["proxydelegators"][2][1])
         assert self.format_decimal(resultProxydelegator3["tokens"]) == self.config["depoistCoin"], resultProxydelegator3
         assert self.format_decimal(resultProxydelegator3["shares"]) == 0, resultProxydelegator3
@@ -1142,7 +1145,7 @@ class CaseDistrProposal:
         # 再次申请验证节点
         ledger = self.okcli.get_ledger_seq()
         result = self.okcli.create_validator(self.config["vaAddadmin16"])
-        result = self.okcli.edit_validator("0.1", self.config["vaAddadmin16"])
+        result = self.okcli.edit_validator("0.5", self.config["vaAddadmin16"])
         result = self.okcli.query_commission(self.config["vaadmin16"])
         logging.info("query_commission:" + result)
         result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
@@ -1301,5 +1304,3 @@ if __name__ == '__main__':
         logging.info(str(case.okcli.get_ledger_seq()))
     else:
         case.exit()
-
-    # case.exit()
