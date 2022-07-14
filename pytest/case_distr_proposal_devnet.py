@@ -17,7 +17,7 @@ class CaseDistrProposal:
         self.vals2 = self.config["vals"][0][3] + "," + self.config["vals"][1][3]
         self.vals3 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3]
         self.valsall = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3] + "," + self.config["vals"][3][3] + "," + self.config["vaadmin16"]
-        self.single_debug = False
+        self.single_debug = self.config["singleDebug"]
         return
 
     def format_decimal(self, num):
@@ -47,41 +47,54 @@ class CaseDistrProposal:
         assert abs(a - b) <= 0, result
 
     def auto(self):
+        # 阶段一，初始化账户信息
         self.init_chain_before()
         self.init_chain()
 
+        # 阶段二，构建初始化投票交易
         self.init_staking_before()
         self.init_staking()
 
+        # 阶段三，升级程序，继续初始化投票交易
         self.upgrate_bin_staking_before()
         self.upgrate_bin_staking()
 
+        # 阶段四，达到高度隔离，验证新增接口在提前前无效，继续初始化投票交易
         self.upgrate_ledger_staking_before()
         self.upgrate_ledger_staking()
-
+        
+        # 阶段五， 投票链上分红提案，验证分红和抽成正常，继续初始化投票
         self.after_distr_proposal_before()
         self.after_distr_proposal()
 
+        # 阶段六，投票为链下分红提案，验证分红为0抽成正常，继续初始化投票
         self.change_to_off_chain_before()
         self.change_to_off_chain()
 
+        # 阶段七，投票为链上分红提案，验证委托人、代理人、被代理人操作投票分红，验证节点销毁不再分红
         self.change_to_on_chain_before()
-        #self.change_to_on_chain()
+        self.change_to_on_chain()
     
     def test(self):
-        # self.okcli.kill_process("exchaind")
-        # time.sleep(5)
-        # self.okcli.run_all_node(22, 3000)
+        self.okcli.kill_process("exchaind")
+        time.sleep(5)
+        self.okcli.run_all_node(22, 3000)
 
-        # outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
-        # self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
         result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # rewards = result["total"][0]["amount"]
+        rewards = result["total"][0]["amount"]
         rewards = 0
         for v in result["rewards"]:
             if len(v["reward"]) > 0:
                 rewards += self.format_decimal(v["reward"][0]["amount"])
         logging.info("rewards:" + str(rewards))
+        ledger = self.okcli.get_ledger_seq()
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger - 1)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
+        self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], self.config["vals"][1][3], 0)
 
     def init_chain_before(self):
         logging.info("------------------------initChainBefore start--------------------------------")
@@ -395,27 +408,31 @@ class CaseDistrProposal:
         result = self.okcli.query_proposal(proposal_num)
 
         # va1～va3查询抽成和outstanking一致，va4由于提前设置，不一致
-        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3])
-        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        ledger = self.okcli.get_ledger_seq()
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + commission_va1 + ", outstanding_va1:" + outstanding_va1)
-        self.assert_compare_near(commission_va1, outstanding_va1)
+        self.assert_compare_same(commission_va1, outstanding_va1)
 
-        commission_va2 = self.okcli.query_commission(self.config["vals"][1][3])
-        outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3])
+        ledger = self.okcli.get_ledger_seq()
+        commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
+        outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
         logging.info("commission_va2:" + commission_va2 + ", outstanding_va2:" + outstanding_va2)
-        self.assert_compare_near(commission_va2, outstanding_va2)
+        self.assert_compare_same(commission_va2, outstanding_va2)
 
-        commission_va3 = self.okcli.query_commission(self.config["vals"][2][3])
-        outstanding_va3 = self.okcli.query_outstanding(self.config["vals"][2][3])
+        ledger = self.okcli.get_ledger_seq()
+        commission_va3 = self.okcli.query_commission(self.config["vals"][2][3], ledger)
+        outstanding_va3 = self.okcli.query_outstanding(self.config["vals"][2][3], ledger)
         logging.info("commission_va3:" + commission_va3 + ", outstanding_va3:" + outstanding_va3)
-        self.assert_compare_near(commission_va3, commission_va3)
+        self.assert_compare_same(commission_va3, commission_va3)
 
         # 等待 outstanding_va4 增加1个奖励
         outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
         self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
 
-        commission_va4 = self.okcli.query_commission(self.config["vals"][3][3])
-        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
+        ledger = self.okcli.get_ledger_seq()
+        commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
         assert outstanding_va4 > commission_va4
 
         # proxy1~3, delegator1~3 查询分红为空，因为va1~va3抽成比例为100%
@@ -434,18 +451,23 @@ class CaseDistrProposal:
         assert len(result["total"]) == 0, result
 
         # 取出va1的抽成，预期va1增加commission_va1，commission_va1 和 outstanding_va1为0
-        beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
-        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3])
+        #保证va1增加1个奖励
         outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1) + 1)
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
-        self.assert_compare_near(commission_va1, outstanding_va1)
+        self.assert_compare_same(commission_va1, outstanding_va1)
         result = self.okcli.withdraw_commission(self.config["vals"][0][3], "va1")
         afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
         logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
         result = "afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1)
         self.assert_compare_near(self.format_decimal(beforeAmountVa1) + self.format_decimal(commission_va1), self.format_decimal(afterAmountVa1))
-        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3])
-        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        ledger = self.okcli.get_ledger_seq()
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         self.assert_compare_near(commission_va1, outstanding_va1)
         assert self.format_decimal(commission_va1) == 0
@@ -525,9 +547,12 @@ class CaseDistrProposal:
 
         # 333333
         # 取出va1的抽成，预期va1增加commission_va1，commission_va1 和 outstanding_va1为0
-        beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
-        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3])
         outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1) + 1)
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         self.assert_compare_near(commission_va1, outstanding_va1)
         result = self.okcli.withdraw_commission(self.config["vals"][0][3], "va1")
@@ -535,16 +560,20 @@ class CaseDistrProposal:
         logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
         result = "afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1)
         self.assert_compare_near(self.format_decimal(beforeAmountVa1) + self.format_decimal(commission_va1), self.format_decimal(afterAmountVa1))
-        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3])
-        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        ledger = self.okcli.get_ledger_seq()
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         self.assert_compare_near(commission_va1, outstanding_va1)
         assert self.format_decimal(commission_va1) == 0
 
         # 取出va2的抽成，预期va2增加commission_va2，commission_va2 和 outstanding_va2为0
-        beforeAmountVa2 = self.okcli.query_account(self.config["vals"][1][1])
-        commission_va2 = self.okcli.query_commission(self.config["vals"][1][3])
         outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][1][3], self.format_decimal(outstanding_va2) + 1)
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa2 = self.okcli.query_account(self.config["vals"][1][1])
+        commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
+        outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
         logging.info("commission_va2:" + str(commission_va2) + ", outstanding_va2:" + str(outstanding_va2))
         self.assert_compare_gt(outstanding_va2, commission_va2)
         result = self.okcli.withdraw_commission(self.config["vals"][1][3], "va2")
@@ -552,16 +581,20 @@ class CaseDistrProposal:
         logging.info("afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2))
         result = "afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2)
         self.assert_compare_near(self.format_decimal(beforeAmountVa2) + self.format_decimal(commission_va2), self.format_decimal(afterAmountVa2))
-        commission_va2 = self.okcli.query_commission(self.config["vals"][1][3])
-        outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3])
+        ledger = self.okcli.get_ledger_seq()
+        commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
+        outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
         logging.info("commission_va2:" + str(commission_va2) + ", outstanding_va2:" + str(outstanding_va2))
         self.assert_compare_gt(outstanding_va2, commission_va2)
         assert self.format_decimal(commission_va2) == 0
         
         # 取出va4的抽成，预期va4增加commission_va4，commission_va4 和 outstanding_va4为0
-        beforeAmountVa4 = self.okcli.query_account(self.config["vals"][3][1])
-        commission_va4 = self.okcli.query_commission(self.config["vals"][3][3])
         outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa4 = self.okcli.query_account(self.config["vals"][3][1])
+        commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
         logging.info("commission_va4:" + str(commission_va4) + ", outstanding_va4:" + str(outstanding_va4))
         self.assert_compare_gt(outstanding_va4, commission_va4)
         result = self.okcli.withdraw_commission(self.config["vals"][3][3], "va4")
@@ -569,8 +602,9 @@ class CaseDistrProposal:
         logging.info("afterAmountVa4:" + str(afterAmountVa4) + ", beforeAmountVa4:" + str(beforeAmountVa4))
         result = "afterAmountVa4:" + str(afterAmountVa4) + ", beforeAmountVa4:" + str(beforeAmountVa4)
         self.assert_compare_near(self.format_decimal(beforeAmountVa4) + self.format_decimal(commission_va4), self.format_decimal(afterAmountVa4))
-        commission_va4 = self.okcli.query_commission(self.config["vals"][3][3])
-        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
+        ledger = self.okcli.get_ledger_seq()
+        commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
         logging.info("commission_va4:" + str(commission_va4) + ", outstanding_va4:" + str(outstanding_va4))
         self.assert_compare_gt(outstanding_va4, commission_va4)
         assert self.format_decimal(commission_va4) == 0
@@ -587,6 +621,7 @@ class CaseDistrProposal:
         self.assert_compare_same(beforeAmount, afterAmount)
 
         # proxy2 取出va2的分红
+        self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], self.config["vals"][1][3], 0)
         rewards = self.okcli.query_rewards(self.config["proxys"][1][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["proxys"][1][1])
         result = self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][1][1])
@@ -627,9 +662,9 @@ class CaseDistrProposal:
         assert self.format_decimal(result["total_delegated_tokens"]) == self.format_decimal(resultProxydelegator4["tokens"]), result
         
 
-        # 等待 proxy2 和 proxy4 的奖励大于1
-        self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], 1)
-        self.okcli.query_total_rewards_gt(self.config["proxys"][3][1], 1)
+        # 等待 proxy2 和 proxy4 的奖励大于0
+        self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], "", 0)
+        self.okcli.query_total_rewards_gt(self.config["proxys"][3][1], "", 0)
 
         logging.info("------------------------after_distr_proposal end--------------------------------")
 
@@ -674,7 +709,7 @@ class CaseDistrProposal:
 
         # proxy2 取出之前的所有的分红，仍可取出
         rewards = self.okcli.query_rewards(self.config["proxys"][1][1], "")["total"][0]["amount"]
-        self.assert_compare_gt(rewards, 1)
+        self.assert_compare_gt(rewards, 0)
         beforeAmount = self.okcli.query_account(self.config["proxys"][1][1])
         result = self.okcli.withdraw_all_rewards(self.config["proxys"][1][1])
         afterAmount = self.okcli.query_account(self.config["proxys"][1][1])
@@ -701,13 +736,13 @@ class CaseDistrProposal:
 
         # proxy4 取出所有的分红，仍可取出
         rewards = self.okcli.query_rewards(self.config["proxys"][3][1], "")["total"][0]["amount"]
-        self.assert_compare_gt(rewards, 1)
+        self.assert_compare_gt(rewards, 0)
         beforeAmount = self.okcli.query_account(self.config["proxys"][3][1])
         result = self.okcli.withdraw_all_rewards(self.config["proxys"][3][1])
         afterAmount = self.okcli.query_account(self.config["proxys"][3][1])
         addValue = self.format_decimal(afterAmount) - self.format_decimal(beforeAmount)
         assert addValue >= 0
-        assert addValue < self.format_decimal(rewards)
+        assert addValue <= self.format_decimal(rewards), "addValue:" + str(addValue) + ", rewards:" + str(rewards)
 
         # 新增质押人5
         result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][4][1])
@@ -722,9 +757,12 @@ class CaseDistrProposal:
 
         # 333333333
         # 取出v1的分红，预期正常
-        beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
-        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3])
         outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1) + 1)
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         self.assert_compare_same(outstanding_va1, commission_va1)
         result = self.okcli.withdraw_commission(self.config["vals"][0][3], "va1")
@@ -732,8 +770,9 @@ class CaseDistrProposal:
         logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
         result = "afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1)
         self.assert_compare_near(self.format_decimal(beforeAmountVa1) + self.format_decimal(commission_va1), self.format_decimal(afterAmountVa1))
-        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3])
-        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        ledger = self.okcli.get_ledger_seq()
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         self.assert_compare_same(outstanding_va1, commission_va1)
         assert self.format_decimal(commission_va1) == 0
@@ -744,10 +783,11 @@ class CaseDistrProposal:
         result = self.okcli.query_commission(self.config["vals"][3][3])
         result = self.okcli.query_commission(self.config["vaadmin16"])
 
-        result = self.okcli.query_outstanding(self.config["vals"][1][3])
-        result = self.okcli.query_outstanding(self.config["vals"][2][3])
-        result = self.okcli.query_outstanding(self.config["vals"][3][3])
-        result = self.okcli.query_outstanding(self.config["vaadmin16"])
+        ledger = self.okcli.get_ledger_seq()
+        result = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vals"][2][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
 
         # 查询分红正常
         result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
@@ -980,23 +1020,28 @@ class CaseDistrProposal:
 
         # 取出 delegator3 的所有投票，预期分红到账
         self.okcli.wait_ledger_than(20)
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # rewards = result["total"][0]["amount"]
+        total_rewards = result["total"][0]["amount"]
         rewards = 0
         for v in result["rewards"]:
             if len(v["reward"]) > 0:
                 rewards += self.format_decimal(v["reward"][0]["amount"])
         logging.info("rewards:" + str(rewards))
-        result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
-        assert len(result) > 0, result
-        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        
         result = self.okcli.query_shares(self.config["delegators"][2][1])
         result = self.okcli.withdraw(self.format_decimal(result["tokens"]), self.config["delegators"][2][1])
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
         assert result == -1, result
         affertAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), affertAmount)
+        addValue = self.format_decimal(affertAmount) - self.format_decimal(beforeAmount)
+        assert addValue > 0, str(addValue)
+        assert addValue >= self.format_decimal(rewards)
+        assert addValue <= (self.format_decimal(total_rewards) + 1)
+        # self.assert_compare_near(self.format_decimal(total_rewards) + self.format_decimal(beforeAmount), affertAmount)
 
         # 取出 delegator3 的投票，等待30秒，再次取出分红为0
         self.okcli.wait_ledger_than(20)
@@ -1029,9 +1074,10 @@ class CaseDistrProposal:
         assert result["jailed"] == True, result
         
         # 销毁验证节点，取出自己抽成
+        ledger = self.okcli.get_ledger_seq()
         beforeAmount = self.okcli.query_account(self.config["vaAddadmin16"])
-        commission = self.okcli.query_commission(self.config["vaadmin16"])
-        outstanding = self.okcli.query_outstanding(self.config["vaadmin16"])
+        commission = self.okcli.query_commission(self.config["vaadmin16"], ledger)
+        outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
         logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
         self.assert_compare_gt(outstanding, commission)
         result = self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"])
@@ -1039,8 +1085,9 @@ class CaseDistrProposal:
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount))
         result = "afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount)
         self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(commission), self.format_decimal(afterAmount))
-        commission = self.okcli.query_commission(self.config["vaadmin16"])
-        outstanding = self.okcli.query_outstanding(self.config["vaadmin16"])
+        ledger = self.okcli.get_ledger_seq()
+        commission = self.okcli.query_commission(self.config["vaadmin16"], ledger)
+        outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
         logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
         self.assert_compare_gt(outstanding, commission)
         assert self.format_decimal(commission) == 0
@@ -1048,7 +1095,7 @@ class CaseDistrProposal:
         # delegator4 取出质押
         self.okcli.wait_ledger_than(20)
         result = self.okcli.query_rewards(self.config["delegators"][3][1], "")
-        # rewards = result["total"][0]["amount"]
+        total_rewards = result["total"][0]["amount"]
         rewards = 0
         for v in result["rewards"]:
             if len(v["reward"]) > 0:
@@ -1064,14 +1111,16 @@ class CaseDistrProposal:
         affertAmount = self.okcli.query_account(self.config["withdrawaddress"])
         # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), affertAmount)
         addValue = self.format_decimal(affertAmount) - self.format_decimal(beforeAmount)
-        assert addValue > 0
-        assert addValue <= self.format_decimal(rewards)
+        assert addValue > 0, str(addValue)
+        assert addValue >= self.format_decimal(rewards)
+        assert addValue <= (self.format_decimal(total_rewards) + 1)
 
         # 30秒后，验证节点不再有抽成
         self.okcli.wait_ledger_than(20)
+        ledger = self.okcli.get_ledger_seq()
         beforeAmount = self.okcli.query_account(self.config["vaAddadmin16"])
-        commission = self.okcli.query_commission(self.config["vaadmin16"])
-        outstanding = self.okcli.query_outstanding(self.config["vaadmin16"])
+        commission = self.okcli.query_commission(self.config["vaadmin16"], ledger)
+        outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
         logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
         self.assert_compare_gt(outstanding, commission)
         result = self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"])
@@ -1091,11 +1140,12 @@ class CaseDistrProposal:
 
         #666666
         # 再次申请验证节点
+        ledger = self.okcli.get_ledger_seq()
         result = self.okcli.create_validator(self.config["vaAddadmin16"])
         result = self.okcli.edit_validator("0.1", self.config["vaAddadmin16"])
         result = self.okcli.query_commission(self.config["vaadmin16"])
         logging.info("query_commission:" + result)
-        result = self.okcli.query_outstanding(self.config["vaadmin16"])
+        result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
         logging.info("query_outstanding:" + result)
         result = self.okcli.query_validator(self.config["vaadmin16"])
         assert result["jailed"] == True, result
@@ -1123,17 +1173,18 @@ class CaseDistrProposal:
         result = self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1])
 
         # 查询抽成正常
-        result = self.okcli.query_commission(self.config["vals"][0][3])
-        result = self.okcli.query_commission(self.config["vals"][1][3])
-        result = self.okcli.query_commission(self.config["vals"][2][3])
-        result = self.okcli.query_commission(self.config["vals"][3][3])
-        result = self.okcli.query_commission(self.config["vaadmin16"])
+        ledger = self.okcli.get_ledger_seq()
+        result = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        result = self.okcli.query_commission(self.config["vals"][1][3], ledger)
+        result = self.okcli.query_commission(self.config["vals"][2][3], ledger)
+        result = self.okcli.query_commission(self.config["vals"][3][3], ledger)
+        result = self.okcli.query_commission(self.config["vaadmin16"], ledger)
 
-        result = self.okcli.query_outstanding(self.config["vals"][0][3])
-        result = self.okcli.query_outstanding(self.config["vals"][1][3])
-        result = self.okcli.query_outstanding(self.config["vals"][2][3])
-        result = self.okcli.query_outstanding(self.config["vals"][3][3])
-        result = self.okcli.query_outstanding(self.config["vaadmin16"])
+        result = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vals"][2][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
 
         result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
         result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
@@ -1250,3 +1301,5 @@ if __name__ == '__main__':
         logging.info(str(case.okcli.get_ledger_seq()))
     else:
         case.exit()
+
+    case.exit()

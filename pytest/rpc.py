@@ -172,8 +172,11 @@ class OKCli:
 
         return result_obj["value"]["coins"][0]["amount"]
 
-    def query_commission(self, address):
-        cmd = " exchaincli query distr commission   " + address
+    def query_commission(self, address, height = 0):
+        arg = ""
+        if height > 0:
+            arg = " --height " + str(height)
+        cmd = " exchaincli query distr commission   " + address + " " + arg
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 
@@ -203,20 +206,27 @@ class OKCli:
         except:
             return -1
 
-    def query_total_rewards_gt(self, delegator, amount):
+    def query_total_rewards_gt(self, delegator, validator, amount):
         while True:
-            cmd = " exchaincli query distr rewards   " + delegator
+            cmd = " exchaincli query distr rewards   " + delegator +  " " + validator
             result = os.popen(cmd).read()
             logging.info("result, cmd:" + cmd + ", result:" + result)
             
             try:
-                result_obj = json.loads(result)
-                a = self.format_decimal(result_obj["total"][0]["amount"])
-                b = self.format_decimal(amount)
-                logging.info("a:" + str(result_obj["total"][0]["amount"]) + ",b:" + str(amount))
-                if a > b:
-                    break
-
+                if len(validator) > 0:
+                    result_obj = json.loads(result)
+                    a = self.format_decimal(result_obj[0]["amount"])
+                    b = self.format_decimal(amount)
+                    logging.info("a:" + str(result_obj[0]["amount"]) + ",b:" + str(amount))
+                    if a > b:
+                        break
+                else:
+                    result_obj = json.loads(result)
+                    a = self.format_decimal(result_obj["total"][0]["amount"])
+                    b = self.format_decimal(amount)
+                    logging.info("a:" + str(result_obj["total"][0]["amount"]) + ",b:" + str(amount))
+                    if a > b:
+                        break
             except:
                 logging.error(result)
             time.sleep(1)
@@ -244,8 +254,12 @@ class OKCli:
 
         return result_obj["proposal_status"]
     
-    def query_outstanding(self, address):
-        cmd = " exchaincli query distr outstanding-rewards   " + address
+    def query_outstanding(self, address, height = 0):
+        arg = ""
+        if height > 0:
+            arg = " --height " + str(height)
+
+        cmd = " exchaincli query distr outstanding-rewards   " + address + " " + arg
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
         try:
