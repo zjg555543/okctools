@@ -12,7 +12,7 @@ import rpc
 class CaseDistrProposal:
     def __init__(self, configObj):
         self.config = configObj
-        self.okcli = rpc.OKCli("exchaind", "exchaincli")
+        self.okcli = rpc.OKCli("exchaind", "exchaincli", self.config["rpc"])
         self.vals1 = self.config["vals"][0][3]
         self.vals2 = self.config["vals"][0][3] + "," + self.config["vals"][1][3]
         self.vals3 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3]
@@ -1302,4 +1302,4 @@ if __name__ == '__main__':
     else:
         case.exit()
 
-    case.exit()
+    # case.exit()
