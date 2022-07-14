@@ -14,12 +14,12 @@ Version=v1.6.1
  OKCHAIN_TOP=/Users/oker/workspace/exchain
 
 ./testnet.sh
-(cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus3Height=50)
+(cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus3Height=100)
 LOG_LEVEL=main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug
     --consensus.timeout_commit 1000ms \
 
 ## testnet.sh
-(cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus3Height=50)
+(cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus3Height=100)
 echorun exchaind testnet --v $1 --r $2 --equal-voting-power -o cache -l \
 LOG_LEVEL=main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug
   --consensus.timeout_commit 1000ms \

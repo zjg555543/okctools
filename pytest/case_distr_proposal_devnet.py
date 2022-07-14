@@ -66,12 +66,22 @@ class CaseDistrProposal:
         self.change_to_off_chain()
 
         self.change_to_on_chain_before()
-        self.change_to_on_chain()
+        #self.change_to_on_chain()
     
     def test(self):
-        self.okcli.kill_process("exchaind")
-        time.sleep(5)
-        self.okcli.run_all_node(22, 3000)
+        # self.okcli.kill_process("exchaind")
+        # time.sleep(5)
+        # self.okcli.run_all_node(22, 3000)
+
+        # outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
+        # self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        # rewards = result["total"][0]["amount"]
+        rewards = 0
+        for v in result["rewards"]:
+            if len(v["reward"]) > 0:
+                rewards += self.format_decimal(v["reward"][0]["amount"])
+        logging.info("rewards:" + str(rewards))
 
     def init_chain_before(self):
         logging.info("------------------------initChainBefore start--------------------------------")
@@ -297,7 +307,7 @@ class CaseDistrProposal:
     def upgrate_ledger_staking(self):
         logging.info("------------------------upgrate_ledger_staking start--------------------------------")
         # 新的程序启动，区块升级之后，没有投票提案，仍然按照佣金100%提成计算，查询验证节点投票仍然可用，验证节点取款仍然有效
-        result = self.okcli.wait_ledger(150)
+        result = self.okcli.wait_ledger(self.config["upgradeLedger"])
         result = self.okcli.query_commission(self.config["vals"][0][3])
         assert self.format_decimal(result) > 0, result
         result = self.okcli.query_commission(self.config["vals"][1][3])
@@ -399,6 +409,10 @@ class CaseDistrProposal:
         outstanding_va3 = self.okcli.query_outstanding(self.config["vals"][2][3])
         logging.info("commission_va3:" + commission_va3 + ", outstanding_va3:" + outstanding_va3)
         self.assert_compare_near(commission_va3, commission_va3)
+
+        # 等待 outstanding_va4 增加1个奖励
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
 
         commission_va4 = self.okcli.query_commission(self.config["vals"][3][3])
         outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
@@ -967,7 +981,12 @@ class CaseDistrProposal:
         # 取出 delegator3 的所有投票，预期分红到账
         self.okcli.wait_ledger_than(20)
         result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        rewards = result["total"][0]["amount"]
+        # rewards = result["total"][0]["amount"]
+        rewards = 0
+        for v in result["rewards"]:
+            if len(v["reward"]) > 0:
+                rewards += self.format_decimal(v["reward"][0]["amount"])
+        logging.info("rewards:" + str(rewards))
         result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
         assert len(result) > 0, result
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
@@ -1029,7 +1048,13 @@ class CaseDistrProposal:
         # delegator4 取出质押
         self.okcli.wait_ledger_than(20)
         result = self.okcli.query_rewards(self.config["delegators"][3][1], "")
-        rewards = result["total"][0]["amount"]
+        # rewards = result["total"][0]["amount"]
+        rewards = 0
+        for v in result["rewards"]:
+            if len(v["reward"]) > 0:
+                rewards += self.format_decimal(v["reward"][0]["amount"])
+        logging.info("rewards:" + str(rewards))
+
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         result = self.okcli.query_shares(self.config["delegators"][3][1])
         result = self.okcli.withdraw(self.format_decimal(result["tokens"]), self.config["delegators"][3][1])
@@ -1040,7 +1065,7 @@ class CaseDistrProposal:
         # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), affertAmount)
         addValue = self.format_decimal(affertAmount) - self.format_decimal(beforeAmount)
         assert addValue > 0
-        assert addValue < self.format_decimal(rewards)
+        assert addValue <= self.format_decimal(rewards)
 
         # 30秒后，验证节点不再有抽成
         self.okcli.wait_ledger_than(20)
@@ -1216,7 +1241,7 @@ if __name__ == '__main__':
         case.change_to_on_chain()
 
     elif opt == "start":
-        case.okcli.run_all_node()
+        case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"])
     elif opt == "stop":
         case.okcli.kill_process("exchaind")
     elif opt == "ps":

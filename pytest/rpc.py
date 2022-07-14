@@ -255,6 +255,23 @@ class OKCli:
 
         return result_obj[0]["amount"]
 
+    def query_outstanding_gt(self, address, amount):
+        while True:
+            cmd = " exchaincli query distr outstanding-rewards   " + address
+            result = os.popen(cmd).read()
+            logging.info("result, cmd:" + cmd + ", result:" + result)
+
+            try:
+                result_obj = json.loads(result)
+                a = self.format_decimal(result_obj[0]["amount"])
+                b = self.format_decimal(amount)
+                logging.info("a:" + str(result_obj[0]["amount"]) + ",b:" + str(amount))
+                if a > b:
+                    break
+            except:
+                logging.error(result)
+            time.sleep(1)
+
     def query_distr_params(self):
         cmd = " exchaincli query distr params   "
         result = os.popen(cmd).read()
