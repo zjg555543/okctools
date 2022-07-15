@@ -1,0 +1,262 @@
+{
+    "devGitPath": "/Users/oker/workspace/exchain-raw",
+    "newGitPaht":"/Users/oker/workspace/exchain",
+    "nodes":"/Users/oker/workspace/nodes/",
+    "initCoin": 1000000,
+    "depoistCoin": 10000,
+    "addDepoistCoin": 300000,
+    "rpc": "http://52.199.88.250:26657", 
+    "nodeCount": 5,
+    "ledgerTime":1000,
+    "upgradeLedger": 78000,
+    "singleDebug": false,
+    "vals":[
+        [
+            "va1",
+            "ex1sgpmkjhqnv2mmsl8j2fmurq2ff80dvhw4a7a74",
+            "junior vague equal mandate asthma bright ridge joke whisper choice old elbow",
+            "exvaloper1sgpmkjhqnv2mmsl8j2fmurq2ff80dvhwr65e60"
+        ],
+        [
+            "va2",
+            "ex1589pyc6ukzn2lkl8hm24t49n5s2aew37d292tq",
+            "ask banner carbon foil portion switch business cart provide shell squirrel feed" ,
+            "exvaloper1589pyc6ukzn2lkl8hm24t49n5s2aew37md0w06"
+        ],
+        [
+            "va3",
+            "ex1sfn5y083zd4esmdv7dnwe40l9hakm309ndjh5z",
+            "protect eternal vanish rather salute affair suffer coconut address inquiry churn device" ,
+            "exvaloper1sfn5y083zd4esmdv7dnwe40l9hakm30992cnsc"
+        ],
+        [
+            "va4",
+            "ex108erxch7y2fzf9enh2acc25megw3w87lhe7nlz",
+            "adapt maze wasp sort unit bind song exchange impose muffin title movie",
+            "exvaloper108erxch7y2fzf9enh2acc25megw3w87lp75hmc"
+        ],
+        [
+            "va5",
+            "ex12f7qgfhqdq03scf748r0f5cnes4jwf9vvlnf9p",
+            "fame because balcony pyramid menu ginger rack sleep flee cat chief convince",
+            "exvaloper12f7qgfhqdq03scf748r0f5cnes4jwf9v6cedpm"
+        ],
+        [
+            "va6",
+            "ex1trk5f6sgug0clp2t3q24w4n6aqu46rs32d6gx4",
+            "prize price punch mango mouse weird glass seminar outside search awkward sugar",
+            "exvaloper1trk5f6sgug0clp2t3q24w4n6aqu46rs3u2svz0"
+        ],
+        [
+            "va7",
+            "ex1zrgtml3am0x9f3rarhp8rqejn07ew5609sugkz",
+            "screen awkward camera cradle clip armor pretty lounge poem chicken furnace announce",
+            "exvaloper1zrgtml3am0x9f3rarhp8rqejn07ew560nhkvjc"
+        ],
+        [
+            "va8",
+            "ex14prjskv7eakch8sgszcp59jhfephq5tteaq6vw",
+            "excess tourist legend auto govern canal runway mango cream light marriage pause",
+            "exvaloper14prjskv7eakch8sgszcp59jhfephq5tt0627g5"
+        ],
+        [
+            "va9",
+            "ex1dtz6h3qf2hmy8md6hrw7hh6et0yxf0whztfzky",
+            "stone delay soccer cactus energy gravity estate banana fold pull miss hand",
+            "exvaloper1dtz6h3qf2hmy8md6hrw7hh6et0yxf0wh5vrxj7"
+        ],
+        [
+            "va10",
+            "ex105vc7ltgql9x5zvsupq6pnec4vrm6aza6xp2jn",
+            "unknown latin quote quote era slam future artist clown always lunar olympic",
+            "exvaloper105vc7ltgql9x5zvsupq6pnec4vrm6azavptwkf"
+        ],
+        [
+            "va11",
+            "ex17ht58havkxllrm433dkmr4evwt7s4ygch0h7t5",
+            "lawsuit awake churn birth canyon error boring young dove waste genre all",
+            "exvaloper17ht58havkxllrm433dkmr4evwt7s4ygcpga60w"
+        ],
+        [
+            "va12",
+            "ex10cs3njazusxa8yy0c7td4lv8ecfnh9yaj30avm",
+            "guess nothing main blade wealth great height loop quality giggle admit cabbage",
+            "exvaloper10cs3njazusxa8yy0c7td4lv8ecfnh9yayk9egp"
+        ],
+        [
+            "va13",
+            "ex1qw8g8ehudks0dnxqhhn7gp8g4a04m0kk72xkm9",
+            "peanut decade melody sample merge clock man citizen treat consider change share",
+            "exvaloper1qw8g8ehudks0dnxqhhn7gp8g4a04m0kkgdvjll"
+        ],
+        [
+            "va14",
+            "ex1e5mfvkza0x5uhddqplw2dxggmu0dwxju2n2r42",
+            "miracle fun rice tuna spin brown embody oxygen system flock below jelly",
+            "exvaloper1e5mfvkza0x5uhddqplw2dxggmu0dwxjuu5q83s"
+        ],
+        [
+            "va15",
+            "ex14e8jcta8pt22lq0d7rjxfjlwevpxpfgcf0j4gf",
+            "rude bundle rookie swim fruit glimpse door garden figure faculty wealth tired",
+            "exvaloper14e8jcta8pt22lq0d7rjxfjlwevpxpfgclgc3vn"
+        ],
+        [
+            "va16",
+            "ex1p4j7t7j0u7fyew7hpjdltdrcnmhp6l7d2sc5fw",
+            "mule chunk tent fossil dismiss deny glow purity outside satisfy release chapter",
+            "exvaloper1p4j7t7j0u7fyew7hpjdltdrcnmhp6l7duhjsd5"
+        ],
+        [
+            "va17",
+            "ex1qwcaq8nzurxcz86g56yc9a247ehxc9deqh6n3s",
+            "scene rude adapt tobacco accident cover skill absorb then announce clip miracle",
+            "exvaloper1qwcaq8nzurxcz86g56yc9a247ehxc9dekssh42"
+        ],
+        [
+            "va18",
+            "ex1hc4334jeh8flpu0lrymhr38dgl4y9gmwzmh7sa",
+            "favorite mask rebel brass notice warrior fuel truck dwarf glide lottery know",
+            "exvaloper1hc4334jeh8flpu0lrymhr38dgl4y9gmw5ua658"
+        ],
+        [
+            "va19",
+            "ex1ex33c8mwvl9shy4esf8q0gevwanqvmpjzyvxy8",
+            "green logic famous cup minor west skill loyal order cost rail reopen",
+            "exvaloper1ex33c8mwvl9shy4esf8q0gevwanqvmpj5rxzqa"
+        ],
+        [
+            "va20",
+            "ex1u82fvl0nfhnuz565pp7x004ept5yy6ftq2zp08",
+            "save quiz input hobby stage obvious dash foil often torch wear sibling",
+            "exvaloper1u82fvl0nfhnuz565pp7x004ept5yy6ftkdg9ta"
+        ],
+        [
+            "va21",
+            "ex1qlruqeurjk9hcnfkfp90vzkh4z2vr0v46x5v9d",
+            "much type light absorb sound already right connect device fetch burger space",
+            "exvaloper1qlruqeurjk9hcnfkfp90vzkh4z2vr0v4vp7gph"
+        ]
+    ],
+    "vaadmin16": "exvaloper1s0vrf96rrsknl64jj65lhf89ltwj7lks4e348l",
+    "vaAddadmin16": "ex1s0vrf96rrsknl64jj65lhf89ltwj7lksr7m3r9",
+    "proxys":[
+        [
+            "proxy1",
+            "ex1x8y59yxhk64mh0ct4h73fad2w5xap2zgq4f4kz",
+            "shrug network dry despair album vehicle distance source attack bag hybrid knee"
+        ],
+        [
+            "proxy2",
+            "ex1kc3gtzwelafncg3qeqwju68flhrr4ynwehulyu",
+            "broken woman destroy hint slogan stamp genre similar idle below grab eagle"
+        ],
+        [
+            "proxy3",
+            "ex153z8qwxkqa5p2samfn8z50kr9pt8j6afs0am6e",
+            "output hundred credit stomach heavy swallow cry unique rail relax expand truth"
+        ],
+        [
+            "proxy4",
+            "ex1snxj5u93gq469z5gawntg7qaduaq7amdg2qd4q",
+            "belt setup wealth bubble shield nerve drop expect success confirm hybrid hurt"
+        ],
+        [
+            "proxy5",
+            "ex1qllmuet9vuq9eznqva5dxput4mq0lqh482nvzx",
+            "nice review thrive invest embody cement since struggle brass minimum explain lab"
+        ],
+        [
+            "proxy6",
+            "ex10lcvjcavvhgmduskh3kw0jlcm0w0kuyuzs57xl",
+            "patrol much enact shell next cube develop leopard manual present frequent fossil"
+        ]
+    ],
+    "proxydelegators":[
+        [
+            "proxydelegator1",
+            "ex1t84e8ujr8dyjmnvjrfpwy40u8ha9x75tdlgy6y",
+            "sniff resource unable drift rent mansion moon bone bread square height category"
+        ],
+        [
+            "proxydelegator2",
+            "ex1c8w3jcfagaw8s2je3kk2dqftmyypzv3mrv4tcd",
+            "legend crumble garbage gun knife execute wool trim social brave swear use"
+        ],
+        [
+            "proxydelegator3",
+            "ex1wfjk3yustj8zeekxdufeud978jahjxrwptxacp",
+            "century tonight old vicious armed mimic sheriff practice bench gap suit search"
+        ],
+        [
+            "proxydelegator4",
+            "ex1t5wwm8vph36l5ntv92pezc3w0p0mwxtu200gpr",
+            "true neglect miss bitter dirt peace catalog aisle wrestle vehicle bless door"
+        ],
+        [
+            "proxydelegator5",
+            "ex1fye6qatnuxc4lprwpwzrza382dyp3xgkjqh6eh",
+            "tourist wool regular network digital genre drastic father year can crop entire"
+        ],
+        [
+            "proxydelegator6",
+            "ex12xs48cguk00jpq4che0zcu4pyr5xzrc2we30dd",
+            "job add suit defense wagon pave rival choice mind regret garlic home"
+        ]
+    ],
+    "delegators":[
+        [
+            "delegator1",
+            "ex1j5mr2jhr9pf20e7yhln5zkcsgqtdt7cydr8x3y",
+            "chest control issue mention team green shrimp derive expect dust spy mail"
+        ],
+        [
+            "delegator2",
+            "ex1dyxj3q9tzfkwrryejygqsfh7jj7cp4yuetcz3n",
+            "wrestle letter mind guard wrist keen swallow vote rally embody dragon hamster"
+        ],
+        [
+            "delegator3",
+            "ex17kn7d20d85yymu45h79dqs5pxq9m3nyx2mdmcs",
+            "obtain uphold venue decide advice decide mystery rate bulk quarter bus camera"
+        ],
+        [
+            "delegator4",
+            "ex1fesgddl00rxzl7ye3yx32j7vwlm5xdc36vadg5",
+            "faculty era wall initial useless float west ivory split ready foam guitar"
+        ],
+        [
+            "delegator5",
+            "ex1jr9yzgu6vqpv6v639jnx8d5keq0qmvwun079l8",
+            "client erode double when cross vault pistol orbit cave boat ethics slender"
+        ],
+        [
+            "delegator6",
+            "ex1phvp0mwdnymvrkeu7unc8tuddx8hwpggz2hrfz",
+            "find second fault artist rude venture assume hybrid clean hazard air stuff"
+        ],
+        [
+            "delegator7",
+            "ex19j5xt2s2gpkdazhguta9vap7fu8h2s5uawf920",
+            "fine furnace dress true lawsuit tray list lyrics rhythm parade kitchen dinner"
+        ],
+        [
+            "delegator8",
+            "ex1hhxneawuavke7cjw58hrvcyevqjy0mp80mys8j",
+            "sibling try moment kitten estate ostrich final symptom great shine alone sword"
+        ],
+        [
+            "delegator9",
+            "ex1x9kata3p35wddjt40g2pzurya0xhfjkgupx4ll",
+            "twin kingdom green tell liquid eye check symbol today stomach pencil glare"
+        ],
+        [
+            "delegator10",
+            "ex10t7hhfjya9k7yn9ymdg79n68zeuk224xn27fx8",
+            "gesture night genuine risk potato dinner airport net wine hire collect aerobic"
+        ]
+    ],
+    "captain":"ex1c8a5wdpg28dq77n06yuxd2eh52sjt03kln4n66",
+    "withdrawaddress":"ex1j0pa7dddqyt2kmpaepey0zxuw9d6ap82xgvqt5",
+    "mnemonicwithdrawaddress":"issue vessel merit violin wing glove original method census clever visit pipe"
+}

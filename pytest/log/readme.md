@@ -35,3 +35,7 @@ LOG_LEVEL=main:debug,*:debug,consensus:debug,state:debug,distr:debug,gov:debug,s
 ## okc.profile
   OKCHAIN_TOP=/Users/oker/workspace/exchain-raw/
 
+
+
+- 所有账户要初始化，包括验证节点
+- 导入超级节点账户私钥要注意格式

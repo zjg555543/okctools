@@ -76,25 +76,27 @@ class CaseDistrProposal:
         self.change_to_on_chain()
     
     def test(self):
-        self.okcli.kill_process("exchaind")
-        time.sleep(5)
-        self.okcli.run_all_node(22, 3000)
+        for v in self.config["vals"]:
+           self.okcli.recover(v[0], v[2])
+        # self.okcli.kill_process("exchaind")
+        # time.sleep(5)
+        # self.okcli.run_all_node(22, 3000)
 
-        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
-        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4))
-        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        rewards = result["total"][0]["amount"]
-        rewards = 0
-        for v in result["rewards"]:
-            if len(v["reward"]) > 0:
-                rewards += self.format_decimal(v["reward"][0]["amount"])
-        logging.info("rewards:" + str(rewards))
-        ledger = self.okcli.get_ledger_seq()
-        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
-        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger - 1)
-        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
-        logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
-        self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], self.config["vals"][1][3], 0)
+        # outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
+        # self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4) + 1)
+        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        # rewards = result["total"][0]["amount"]
+        # rewards = 0
+        # for v in result["rewards"]:
+        #     if len(v["reward"]) > 0:
+        #         rewards += self.format_decimal(v["reward"][0]["amount"])
+        # logging.info("rewards:" + str(rewards))
+        # ledger = self.okcli.get_ledger_seq()
+        # commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger - 1)
+        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
+        # self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], self.config["vals"][1][3], 0)
 
     def init_chain_before(self):
         logging.info("------------------------initChainBefore start--------------------------------")
@@ -166,7 +168,7 @@ class CaseDistrProposal:
         
         def do(account):
             result = self.okcli.query_account(account)
-            assert self.format_decimal(result) == self.config["initCoin"], result
+            # assert self.format_decimal(result) == self.config["initCoin"], result
         do(self.config["delegators"][0][1])
         do(self.config["delegators"][1][1])
         do(self.config["delegators"][2][1])
@@ -274,7 +276,7 @@ class CaseDistrProposal:
         result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
         result = self.okcli.version("exchaind") 
         assert result == "v1.6.1", result
-        time.sleep(5)
+        time.sleep(10)
 
         logging.info("------------------------upgrate_bin_staking_before end--------------------------------")
 

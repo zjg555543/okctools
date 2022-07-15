@@ -10,7 +10,7 @@ class OKCli:
     def __init__(self, exchaind, exchaincli, rpc):
         self.exchaind = exchaind
         self.exchaincli = exchaincli
-        self.node_rpc = " --node " + rpc
+        self.node_rpc = " --chain-id exchain-64 --node " + rpc
 
     def version(self, name):
         cmd = name + ' version'
@@ -127,7 +127,7 @@ class OKCli:
         return self.run_tx(cmd)
 
     def withdraw_rewards(self, val, from_name):
-        cmd = "exchaincli tx distr withdraw-rewards " + val + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"
+        cmd = "exchaincli tx distr withdraw-rewards " + val + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"   + self.node_rpc
         return self.run_tx(cmd)
 
     def withdraw_all_rewards(self, from_name):
