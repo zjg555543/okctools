@@ -7,10 +7,10 @@ import time
 import json
 
 class OKCli:
-    def __init__(self, exchaind, exchaincli, rpc):
+    def __init__(self, exchaind, exchaincli, chainID, rpc):
         self.exchaind = exchaind
         self.exchaincli = exchaincli
-        self.node_rpc = " --chain-id exchain-64 --node " + rpc
+        self.node_rpc = " --chain-id " + chainID + " --node " + rpc
 
     def version(self, name):
         cmd = name + ' version'
@@ -25,6 +25,12 @@ class OKCli:
 
         result_obj = json.loads(result)
         return int(result_obj["sync_info"]["latest_block_height"])
+
+    def get_ledger_seq_from_hash(self, hash):
+        cmd = " exchaincli query tx " + hash  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return int(result_obj["height"])
 
     def wait_ledger(self, target):
         cur = self.get_ledger_seq()
@@ -213,8 +219,12 @@ class OKCli:
         except:
             return -1
 
-    def query_rewards(self, delegator, validator):
-        cmd = " exchaincli query distr rewards   " + delegator +  " " + validator  + self.node_rpc
+    def query_rewards(self, delegator, validator, height = 0):
+        arg = ""
+        if height > 0:
+            arg = " --height " + str(height)
+
+        cmd = " exchaincli query distr rewards   " + delegator +  " " + validator + arg + "  "+ self.node_rpc
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 

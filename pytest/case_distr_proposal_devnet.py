@@ -12,7 +12,7 @@ import rpc
 class CaseDistrProposal:
     def __init__(self, configObj):
         self.config = configObj
-        self.okcli = rpc.OKCli("exchaind", "exchaincli", self.config["rpc"])
+        self.okcli = rpc.OKCli("exchaind", "exchaincli", self.config["chainId"], self.config["rpc"])
         self.vals1 = self.config["vals"][0][3]
         self.vals2 = self.config["vals"][0][3] + "," + self.config["vals"][1][3]
         self.vals3 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3]
@@ -74,6 +74,11 @@ class CaseDistrProposal:
         # 阶段七，投票为链上分红提案，验证委托人、代理人、被代理人操作投票分红，验证节点销毁不再分红
         self.change_to_on_chain_before()
         self.change_to_on_chain()
+
+        # 阶段八，补充测试用例
+        self.extension_before()
+        self.extension()
+
     
     def test(self):
         for v in self.config["vals"]:
@@ -1043,7 +1048,6 @@ class CaseDistrProposal:
         assert result == -1, result
         affertAmount = self.okcli.query_account(self.config["withdrawaddress"])
         addValue = self.format_decimal(affertAmount) - self.format_decimal(beforeAmount)
-        assert addValue > 0, str(addValue)
         assert addValue >= self.format_decimal(rewards)
         assert addValue <= (self.format_decimal(total_rewards) + 1)
         # self.assert_compare_near(self.format_decimal(total_rewards) + self.format_decimal(beforeAmount), affertAmount)
@@ -1116,7 +1120,6 @@ class CaseDistrProposal:
         affertAmount = self.okcli.query_account(self.config["withdrawaddress"])
         # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), affertAmount)
         addValue = self.format_decimal(affertAmount) - self.format_decimal(beforeAmount)
-        assert addValue > 0, str(addValue)
         assert addValue >= self.format_decimal(rewards)
         assert addValue <= (self.format_decimal(total_rewards) + 1)
 
@@ -1237,6 +1240,53 @@ class CaseDistrProposal:
 
         logging.info("------------------------change_to_on_chain end--------------------------------")
 
+    def extension_before(self):
+        logging.info("------------------------cextension_before start--------------------------------")
+        if self.single_debug:
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
+            result = self.okcli.version("exchaind") 
+            assert result == "v1.6.1", result
+            time.sleep(5)
+        
+        logging.info("------------------------cextension_before end--------------------------------")
+
+    def extension(self):
+        logging.info("------------------------cextension start--------------------------------")
+        # 使用deledator取出代理分红
+        dictDV = {}
+        for p in self.config["proxys"]:
+            # 设置代理人的取款地址
+            self.okcli.set_withdraw_addr(self.config["withdrawaddress"], p[1])
+            for v in self.config["vals"]:
+                result = self.okcli.query_rewards(p[1], v[3])
+                if result != -1:
+                    dictDV[p[1]] = v[3]
+        
+        while True:
+            time.sleep(1)
+            for k in dictDV:
+                result = self.okcli.query_rewards(k, dictDV[k])
+                if len(result) <= 0:
+                    continue
+                if self.format_decimal(result[0]["amount"]) < 1:
+                    continue
+
+                before = self.okcli.query_account(self.config["withdrawaddress"])
+                hash = self.okcli.withdraw_rewards(dictDV[k], k)
+                after = self.okcli.query_account(self.config["withdrawaddress"])
+
+                seq = self.okcli.get_ledger_seq_from_hash(hash)
+                result = self.okcli.query_rewards(k, dictDV[k], seq-1)
+                reward = 0
+                if len(result) > 0:
+                    reward = self.format_decimal(result[0]["amount"])
+
+                addValue = self.format_decimal(after) - self.format_decimal(before)
+                logging.info("d:" + k + ", v:" + dictDV[k] + ", before:" + str(before) + ", after:" + str(after) + ", reward:" + str(reward))
+                
+                assert addValue  == reward
+        logging.info("------------------------cextension end--------------------------------")
+
     def exit(self, stop = True):
         #if stop:
             #case.okcli.kill_process("exchaind")
@@ -1295,6 +1345,11 @@ if __name__ == '__main__':
         case.change_to_on_chain_before()
     elif opt == "change_to_on_chain":
         case.change_to_on_chain()
+
+    elif opt == "extension_before":
+        case.extension_before()
+    elif opt == "extension":
+        case.extension()
 
     elif opt == "start":
         case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"])

@@ -10,6 +10,7 @@
     "ledgerTime":1000,
     "upgradeLedger": 100,
     "singleDebug": false,
+    "chainId": "exchain-67",
     "vals":[
         [
             "va1",
