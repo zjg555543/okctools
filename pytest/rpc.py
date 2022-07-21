@@ -119,6 +119,22 @@ class OKCli:
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
+    def submit_withdraw_reward_enabled(self, from_name):
+        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-enabled.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        cmd = " exchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+
+    def submit_withdraw_reward_disabled(self, from_name):
+        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-disabled.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        cmd = " exchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+
     def vote(self, from_name, num):
         result = self.query_proposal(num)
         if result == "Passed":
@@ -163,6 +179,15 @@ class OKCli:
 
     def query_shares(self, delegator):
         cmd = " exchaincli query staking delegator " + delegator  + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:" + cmd + ", result:" + result)
+
+        result_obj = json.loads(result)
+
+        return result_obj
+
+    def query_proxy(self, delegator):
+        cmd = " exchaincli query staking proxy " + delegator  + self.node_rpc
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 
@@ -313,6 +338,17 @@ class OKCli:
             except:
                 logging.error(result)
             time.sleep(1)
+
+    def query_shares_added_to(self, val):
+        cmd = " exchaincli query staking shares-added-to   " + val + " " + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:" + cmd + ", result:" + result)
+        try:
+            result_obj = json.loads(result)
+        except:
+            return -1
+
+        return result_obj
 
     def query_distr_params(self):
         cmd = " exchaincli query distr params   "  + self.node_rpc
