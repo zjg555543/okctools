@@ -17,6 +17,7 @@ class CaseDistrProposal:
         self.vals1 = self.config["vals"][0][3]
         self.vals2 = self.config["vals"][0][3] + "," + self.config["vals"][1][3]
         self.vals3 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3]
+        self.vals4 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3] + "," + self.config["vals"][3][3] 
         self.valsall = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3] + "," + self.config["vals"][3][3] + "," + self.config["vaadmin16"]
         self.single_debug = self.config["singleDebug"]
         return
@@ -1269,19 +1270,19 @@ class CaseDistrProposal:
         # 禁止代理相关操作
         result = self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][5][1]) # 无分红，正常
         assert result != -1
-        result = self.okcli.add_shares(self.valsall, self.config["delegators"][5][1])  # 无分红，正常
+        result = self.okcli.add_shares(self.vals4, self.config["delegators"][5][1])  # 无分红，正常
         assert result != -1
         self.okcli.wait_ledger_than(2)
-        result = self.okcli.add_shares(self.valsall, self.config["delegators"][5][1])  # 第二次，失败
+        result = self.okcli.add_shares(self.vals4, self.config["delegators"][5][1])  # 第二次，失败
         assert result == -1
         result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][5][1])
         assert result != -1
         result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][5][1])
         assert result != -1
-        result = self.okcli.add_shares(self.valsall, self.config["proxys"][5][1]) # 无分红，正常
+        result = self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) # 无分红，正常
         assert result != -1
         self.okcli.wait_ledger_than(2)
-        result = self.okcli.add_shares(self.valsall, self.config["proxys"][5][1]) # 无分红，正常
+        result = self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) # 无分红，正常
         assert result == -1
 
         result = self.okcli.proxy_reg(self.config["proxys"][5][1])
@@ -1314,7 +1315,7 @@ class CaseDistrProposal:
         assert result["withdraw_reward_enabled"] == True, result
 
         # 注册代理成功
-        result = self.okcli.add_shares(self.valsall, self.config["proxys"][5][1])
+        result = self.okcli.add_shares(self.vals4, self.config["proxys"][5][1])
         assert result != -1
         result = self.okcli.proxy_reg(self.config["proxys"][5][1])
         assert result != -1
