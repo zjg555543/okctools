@@ -15,15 +15,14 @@ def quit(signum, frame):
 
 class Pybase:
     def __init__(self):
-        # 读取配置文件
-        file = open('config/config.json')
-        self.config = json.loads(file.read())
-        file.close()
-
         # 设置log
+        log_type = "file"
+        log_level = "INFO"
+        log_path = "./log/pytest.log"
+
         logger = logging.getLogger()
-        logger.setLevel(self.config["log"]["log_level"])
-        rht = logging.FileHandler(self.config["log"]["log_path"] + "/pytest.log", encoding='utf-8', mode='a')
+        logger.setLevel(log_level)
+        rht = logging.FileHandler(log_path, encoding='utf-8', mode='a')
         fmt = logging.Formatter(
             '%(asctime)s - %(filename)s[line:%(lineno)d](%(funcName)s) - %(levelname)s: %(message)s',
             '%Y-%m-%d %H:%M:%S')

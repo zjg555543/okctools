@@ -9,6 +9,8 @@ import sys
 import time
 import pybase
 import rpc
+import sys
+import os
 
 class CaseDistrProposal:
     def __init__(self, configObj):
@@ -1394,8 +1396,8 @@ class CaseDistrProposal:
 
 if __name__ == '__main__':
     pybase = pybase.Pybase()
-
-    file = open('config/case_distr_proposal_devnet.json', 'r', encoding='UTF-8')
+    strlist = os.path.basename(__file__).split('.') 
+    file = open('config/' + strlist[0] + '.json', 'r', encoding='UTF-8')
     moduleConfig = json.loads(file.read())
     file.close()
     case = CaseDistrProposal(moduleConfig)
