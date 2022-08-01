@@ -10,6 +10,7 @@
     "ledgerTime":1000,
     "upgradeLedger": 78000,
     "singleDebug": false,
+    "val_recover_996": false,
     "vals":[
         [
             "va1",

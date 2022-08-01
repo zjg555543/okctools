@@ -59,9 +59,13 @@ class CaseDistrProposal:
         self.init_staking_before()
         self.init_staking()
 
-        # 阶段三，升级程序，继续初始化投票交易
+        # 阶段三-1，升级程序，继续初始化投票交易
         self.upgrate_bin_staking_before()
         self.upgrate_bin_staking()
+
+        # 阶段三-2，升级程序，继续初始化投票交易
+        self.upgrate_bin_staking_step2_before()
+        self.upgrate_bin_staking_step2()
 
         # 阶段四，达到高度隔离，验证新增接口在提前前无效，继续初始化投票交易
         self.upgrate_ledger_staking_before()
@@ -84,14 +88,15 @@ class CaseDistrProposal:
         self.enabled_withdraw_reward()
 
         # 阶段九，补充测试用例
-        # self.extension_before()
-        # self.extension()
+        self.extension_before()
+        self.extension()
 
     
     def test(self):
-        for v in self.config["vals"]:
-           self.okcli.recover(v[0], v[2])
-        # self.okcli.kill_process("exchaind")
+        # self.okcli.copy_node(1, "v1.6.1")
+        # for v in self.config["vals"]:
+        #    self.okcli.recover(v[0], v[2])
+        # self.okcli.kill_all_process()
         # time.sleep(5)
         # self.okcli.run_all_node(22, 3000)
 
@@ -110,102 +115,81 @@ class CaseDistrProposal:
         # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
         # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         # self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], self.config["vals"][1][3], 0)
+        return
 
     def init_chain_before(self):
         logging.info("------------------------initChainBefore start--------------------------------")
+
+        # 老版本编译
         result = self.okcli.run_cmd("cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.sh")
         time.sleep(5)
         result = self.okcli.wait_ledger(1)
-        result = self.okcli.kill_process("exchaind")
+        result = self.okcli.kill_all_process()
+        self.okcli.copy_node("exchaind-dev")
+        result = self.okcli.version("exchaind-dev") 
+        assert result == "v1.6.0", result
 
         # 迁移命令行和迁移文件夹，重新启动
-        result = self.okcli.run_cmd("rm -rf /Users/oker/workspace/nodes/*; cp -rf /Users/oker/workspace/exchain-raw/dev/testnet/cache/* /Users/oker/workspace/nodes/")
-        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
-        result = self.okcli.version("exchaind") 
-        assert result == "v1.6.0", result
+        result = self.okcli.run_cmd("rm -rf /Users/oker/workspace/nodes/; mkdir /Users/oker/workspace/nodes/;  cp -rf /Users/oker/workspace/exchain-raw/dev/testnet/cache/* /Users/oker/workspace/nodes/")
+
+        # 新版本编译
+        result = self.okcli.run_cmd("cd /Users/oker/workspace/exchain/dev/testnet/;./run4v1r.sh")
+        time.sleep(5)
+        result = self.okcli.wait_ledger(1)
+        result = self.okcli.kill_all_process()
+        self.okcli.copy_node("exchaind-my")
+        result = self.okcli.version("exchaind-my") 
+        assert result == "v1.6.1", result
+        
+
+        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0)
+        
         logging.info("------------------------initChainBefore end--------------------------------")
 
     def init_chain(self):
         logging.info("------------------------initChain start--------------------------------")
 
         # 导入委托人账户和代理人账户
-        self.okcli.recover(self.config["delegators"][0][0], self.config["delegators"][0][2])
-        self.okcli.recover(self.config["delegators"][1][0], self.config["delegators"][1][2])
-        self.okcli.recover(self.config["delegators"][2][0], self.config["delegators"][2][2])
-        self.okcli.recover(self.config["delegators"][3][0], self.config["delegators"][3][2])
-        self.okcli.recover(self.config["delegators"][4][0], self.config["delegators"][4][2])
-        self.okcli.recover(self.config["delegators"][5][0], self.config["delegators"][5][2])
-        self.okcli.recover(self.config["delegators"][6][0], self.config["delegators"][6][2])
-        self.okcli.recover(self.config["delegators"][7][0], self.config["delegators"][7][2])
-        self.okcli.recover(self.config["delegators"][8][0], self.config["delegators"][8][2])
-        self.okcli.recover(self.config["delegators"][9][0], self.config["delegators"][9][2])
-        self.okcli.recover("proxy1", self.config["proxys"][0][2])
-        self.okcli.recover("proxy2", self.config["proxys"][1][2])
-        self.okcli.recover("proxy3", self.config["proxys"][2][2])
-        self.okcli.recover("proxy4", self.config["proxys"][3][2])
-        self.okcli.recover("proxy5", self.config["proxys"][4][2])
-        self.okcli.recover("proxy6", self.config["proxys"][5][2])
-        self.okcli.recover("proxydelegator1", self.config["proxydelegators"][0][2])
-        self.okcli.recover("proxydelegator2", self.config["proxydelegators"][1][2])
-        self.okcli.recover("proxydelegator3", self.config["proxydelegators"][2][2])
-        self.okcli.recover("proxydelegator4", self.config["proxydelegators"][3][2])
-        self.okcli.recover("proxydelegator5", self.config["proxydelegators"][4][2])
-        self.okcli.recover("proxydelegator6", self.config["proxydelegators"][5][2])
+        for d in self.config["delegators"]:
+            self.okcli.recover(d[0], d[2])
+
+        for p in self.config["proxys"]:
+            self.okcli.recover(p[0], p[2])
+
+        for p in self.config["proxydelegators"]:
+            self.okcli.recover(p[0], p[2])
 
         for v in self.config["vals"]:
-           self.okcli.recover_val(v[0], v[2])
-
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][0][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][1][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][2][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][3][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][4][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][5][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][6][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][7][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][8][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["delegators"][9][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxys"][0][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxys"][1][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxys"][2][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxys"][3][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxys"][4][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxys"][5][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxydelegators"][0][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxydelegators"][1][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxydelegators"][2][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxydelegators"][3][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxydelegators"][4][1], self.config["initCoin"])
-        self.okcli.transfer(self.config["captain"], self.config["proxydelegators"][5][1], self.config["initCoin"])
-        
+            if self.config["val_recover_996"]:
+                self.okcli.recover_val(v[0], v[2])
+            else:
+                self.okcli.recover(v[0], v[2])
+        for v in self.config["delegators"]:
+            result = self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"])
+            assert result != -1
+        for v in self.config["proxys"]:
+            result = self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"])
+            assert result != -1
+        for v in self.config["proxydelegators"]:
+            result = self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"])
+            assert result != -1
+        result = self.okcli.transfer(self.config["captain"], self.config["vaAddadmin16"], self.config["initCoin"])
+        assert result != -1
         
         def do(account):
             result = self.okcli.query_account(account)
-            # assert self.format_decimal(result) == self.config["initCoin"], result
-        do(self.config["delegators"][0][1])
-        do(self.config["delegators"][1][1])
-        do(self.config["delegators"][2][1])
-        do(self.config["delegators"][3][1])
-        do(self.config["delegators"][4][1])
-        do(self.config["delegators"][5][1])
-        do(self.config["delegators"][6][1])
-        do(self.config["delegators"][7][1])
-        do(self.config["delegators"][8][1])
-        do(self.config["delegators"][9][1])
+            assert self.format_decimal(result) > 0, result
 
-        do(self.config["proxys"][0][1])
-        do(self.config["proxys"][1][1])
-        do(self.config["proxys"][2][1])
-        do(self.config["proxys"][3][1])
-        do(self.config["proxys"][4][1])
-        do(self.config["proxys"][5][1])
+        for v in self.config["delegators"]:
+            do(v[1])
+    
+        for v in self.config["proxys"]:
+            do(v[1])
 
-        do(self.config["proxydelegators"][0][1])
-        do(self.config["proxydelegators"][1][1])
-        do(self.config["proxydelegators"][2][1])
-        do(self.config["proxydelegators"][3][1])
-        do(self.config["proxydelegators"][4][1])
-        do(self.config["proxydelegators"][5][1])
+        for v in self.config["proxydelegators"]:
+            do(v[1])
+        
+        do(self.config["vaAddadmin16"])
 
         logging.info("------------------------initChain end--------------------------------")
         return
@@ -213,11 +197,9 @@ class CaseDistrProposal:
     def init_staking_before(self):
         logging.info("------------------------initStakingBefore start--------------------------------")
         if self.single_debug:
-            result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
+            result = self.okcli.kill_all_process()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0)
             time.sleep(5)
-            result = self.okcli.version("exchaind") 
-            assert result == "v1.6.0", result
         logging.info("------------------------initStakingBefore end--------------------------------")
 
     def init_staking(self):
@@ -275,20 +257,9 @@ class CaseDistrProposal:
 
     def upgrate_bin_staking_before(self):
         logging.info("------------------------upgrate_bin_staking_before start--------------------------------")
-        if self.single_debug:
-            result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
-            time.sleep(5)
 
-        # 编译新的的4个节点，运行
-        result = self.okcli.run_cmd("cd /Users/oker/workspace/exchain/dev/testnet/;./run4v1r.sh")
-        time.sleep(5)
-        result = self.okcli.wait_ledger(1)
-        result = self.okcli.kill_process("exchaind")
-
-        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
-        result = self.okcli.version("exchaind") 
-        assert result == "v1.6.1", result
+        result = self.okcli.kill_all_process()
+        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 2)
         time.sleep(10)
 
         logging.info("------------------------upgrate_bin_staking_before end--------------------------------")
@@ -305,6 +276,19 @@ class CaseDistrProposal:
         result = self.okcli.query_shares(self.config["proxydelegators"][1][1])
         assert self.format_decimal(result["tokens"]) == self.config["depoistCoin"], result
         assert self.format_decimal(result["shares"]) == 0, result
+
+        logging.info("------------------------upgrate_bin_staking end--------------------------------")
+
+    def upgrate_bin_staking_step2_before(self):
+        logging.info("------------------------upgrate_bin_staking_step2_before start--------------------------------")
+        result = self.okcli.kill_all_process()
+        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+        time.sleep(10)
+
+        logging.info("------------------------upgrate_bin_staking_step2_before end--------------------------------")
+
+    def upgrate_bin_staking_step2(self):
+        logging.info("------------------------upgrate_bin_staking_step2 start--------------------------------")
 
         # 注册 proxy2， proxydelegator2 绑定 proxy2
         result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][1][1])
@@ -324,22 +308,33 @@ class CaseDistrProposal:
         assert self.format_decimal(result["tokens"]) == self.config["depoistCoin"], result
         assert self.format_decimal(result["total_delegated_tokens"]) == self.format_decimal(resultProxydelegator2["tokens"]), result
 
-        logging.info("------------------------upgrate_bin_staking end--------------------------------")
+        logging.info("------------------------upgrate_bin_staking_step2 end--------------------------------")
+        
 
     def upgrate_ledger_staking_before(self):
         logging.info("------------------------upgrate_ledger_staking_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
+            result = self.okcli.kill_all_process()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
-            result = self.okcli.version("exchaind") 
-            assert result == "v1.6.1", result
 
         logging.info("------------------------upgrate_ledger_staking_before end--------------------------------")
 
     def upgrate_ledger_staking(self):
         logging.info("------------------------upgrate_ledger_staking start--------------------------------")
+        # 不支持的操作  withdraw-all-rewards、withdraw-rewards、outstanding-rewards、query_rewards
+        result = self.okcli.withdraw_all_rewards(self.config["delegators"][0][1])
+        assert result == -1, result
+        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1])
+        assert result == -1, result
+        result = self.okcli.query_outstanding(self.config["vals"][0][3])
+        assert result == -1, result
+        result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
+        assert result == -1, result
+
         # 新的程序启动，区块升级之后，没有投票提案，仍然按照佣金100%提成计算，查询验证节点投票仍然可用，验证节点取款仍然有效
+        assert self.okcli.get_ledger_seq() <= self.config["upgradeLedger"], str(self.okcli.get_ledger_seq())
+
         result = self.okcli.wait_ledger(self.config["upgradeLedger"])
         result = self.okcli.query_commission(self.config["vals"][0][3])
         assert self.format_decimal(result) > 0, result
@@ -401,10 +396,8 @@ class CaseDistrProposal:
     def after_distr_proposal_before(self):
         logging.info("------------------------after_distr_proposal_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
-            result = self.okcli.version("exchaind") 
-            assert result == "v1.6.1", result
+            result = self.okcli.kill_all_process()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         logging.info("------------------------after_distr_proposal_before start--------------------------------")
 
@@ -692,10 +685,8 @@ class CaseDistrProposal:
     def change_to_off_chain_before(self):
         logging.info("------------------------change_to_off_chain_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.kill_process("exchaind")
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
-            result = self.okcli.version("exchaind") 
-            assert result == "v1.6.1", result
+            result = self.okcli.kill_all_process()
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         logging.info("------------------------change_to_off_chain_before end--------------------------------")
 
@@ -853,9 +844,7 @@ class CaseDistrProposal:
     def change_to_on_chain_before(self):
         logging.info("------------------------change_to_on_chain_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
-            result = self.okcli.version("exchaind") 
-            assert result == "v1.6.1", result
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         
         
@@ -1233,9 +1222,7 @@ class CaseDistrProposal:
     def enabled_withdraw_reward_before(self):
         logging.info("------------------------enabled_withdraw_reward_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
-            result = self.okcli.version("exchaind") 
-            assert result == "v1.6.1", result
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         
         logging.info("------------------------enabled_withdraw_reward_before end--------------------------------")
@@ -1335,15 +1322,10 @@ class CaseDistrProposal:
         
         logging.info("------------------------enabled_withdraw_reward end--------------------------------")
 
-    def extension(self):
-        logging.info("------------------------cextension start--------------------------------")
-
     def extension_before(self):
         logging.info("------------------------cextension_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"])
-            result = self.okcli.version("exchaind") 
-            assert result == "v1.6.1", result
+            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         
         logging.info("------------------------cextension_before end--------------------------------")
@@ -1360,7 +1342,7 @@ class CaseDistrProposal:
                 if result != -1:
                     dictDV[p[1]] = v[3]
 
-        self.exit()
+        # self.exit()
         
         while True:
             logging.info("total:" + str(len(dictDV)))
@@ -1390,7 +1372,7 @@ class CaseDistrProposal:
 
     def exit(self, stop = True):
         #if stop:
-            #case.okcli.kill_process("exchaind")
+            #case.okcli.kill_all_process()
         logging.info("Please use arg eg:  auto")
         sys.exit()
 
@@ -1427,6 +1409,11 @@ if __name__ == '__main__':
     elif opt == "upgrate_bin_staking":
         case.upgrate_bin_staking()
 
+    elif opt == "upgrate_bin_staking_step2_before":
+        case.upgrate_bin_staking_step2_before()
+    elif opt == "upgrate_bin_staking_step2":
+        case.upgrate_bin_staking_step2()
+
     elif opt == "upgrate_ledger_staking_before":
         case.upgrate_ledger_staking_before()
     elif opt == "upgrate_ledger_staking":
@@ -1458,11 +1445,13 @@ if __name__ == '__main__':
         case.extension()
 
     elif opt == "start":
-        case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"])
+        case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"], case.config["nodeCount"])
     elif opt == "stop":
-        case.okcli.kill_process("exchaind")
+        case.okcli.kill_all_process()
     elif opt == "ps":
         case.okcli.ps("exchaind")
+        case.okcli.ps("exchaind-dev")
+        case.okcli.ps("exchaind-my")
     elif opt == "ledger":
         logging.info(str(case.okcli.get_ledger_seq()))
     else:
