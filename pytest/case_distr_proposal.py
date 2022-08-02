@@ -23,7 +23,8 @@ class CaseDistrProposal:
         self.valsall = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3] + "," + self.config["vals"][3][3] + "," + self.config["vaadmin16"]
         self.valsDeafultAll = ""
         for v in self.config["vals"]:
-            self.valsDeafultAll = v[3] + ","
+            self.valsDeafultAll += v[3] + ","
+        self.valsDeafultAll = self.valsDeafultAll.strip(',')
 
         self.vals3 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3]
         self.single_debug = self.config["singleDebug"]
@@ -211,23 +212,23 @@ class CaseDistrProposal:
         logging.info("------------------------initStaking start--------------------------------")
         
         # 质押delegator1 10000 okt
-        self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][0][1])
-        self.okcli.add_shares(self.vals1, self.config["delegators"][0][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][0][1]) != -1
+        assert self.okcli.add_shares(self.vals1, self.config["delegators"][0][1]) != -1
         result = self.okcli.query_shares(self.config["delegators"][0][1])
         assert self.format_decimal(result["tokens"]) == self.config["depoistCoin"], result
         assert self.format_decimal(result["shares"]) > 0, result
 
         # 质押 proxydelegator1 10000 okt
-        self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][0][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][0][1]) != -1
         result = self.okcli.query_shares(self.config["proxydelegators"][0][1])
         assert self.format_decimal(result["tokens"]) == self.config["depoistCoin"], result
         assert self.format_decimal(result["shares"]) == 0, result
 
         # 质押proxy1 10000 okt，注册代理 proxy1, proxydelegator1 绑定 proxy1
-        self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][0][1])
-        self.okcli.add_shares(self.vals1, self.config["proxys"][0][1])
-        self.okcli.proxy_reg(self.config["proxys"][0][1])
-        self.okcli.proxy_bind(self.config["proxys"][0][1], self.config["proxydelegators"][0][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][0][1]) != -1
+        assert self.okcli.add_shares(self.vals1, self.config["proxys"][0][1]) != -1
+        assert self.okcli.proxy_reg(self.config["proxys"][0][1]) != -1
+        assert self.okcli.proxy_bind(self.config["proxys"][0][1], self.config["proxydelegators"][0][1]) != -1
 
         # proxydelegator1 有 tokens，shares 为 0
         resultProxydelegator1 = self.okcli.query_shares(self.config["proxydelegators"][0][1])
@@ -259,16 +260,16 @@ class CaseDistrProposal:
         assert self.format_decimal(result) > 0, result
 
         ## delegators 10投票所有人
-        self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][9][1])
-        self.okcli.add_shares(self.valsDeafultAll, self.config["delegators"][9][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][9][1]) != -1
+        assert self.okcli.add_shares(self.valsDeafultAll, self.config["delegators"][9][1]) != -1
 
         logging.info("------------------------initStaking end--------------------------------")
 
     def upgrate_bin_staking_before(self):
         logging.info("------------------------upgrate_bin_staking_before start--------------------------------")
 
-        result = self.okcli.kill_all_process()
-        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 2)
+        self.okcli.kill_all_process()
+        self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 2)
         time.sleep(10)
 
         logging.info("------------------------upgrate_bin_staking_before end--------------------------------")
@@ -277,11 +278,11 @@ class CaseDistrProposal:
         logging.info("------------------------upgrate_bin_staking start--------------------------------")
         
         # 质押delegator2 10000 okt，投票给va1
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][1][1])
-        result = self.okcli.add_shares(self.vals2, self.config["delegators"][1][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][1][1]) != -1
+        assert self.okcli.add_shares(self.vals2, self.config["delegators"][1][1]) != -1
 
         # proxydelegator2 质押 10000okt
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][1][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][1][1]) != -1
         result = self.okcli.query_shares(self.config["proxydelegators"][1][1])
         assert self.format_decimal(result["tokens"]) == self.config["depoistCoin"], result
         assert self.format_decimal(result["shares"]) == 0, result
@@ -290,8 +291,8 @@ class CaseDistrProposal:
 
     def upgrate_bin_staking_step2_before(self):
         logging.info("------------------------upgrate_bin_staking_step2_before start--------------------------------")
-        result = self.okcli.kill_all_process()
-        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+        self.okcli.kill_all_process()
+        self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
         time.sleep(10)
 
         logging.info("------------------------upgrate_bin_staking_step2_before end--------------------------------")
@@ -300,10 +301,10 @@ class CaseDistrProposal:
         logging.info("------------------------upgrate_bin_staking_step2 start--------------------------------")
 
         # 注册 proxy2， proxydelegator2 绑定 proxy2
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][1][1])
-        result = self.okcli.add_shares(self.vals2, self.config["proxys"][1][1])
-        result = self.okcli.proxy_reg(self.config["proxys"][1][1])
-        result = self.okcli.proxy_bind(self.config["proxys"][1][1], self.config["proxydelegators"][1][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][1][1]) != -1
+        assert self.okcli.add_shares(self.vals2, self.config["proxys"][1][1]) != -1
+        assert self.okcli.proxy_reg(self.config["proxys"][1][1]) != -1
+        assert self.okcli.proxy_bind(self.config["proxys"][1][1], self.config["proxydelegators"][1][1]) != -1
 
         # proxydelegator2 有 tokens，shares 为 0
         resultProxydelegator2 = self.okcli.query_shares(self.config["proxydelegators"][1][1])
@@ -323,8 +324,8 @@ class CaseDistrProposal:
     def upgrate_ledger_staking_before(self):
         logging.info("------------------------upgrate_ledger_staking_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.kill_all_process()
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.kill_all_process()
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
 
         logging.info("------------------------upgrate_ledger_staking_before end--------------------------------")
@@ -332,19 +333,15 @@ class CaseDistrProposal:
     def upgrate_ledger_staking(self):
         logging.info("------------------------upgrate_ledger_staking start--------------------------------")
         # 不支持的操作  withdraw-all-rewards、withdraw-rewards、outstanding-rewards、query_rewards
-        result = self.okcli.withdraw_all_rewards(self.config["delegators"][0][1])
-        assert result == -1, result
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1])
-        assert result == -1, result
-        result = self.okcli.query_outstanding(self.config["vals"][0][3])
-        assert result == -1, result
-        result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
-        assert result == -1, result
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) == -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) == -1
+        assert self.okcli.query_outstanding(self.config["vals"][0][3]) == -1
+        assert self.okcli.query_rewards(self.config["delegators"][0][1], "") == -1
 
         # 新的程序启动，区块升级之后，没有投票提案，仍然按照佣金100%提成计算，查询验证节点投票仍然可用，验证节点取款仍然有效
         assert self.okcli.get_ledger_seq() <= self.config["upgradeLedger"], str(self.okcli.get_ledger_seq())
 
-        result = self.okcli.wait_ledger(self.config["upgradeLedger"])
+        self.okcli.wait_ledger(self.config["upgradeLedger"])
         result = self.okcli.query_commission(self.config["vals"][0][3])
         assert self.format_decimal(result) > 0, result
         result = self.okcli.query_commission(self.config["vals"][1][3])
@@ -359,38 +356,32 @@ class CaseDistrProposal:
         assert result["distribution_type"] == 0, result
 
         # 支持 edit-validator-commission-rate 操作
-        result = self.okcli.edit_validator_rate("1.1", "va4")
-        result = self.okcli.edit_validator_rate("-0.1", "va4")
-        result = self.okcli.edit_validator("zzzzzzzz", "va4")
-        assert result != -1
-        result = self.okcli.edit_validator_rate("0.5", "va4")
-        assert result != -1, result
+        assert self.okcli.edit_validator_rate("1.1", "va4") == -1
+        assert self.okcli.edit_validator_rate("-0.1", "va4") == -1
+        assert self.okcli.edit_validator("zzzzzzzz", "va4") != -1
+        assert self.okcli.edit_validator_rate("0.5", "va4") != -1
 
         # 不支持的操作  withdraw-all-rewards、withdraw-rewards、outstanding-rewards、query_rewards
-        result = self.okcli.withdraw_all_rewards(self.config["delegators"][0][1])
-        assert result == -1, result
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1])
-        assert result == -1, result
-        result = self.okcli.query_outstanding(self.config["vals"][0][3])
-        assert result == -1, result
-        result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
-        assert result == -1, result
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) == -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) == -1
+        assert self.okcli.query_outstanding(self.config["vals"][0][3]) == -1
+        assert self.okcli.query_rewards(self.config["delegators"][0][1], "") == -1
 
         # 质押delegator3 10000 okt，投票给va1
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][2][1])
-        result = self.okcli.add_shares(self.vals3, self.config["delegators"][2][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][2][1]) != -1
+        assert self.okcli.add_shares(self.vals3, self.config["delegators"][2][1]) != -1
 
         # proxydelegator3 质押 10000okt
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][2][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][2][1]) != -1
         result = self.okcli.query_shares(self.config["proxydelegators"][2][1])
         assert self.format_decimal(result["tokens"]) == self.config["depoistCoin"], result
         assert self.format_decimal(result["shares"]) == 0, result
 
         # 注册 proxy3， proxydelegator3 绑定 proxy3
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][2][1])
-        result = self.okcli.add_shares(self.vals3, self.config["proxys"][2][1])
-        result = self.okcli.proxy_reg(self.config["proxys"][2][1])
-        result = self.okcli.proxy_bind(self.config["proxys"][2][1], self.config["proxydelegators"][2][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][2][1]) != -1
+        assert self.okcli.add_shares(self.vals3, self.config["proxys"][2][1]) != -1
+        assert self.okcli.proxy_reg(self.config["proxys"][2][1]) != -1
+        assert self.okcli.proxy_bind(self.config["proxys"][2][1], self.config["proxydelegators"][2][1]) != -1
 
         # proxydelegator3 有 tokens，shares 为 0
         resultProxydelegator3 = self.okcli.query_shares(self.config["proxydelegators"][2][1])
@@ -409,8 +400,8 @@ class CaseDistrProposal:
     def after_distr_proposal_before(self):
         logging.info("------------------------after_distr_proposal_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.kill_all_process()
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.kill_all_process()
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         logging.info("------------------------after_distr_proposal_before start--------------------------------")
 
@@ -418,18 +409,17 @@ class CaseDistrProposal:
         # 11111
         logging.info("------------------------after_distr_proposal start--------------------------------")
         # 发起投票提案，修改提案，此时分红比例默认为100%，各个接口可以使用，验证节点查询抽成，提取抽成正常；委托人查询分红为0；代理人查询为0，无法提取抽成；
-        result = self.okcli.wait_ledger(65)
+        self.okcli.wait_ledger(65)
         proposal_num = self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1])
-        result = self.okcli.vote(self.config["delegators"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][2][1], proposal_num)
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
+
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
         for v in self.config["vals"]:
-            result = self.okcli.vote(v[1], proposal_num)
-        result = self.okcli.query_proposal(proposal_num)
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
         # va1～va3查询抽成和outstanking一致，va4由于提前设置，不一致
         ledger = self.okcli.get_ledger_seq()
@@ -484,7 +474,7 @@ class CaseDistrProposal:
         outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         self.assert_compare_same(commission_va1, outstanding_va1)
-        result = self.okcli.withdraw_commission(self.config["vals"][0][3], "va1")
+        assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
         ledger = self.okcli.get_ledger_seq()
         afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
         logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
@@ -519,10 +509,8 @@ class CaseDistrProposal:
         # 代理人提取分红，无法取出
         beforeAmountvaProxy1 = self.okcli.query_account(self.config["proxys"][0][1])
         beforeAmountvaDelegator1 = self.okcli.query_account(self.config["delegators"][0][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1])
-        logging.info(result)
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1])
-        logging.info(result)
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) != -1
         self.okcli.wait_ledger_than(2)
         afterAmountvaProxy1 = self.okcli.query_account(self.config["proxys"][0][1])
         afterAmountvaDelegator1 = self.okcli.query_account(self.config["delegators"][0][1])
@@ -530,10 +518,8 @@ class CaseDistrProposal:
         self.assert_compare_same(beforeAmountvaDelegator1, afterAmountvaDelegator1)
 
         # 验证节点2 设置分红比例1%，代理2查询奖励有值，委托人2查询奖励有值，其他人查询为空
-        result = self.okcli.edit_validator("zzzzzzzz", "va2")
-        assert result != -1
-        result = self.okcli.edit_validator_rate("0.5", "va2")
-        assert result != -1
+        assert self.okcli.edit_validator("zzzzzzzz", "va2") != -1
+        assert self.okcli.edit_validator_rate("0.5", "va2") != -1
         self.okcli.wait_ledger_than(20)
         result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
         assert len(result["rewards"]) == 2, result
@@ -582,7 +568,7 @@ class CaseDistrProposal:
         outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         self.assert_compare_near(commission_va1, outstanding_va1)
-        result = self.okcli.withdraw_commission(self.config["vals"][0][3], "va1")
+        assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
         ledger = self.okcli.get_ledger_seq()
         afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
         logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
@@ -606,7 +592,7 @@ class CaseDistrProposal:
         outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
         logging.info("commission_va2:" + str(commission_va2) + ", outstanding_va2:" + str(outstanding_va2))
         self.assert_compare_gt(outstanding_va2, commission_va2)
-        result = self.okcli.withdraw_commission(self.config["vals"][1][3], "va2")
+        assert self.okcli.withdraw_commission(self.config["vals"][1][3], "va2") != -1
         afterAmountVa2 = self.okcli.query_account(self.config["vals"][1][1])
         logging.info("afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2))
         result = "afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2)
@@ -641,12 +627,12 @@ class CaseDistrProposal:
 
         # delegator1无法取出va1的分红，因为验证节点va1没有设置比例
         beforeAmount = self.okcli.query_account(self.config["proxys"][0][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][0][1])
         self.assert_compare_same(beforeAmount, afterAmount)
 
         beforeAmount = self.okcli.query_account(self.config["delegators"][0][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][1], self.config["delegators"][0][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) != -1
         afterAmount = self.okcli.query_account(self.config["delegators"][0][1])
         self.assert_compare_same(beforeAmount, afterAmount)
 
@@ -654,33 +640,31 @@ class CaseDistrProposal:
         self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], self.config["vals"][1][3], 0)
         rewards = self.okcli.query_rewards(self.config["proxys"][1][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["proxys"][1][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][1][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][1][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][1][1])
         self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
 
         # delegator3 取出所有的分红
         rewards = self.okcli.query_rewards(self.config["delegators"][2][1], "")["total"][0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["delegators"][2][1])
-        result = self.okcli.withdraw_all_rewards(self.config["delegators"][2][1])
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][2][1]) != -1
         afterAmount = self.okcli.query_account(self.config["delegators"][2][1])
         self.assert_compare_same(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
 
         # 新增验证节点，进行质押
-        result = self.okcli.create_validator(self.config["vaAddadmin16"])
-        result = self.okcli.edit_validator("zzzzzzzz", self.config["vaAddadmin16"])
-        assert result != -1
-        result = self.okcli.edit_validator_rate("0.5", self.config["vaAddadmin16"])
-        assert result != -1
+        assert self.okcli.create_validator(self.config["vaAddadmin16"]) != -1
+        assert self.okcli.edit_validator("zzzzzzzz", self.config["vaAddadmin16"]) != -1
+        assert self.okcli.edit_validator_rate("0.5", self.config["vaAddadmin16"]) != -1
 
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][3][1])
-        result = self.okcli.add_shares(self.valsall, self.config["proxys"][3][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][3][1]) != -1
+        assert self.okcli.add_shares(self.valsall, self.config["proxys"][3][1]) != -1
 
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][3][1])
-        result = self.okcli.add_shares(self.valsall, self.config["delegators"][3][1])
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][3][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][3][1]) != -1
+        assert self.okcli.add_shares(self.valsall, self.config["delegators"][3][1]) != -1
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][3][1]) != -1
 
-        result = self.okcli.proxy_reg(self.config["proxys"][3][1])
-        result = self.okcli.proxy_bind(self.config["proxys"][3][1], self.config["proxydelegators"][3][1])
+        assert self.okcli.proxy_reg(self.config["proxys"][3][1]) != -1
+        assert self.okcli.proxy_bind(self.config["proxys"][3][1], self.config["proxydelegators"][3][1]) != -1
 
         # proxydelegator4 有 tokens，shares 为 0
         resultProxydelegator4 = self.okcli.query_shares(self.config["proxydelegators"][3][1])
@@ -704,8 +688,8 @@ class CaseDistrProposal:
     def change_to_off_chain_before(self):
         logging.info("------------------------change_to_off_chain_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.kill_all_process()
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.kill_all_process()
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         logging.info("------------------------change_to_off_chain_before end--------------------------------")
 
@@ -715,24 +699,19 @@ class CaseDistrProposal:
         # 11111111
         # 修改成链下分红
         proposal_num = self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1])
-        result = self.okcli.vote(self.config["delegators"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][3][1], proposal_num)
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        result = self.okcli.vote(self.config["proxys"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][3][1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
         for v in self.config["vals"]:
-            result = self.okcli.vote(v[1], proposal_num)
-
-        result = self.okcli.query_proposal(proposal_num)
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
         # delegator1无法取出va1的分红，因为验证节点va1没有设置比例
         beforeAmount = self.okcli.query_account(self.config["proxys"][0][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][0][1])
         self.assert_compare_same(beforeAmount, afterAmount)
 
@@ -740,7 +719,7 @@ class CaseDistrProposal:
         rewards = self.okcli.query_rewards(self.config["proxys"][1][1], "")["total"][0]["amount"]
         self.assert_compare_gt(rewards, 0)
         beforeAmount = self.okcli.query_account(self.config["proxys"][1][1])
-        result = self.okcli.withdraw_all_rewards(self.config["proxys"][1][1])
+        assert self.okcli.withdraw_all_rewards(self.config["proxys"][1][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][1][1])
         self.assert_compare_same(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
 
@@ -752,10 +731,8 @@ class CaseDistrProposal:
 
         # 22222222
         # 验证节点1 设置分红比例1%
-        result = self.okcli.edit_validator("zzzzzzzz", "va1")
-        assert result != -1
-        result = self.okcli.edit_validator_rate("0.5", "va1")
-        assert result != -1
+        assert self.okcli.edit_validator("zzzzzzzz", "va1") != -1
+        assert self.okcli.edit_validator_rate("0.5", "va1") != -1
         self.okcli.wait_ledger_than(20)
 
         # proxy1 的分红仍然为0
@@ -770,22 +747,22 @@ class CaseDistrProposal:
         rewards = self.okcli.query_rewards(self.config["proxys"][3][1], "")["total"][0]["amount"]
         self.assert_compare_gt(rewards, 0)
         beforeAmount = self.okcli.query_account(self.config["proxys"][3][1])
-        result = self.okcli.withdraw_all_rewards(self.config["proxys"][3][1])
+        assert self.okcli.withdraw_all_rewards(self.config["proxys"][3][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][3][1])
         addValue = self.format_decimal(afterAmount) - self.format_decimal(beforeAmount)
         assert addValue >= 0
         assert addValue <= self.format_decimal(rewards), "addValue:" + str(addValue) + ", rewards:" + str(rewards)
 
         # 新增质押人5
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][4][1])
-        result = self.okcli.add_shares(self.valsall, self.config["proxys"][4][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][4][1]) != -1
+        assert self.okcli.add_shares(self.valsall, self.config["proxys"][4][1]) != -1
 
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][4][1])
-        result = self.okcli.add_shares(self.valsall, self.config["delegators"][4][1])
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][4][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][4][1]) != -1
+        assert self.okcli.add_shares(self.valsall, self.config["delegators"][4][1]) != -1
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][4][1]) != -1
 
-        result = self.okcli.proxy_reg(self.config["proxys"][4][1])
-        result = self.okcli.proxy_bind(self.config["proxys"][4][1], self.config["proxydelegators"][4][1])
+        assert self.okcli.proxy_reg(self.config["proxys"][4][1]) != -1
+        assert self.okcli.proxy_bind(self.config["proxys"][4][1], self.config["proxydelegators"][4][1]) != -1
 
         # 333333333
         # 取出v1的分红，预期正常
@@ -797,7 +774,7 @@ class CaseDistrProposal:
         outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
         logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         self.assert_compare_same(outstanding_va1, commission_va1)
-        result = self.okcli.withdraw_commission(self.config["vals"][0][3], "va1")
+        assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
         ledger = self.okcli.get_ledger_seq()
         afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
         logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
@@ -847,13 +824,13 @@ class CaseDistrProposal:
         # 再次尝试取出 proxy4 所有分红，失败
         self.okcli.wait_ledger_than(20)
         beforeAmount = self.okcli.query_account(self.config["proxys"][3][1])
-        result = self.okcli.withdraw_all_rewards(self.config["proxys"][3][1])
+        assert self.okcli.withdraw_all_rewards(self.config["proxys"][3][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][3][1])
         self.assert_compare_near(beforeAmount, afterAmount)
 
         # 尝试取出 proxy5 所有分红，失败
         beforeAmount = self.okcli.query_account(self.config["proxys"][4][1])
-        result = self.okcli.withdraw_all_rewards(self.config["proxys"][4][1])
+        assert self.okcli.withdraw_all_rewards(self.config["proxys"][4][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][4][1])
         self.assert_compare_near(beforeAmount, afterAmount)
 
@@ -866,7 +843,7 @@ class CaseDistrProposal:
     def change_to_on_chain_before(self):
         logging.info("------------------------change_to_on_chain_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         
         
@@ -877,23 +854,18 @@ class CaseDistrProposal:
         # 1111111111
         # 发起投票提案，修改提案链上分红
         proposal_num = self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1])
-        result = self.okcli.query_proposal(proposal_num)
-        result = self.okcli.vote(self.config["delegators"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][3][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][4][1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
+        
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        result = self.okcli.vote(self.config["proxys"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][3][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][4][1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
         for v in self.config["vals"]:
-            result = self.okcli.vote(v[1], proposal_num)
+            self.okcli.vote(v[1], proposal_num)
 
-        result = self.okcli.query_proposal(proposal_num)
+        self.okcli.query_proposal(proposal_num)
         self.okcli.wait_ledger_than(20)
 
         # 222222222
@@ -926,18 +898,16 @@ class CaseDistrProposal:
         assert result == -1, result
 
         # 设置 proxy3 的取款人地址
-        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1])
-        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][2][1])        
-        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][3][1])
-        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][4][1])
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1]) != -1
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][2][1]) != -1    
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][3][1]) != -1
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][4][1]) != -1
 
         # 验证节点3 设置分红比例50%
-        result = self.okcli.edit_validator("zzzzzzzz", "va3")
-        assert result != -1
-        result = self.okcli.edit_validator_rate("0.5", "va3")
-        assert result != -1
+        assert self.okcli.edit_validator("zzzzzzzz", "va3") != -1
+        assert self.okcli.edit_validator_rate("0.5", "va3") != -1
 
-        result = self.okcli.deposit(self.config["addDepoistCoin"], self.config["proxys"][2][1])
+        assert self.okcli.deposit(self.config["addDepoistCoin"], self.config["proxys"][2][1]) != -1
         self.okcli.wait_ledger_than(20)
         # 查询 delegator3 、proxy3的 v3 分红正常， proxydelegator3 不存在质押关系
         result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
@@ -969,7 +939,7 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
         assert len(result) > 0, result
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        result = self.okcli.withdraw(self.config["addDepoistCoin"], self.config["proxys"][2][1])
+        assert self.okcli.withdraw(self.config["addDepoistCoin"], self.config["proxys"][2][1]) != -1
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
         self.assert_compare_near(result["total"][0]["amount"], 1)
@@ -983,7 +953,7 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
         assert len(result) > 0, result
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][2][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][2][1]) != -1
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
         self.assert_compare_near(result["total"][0]["amount"], 1)
@@ -997,7 +967,7 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
         assert len(result) > 0, result
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        result = self.okcli.withdraw(self.config["depoistCoin"], self.config["proxydelegators"][2][1])
+        assert self.okcli.withdraw(self.config["depoistCoin"], self.config["proxydelegators"][2][1]) != -1
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
         self.assert_compare_near(result["total"][0]["amount"], 1)
@@ -1011,7 +981,7 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
         assert len(result) > 0, result
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        result = self.okcli.unreg(self.config["proxys"][2][1])
+        assert self.okcli.unreg(self.config["proxys"][2][1]) != -1
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
         self.assert_compare_near(result["total"][0]["amount"], 1)
@@ -1019,10 +989,10 @@ class CaseDistrProposal:
         self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), affertAmount)
 
         # 重新注册 proxy3 代理，分红仍然正常
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][2][1])
-        result = self.okcli.add_shares(self.vals3, self.config["proxys"][2][1])
-        result = self.okcli.proxy_reg(self.config["proxys"][2][1])
-        result = self.okcli.proxy_bind(self.config["proxys"][2][1], self.config["proxydelegators"][2][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][2][1]) != -1
+        assert self.okcli.add_shares(self.vals3, self.config["proxys"][2][1]) != -1
+        assert self.okcli.proxy_reg(self.config["proxys"][2][1]) != -1
+        assert self.okcli.proxy_bind(self.config["proxys"][2][1], self.config["proxydelegators"][2][1]) != -1
         self.okcli.wait_ledger_than(2)
         resultProxydelegator3 = self.okcli.query_shares(self.config["proxydelegators"][2][1])
         assert self.format_decimal(resultProxydelegator3["tokens"]) == self.config["depoistCoin"], resultProxydelegator3
@@ -1035,14 +1005,14 @@ class CaseDistrProposal:
 
         # 444444
         # 增加 delegator3 的投票，预期分红到账
-        result = self.okcli.deposit(self.config["addDepoistCoin"], self.config["delegators"][2][1])
+        assert self.okcli.deposit(self.config["addDepoistCoin"], self.config["delegators"][2][1]) != -1
         self.okcli.wait_ledger_than(20)
         result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
         rewards = result["total"][0]["amount"]
         result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
         assert len(result) > 0, result
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        result = self.okcli.deposit(self.config["addDepoistCoin"], self.config["delegators"][2][1])
+        assert self.okcli.deposit(self.config["addDepoistCoin"], self.config["delegators"][2][1]) != -1
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
         self.assert_compare_near(result["total"][0]["amount"], 1)
@@ -1086,20 +1056,20 @@ class CaseDistrProposal:
         self.assert_compare_same(beforeAmount, affertAmount)
 
         # delegator3 再次质押，30秒后仍有奖励
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][2][1])
-        result = self.okcli.add_shares(self.vals3, self.config["delegators"][2][1])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][2][1]) != -1
+        assert self.okcli.add_shares(self.vals3, self.config["delegators"][2][1]) != -1
         self.okcli.wait_ledger_than(20)
         result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
         assert len(result["total"]) == 1
         assert len(result["rewards"]) == 3
-        result = self.okcli.withdraw(self.config["depoistCoin"], self.config["delegators"][2][1])
+        assert self.okcli.withdraw(self.config["depoistCoin"], self.config["delegators"][2][1]) != -1
 
         
         # 555555
         # 销毁验证节点
         result = self.okcli.query_validator(self.config["vaadmin16"])
         assert result["jailed"] == False, result
-        result = self.okcli.destroy_validator(self.config["vaAddadmin16"])
+        assert self.okcli.destroy_validator(self.config["vaAddadmin16"]) != -1
         result = self.okcli.query_validator(self.config["vaadmin16"])
         assert result["jailed"] == True, result
         
@@ -1110,7 +1080,7 @@ class CaseDistrProposal:
         outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
         logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
         self.assert_compare_gt(outstanding, commission)
-        result = self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"])
+        assert self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"]) != -1
         afterAmount = self.okcli.query_account(self.config["vaAddadmin16"])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount))
         result = "afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount)
@@ -1134,7 +1104,7 @@ class CaseDistrProposal:
 
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         result = self.okcli.query_shares(self.config["delegators"][3][1])
-        result = self.okcli.withdraw(self.format_decimal(result["tokens"]), self.config["delegators"][3][1])
+        assert self.okcli.withdraw(self.format_decimal(result["tokens"]), self.config["delegators"][3][1]) != -1
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_rewards(self.config["delegators"][3][1], self.config["vaadmin16"])
         assert result == -1, result
@@ -1152,7 +1122,7 @@ class CaseDistrProposal:
         outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
         logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
         self.assert_compare_gt(outstanding, commission)
-        result = self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"])
+        assert self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"]) != -1
         afterAmount = self.okcli.query_account(self.config["vaAddadmin16"])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount))
         result = "afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount)
@@ -1167,14 +1137,12 @@ class CaseDistrProposal:
         affertAmount = self.okcli.query_account(self.config["withdrawaddress"])
         self.assert_compare_same(beforeAmount, affertAmount)
 
-        #666666
+        # 666666
         # 再次申请验证节点
         ledger = self.okcli.get_ledger_seq()
-        result = self.okcli.create_validator(self.config["vaAddadmin16"])
-        result = self.okcli.edit_validator("zzzzzzzz", self.config["vaAddadmin16"])
-        assert result != -1
-        result = self.okcli.edit_validator_rate("0.5", self.config["vaAddadmin16"])
-        assert result == -1
+        assert self.okcli.create_validator(self.config["vaAddadmin16"]) == -1
+        assert self.okcli.edit_validator("zzzzzzzz", self.config["vaAddadmin16"]) != -1
+        assert self.okcli.edit_validator_rate("0.5", self.config["vaAddadmin16"]) == -1
         result = self.okcli.query_commission(self.config["vaadmin16"])
         logging.info("query_commission:" + result)
         result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
@@ -1188,7 +1156,7 @@ class CaseDistrProposal:
         assert result["jailed"] == True, result
         result = self.okcli.query_rewards(self.config["delegators"][4][1], self.config["vaadmin16"])
         assert len(result) > 0, result
-        result = self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["delegators"][4][1])
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["delegators"][4][1]) != -1
         self.okcli.wait_ledger_than(5)
         result = self.okcli.query_rewards(self.config["delegators"][4][1], self.config["vaadmin16"])
         assert len(result) == 0, result
@@ -1220,27 +1188,22 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["delegators"][4][1], "")
 
         # 取出分红分红正常
-        result = self.okcli.withdraw_all_rewards(self.config["delegators"][0][1])
-        result = self.okcli.withdraw_all_rewards(self.config["delegators"][1][1])
-        result = self.okcli.withdraw_all_rewards(self.config["delegators"][2][1])
-        result = self.okcli.withdraw_all_rewards(self.config["delegators"][3][1])
-        result = self.okcli.withdraw_all_rewards(self.config["delegators"][4][1])
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) != -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][1][1]) != -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][2][1]) == -1 # 无法取出分红，因为已经取出押金
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][3][1]) == -1 # 无法取出分红，因为已经取出押金
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][4][1]) != -1
 
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][1][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][2][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][3][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][4][1])
-        result = self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][0][1])
-        assert result == -1, result
-        result = self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][1][1])
-        assert result == -1, result
-        result = self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][2][1])
-        assert result == -1, result
-        result = self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][3][1])
-        assert result != -1, result
-        result = self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][4][1])
-        assert result != -1, result
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][1][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][2][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][3][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][4][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][0][1]) == -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][1][1])== -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][2][1])== -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][3][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][4][1]) != -1
 
         result = self.okcli.query_distr_params()
         assert result["distribution_type"] == 1, result
@@ -1250,7 +1213,7 @@ class CaseDistrProposal:
     def enabled_withdraw_reward_before(self):
         logging.info("------------------------enabled_withdraw_reward_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         
         logging.info("------------------------enabled_withdraw_reward_before end--------------------------------")
@@ -1259,112 +1222,85 @@ class CaseDistrProposal:
         logging.info("------------------------enabled_withdraw_reward start--------------------------------")
         # 发起投票提案，禁止链上提取分红
         proposal_num = self.okcli.submit_withdraw_reward_disabled(self.config["delegators"][0][1])
-        result = self.okcli.query_proposal(proposal_num)
-        result = self.okcli.vote(self.config["delegators"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][3][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][4][1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
+        
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        result = self.okcli.vote(self.config["proxys"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][3][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][4][1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
         for v in self.config["vals"]:
-            result = self.okcli.vote(v[1], proposal_num)
-        result = self.okcli.query_proposal(proposal_num)
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_distr_params()
         assert result["withdraw_reward_enabled"] == False, result
 
         # 禁止分红相关操作
-        result = self.okcli.withdraw_all_rewards(self.config["delegators"][0][1])
-        assert result == -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) == -1
 
         # 禁止代理相关操作
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][5][1]) # 无分红，正常
-        assert result != -1
-        result = self.okcli.add_shares(self.vals4, self.config["delegators"][5][1])  # 无分红，正常
-        assert result != -1
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][5][1]) != -1 # 无分红，正常
+        assert self.okcli.add_shares(self.vals4, self.config["delegators"][5][1]) != -1  # 无分红，正常
         self.okcli.wait_ledger_than(2)
-        result = self.okcli.add_shares(self.vals4, self.config["delegators"][5][1])  # 第二次，失败
-        assert result == -1
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][5][1])
-        assert result != -1
-        result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][5][1])
-        assert result != -1
-        result = self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) # 无分红，正常
-        assert result != -1
+        assert self.okcli.add_shares(self.vals4, self.config["delegators"][5][1]) == -1  # 第二次，失败
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][5][1]) != -1
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][5][1]) != -1
+        assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) != -1# 无分红，正常
         self.okcli.wait_ledger_than(2)
-        result = self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) # 无分红，正常
-        assert result == -1
-
-        result = self.okcli.proxy_reg(self.config["proxys"][5][1])
-        assert result == -1
-        result = self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1])
-        assert result == -1
-
+        assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) == -1 # 无分红，正常
+        assert self.okcli.proxy_reg(self.config["proxys"][5][1]) == -1
+        assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) == -1
 
         # 发起投票提案，启用链上提取分红
         proposal_num = self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1])
-        result = self.okcli.query_proposal(proposal_num)
-        result = self.okcli.vote(self.config["delegators"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][3][1], proposal_num)
-        result = self.okcli.vote(self.config["delegators"][4][1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        result = self.okcli.vote(self.config["proxys"][0][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][1][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][2][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][3][1], proposal_num)
-        result = self.okcli.vote(self.config["proxys"][4][1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
         for v in self.config["vals"]:
-            result = self.okcli.vote(v[1], proposal_num)
-        result = self.okcli.query_proposal(proposal_num)
+            self.okcli.vote(v[1], proposal_num)
+
+        self.okcli.query_proposal(proposal_num)
 
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_distr_params()
         assert result["withdraw_reward_enabled"] == True, result
 
         # 注册代理成功
-        result = self.okcli.add_shares(self.vals4, self.config["proxys"][5][1])
-        assert result != -1
-        result = self.okcli.proxy_reg(self.config["proxys"][5][1])
-        assert result != -1
-        result = self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1])
-        assert result != -1
+        assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) != -1
+        assert self.okcli.proxy_reg(self.config["proxys"][5][1]) != -1
+        assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
 
         # proxy5 取出va2的分红
         self.okcli.query_total_rewards_gt(self.config["proxys"][5][1], self.config["vals"][1][3], 0)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["proxys"][5][1])
-        result = self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][5][1])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
-
+        assert (self.format_decimal(afterAmount)- (self.format_decimal(beforeAmount)) >= self.format_decimal(rewards))
 
         # proxy5 unbind 分红
         self.okcli.query_total_rewards_gt(self.config["proxys"][5][1], self.config["vals"][1][3], 0)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["proxys"][5][1])
-        # result = self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1])
-        self.okcli.proxy_unbind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1])
+        assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][5][1])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
+        assert (self.format_decimal(afterAmount)- (self.format_decimal(beforeAmount)) >= self.format_decimal(rewards))
         
         logging.info("------------------------enabled_withdraw_reward end--------------------------------")
 
     def extension_before(self):
         logging.info("------------------------cextension_before start--------------------------------")
         if self.single_debug:
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
             time.sleep(5)
         
         logging.info("------------------------cextension_before end--------------------------------")
@@ -1374,13 +1310,10 @@ class CaseDistrProposal:
 
         ## 如果为16节点，验证0和1的情况
         if len(self.config["vals"]) > 10:
-            result = self.okcli.edit_validator_rate("0", "va10")
-            assert result != -1
-
-            result = self.okcli.edit_validator_rate("1", "va11")
-            assert result != -1
+            assert self.okcli.edit_validator_rate("0", "va10") != -1
+            assert self.okcli.edit_validator_rate("1", "va11") != -1
             rateTestVals = self.config["vals"][9][3] + "," + self.config["vals"][10][3]
-            result = self.okcli.add_shares(rateTestVals, self.config["proxys"][2][1])
+            assert self.okcli.add_shares(rateTestVals, self.config["proxys"][2][1]) != -1
             self.okcli.query_total_rewards_gt(self.config["proxys"][2][1], self.config["vals"][10][3], 1)
             rewards = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][9][3])[0]["amount"]
             assert rewards == "0.000000000000000000"
@@ -1420,8 +1353,8 @@ class CaseDistrProposal:
 
                 addValue = self.format_decimal(after) - self.format_decimal(before)
                 logging.info("d:" + k + ", v:" + dictDV[k] + ", before:" + str(before) + ", after:" + str(after) + ", reward:" + str(reward))
-                
-                assert addValue  == reward
+                assert addValue >= 1
+                self.assert_compare_near(addValue, reward)
 
             count += 1
             if count >= 100:

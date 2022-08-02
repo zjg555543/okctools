@@ -117,8 +117,8 @@ class OKCli:
         cmd = "exchaincli tx staking proxy bind "+ proxy +" --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
-    def proxy_unbind(self, proxy, from_name):
-        cmd = "exchaincli tx staking proxy unbind "+ proxy +" --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def proxy_unbind(self, from_name):
+        cmd = "exchaincli tx staking proxy unbind --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
     def submit_change_type_proposal_offchain(self, from_name):
@@ -255,16 +255,16 @@ class OKCli:
                 logging.error(result)
             time.sleep(1)
 
-    def query_rewards(self, delegator, validator):
-        cmd = " exchaincli query distr rewards   " + delegator +  " " + validator  + self.node_rpc
-        result = os.popen(cmd).read()
-        logging.info("result, cmd:" + cmd + ", result:" + result)
+    # def query_rewards(self, delegator, validator):
+    #     cmd = " exchaincli query distr rewards   " + delegator +  " " + validator  + self.node_rpc
+    #     result = os.popen(cmd).read()
+    #     logging.info("result, cmd:" + cmd + ", result:" + result)
 
-        try:
-            result_obj = json.loads(result)
-            return result_obj
-        except:
-            return -1
+    #     try:
+    #         result_obj = json.loads(result)
+    #         return result_obj
+    #     except:
+    #         return -1
 
     def query_rewards(self, delegator, validator, height = 0):
         arg = ""
