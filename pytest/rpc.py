@@ -117,6 +117,10 @@ class OKCli:
         cmd = "exchaincli tx staking proxy bind "+ proxy +" --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
+    def proxy_unbind(self, proxy, from_name):
+        cmd = "exchaincli tx staking proxy unbind "+ proxy +" --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        return self.run_tx(cmd)
+
     def submit_change_type_proposal_offchain(self, from_name):
         cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-0.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
@@ -174,7 +178,11 @@ class OKCli:
         cmd = 'exchaincli tx staking create-validator --pubkey=$(exchaind tendermint show-validator) --moniker="zzzzzzzz" --from ' + from_name + ' --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y'  + self.node_rpc
         return self.run_tx(cmd)
     
-    def edit_validator(self, rate, from_name):
+    def edit_validator(self, details, from_name):
+        cmd = "exchaincli tx staking edit-validator --details " + details + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        return self.run_tx(cmd)
+
+    def edit_validator_rate(self, rate, from_name):
         cmd = "exchaincli tx staking edit-validator-commission-rate " + str(rate) + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
     

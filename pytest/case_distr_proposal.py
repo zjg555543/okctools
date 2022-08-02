@@ -21,6 +21,11 @@ class CaseDistrProposal:
         self.vals3 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3]
         self.vals4 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3] + "," + self.config["vals"][3][3] 
         self.valsall = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3] + "," + self.config["vals"][3][3] + "," + self.config["vaadmin16"]
+        self.valsDeafultAll = ""
+        for v in self.config["vals"]:
+            self.valsDeafultAll = v[3] + ","
+
+        self.vals3 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3]
         self.single_debug = self.config["singleDebug"]
         return
 
@@ -121,7 +126,7 @@ class CaseDistrProposal:
         logging.info("------------------------initChainBefore start--------------------------------")
 
         # 老版本编译
-        result = self.okcli.run_cmd("cd /Users/oker/workspace/exchain-raw/dev/testnet/;./run4v1r.sh")
+        result = self.okcli.run_cmd("cd " + self.config["oldGitPath"] + "/dev/testnet/;./run4v1r.sh")
         time.sleep(5)
         result = self.okcli.wait_ledger(1)
         result = self.okcli.kill_all_process()
@@ -130,10 +135,10 @@ class CaseDistrProposal:
         assert result == "v1.6.0", result
 
         # 迁移命令行和迁移文件夹，重新启动
-        result = self.okcli.run_cmd("rm -rf /Users/oker/workspace/nodes/; mkdir /Users/oker/workspace/nodes/;  cp -rf /Users/oker/workspace/exchain-raw/dev/testnet/cache/* /Users/oker/workspace/nodes/")
+        result = self.okcli.run_cmd("rm -rf /Users/oker/workspace/nodes/; mkdir /Users/oker/workspace/nodes/;  cp -rf " + self.config["oldGitPath"] + "/dev/testnet/cache/* /Users/oker/workspace/nodes/")
 
         # 新版本编译
-        result = self.okcli.run_cmd("cd /Users/oker/workspace/exchain/dev/testnet/;./run4v1r.sh")
+        result = self.okcli.run_cmd("cd " + self.config["newGitPath"] + "/dev/testnet/;./run4v1r.sh")
         time.sleep(5)
         result = self.okcli.wait_ledger(1)
         result = self.okcli.kill_all_process()
@@ -253,6 +258,10 @@ class CaseDistrProposal:
         result = self.okcli.query_commission(self.config["vals"][3][3])
         assert self.format_decimal(result) > 0, result
 
+        ## delegators 10投票所有人
+        self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][9][1])
+        self.okcli.add_shares(self.valsDeafultAll, self.config["delegators"][9][1])
+
         logging.info("------------------------initStaking end--------------------------------")
 
     def upgrate_bin_staking_before(self):
@@ -350,7 +359,11 @@ class CaseDistrProposal:
         assert result["distribution_type"] == 0, result
 
         # 支持 edit-validator-commission-rate 操作
-        result = self.okcli.edit_validator("0.5", "va4")
+        result = self.okcli.edit_validator_rate("1.1", "va4")
+        result = self.okcli.edit_validator_rate("-0.1", "va4")
+        result = self.okcli.edit_validator("zzzzzzzz", "va4")
+        assert result != -1
+        result = self.okcli.edit_validator_rate("0.5", "va4")
         assert result != -1, result
 
         # 不支持的操作  withdraw-all-rewards、withdraw-rewards、outstanding-rewards、query_rewards
@@ -517,7 +530,10 @@ class CaseDistrProposal:
         self.assert_compare_same(beforeAmountvaDelegator1, afterAmountvaDelegator1)
 
         # 验证节点2 设置分红比例1%，代理2查询奖励有值，委托人2查询奖励有值，其他人查询为空
-        result = self.okcli.edit_validator("0.5", "va2")
+        result = self.okcli.edit_validator("zzzzzzzz", "va2")
+        assert result != -1
+        result = self.okcli.edit_validator_rate("0.5", "va2")
+        assert result != -1
         self.okcli.wait_ledger_than(20)
         result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
         assert len(result["rewards"]) == 2, result
@@ -651,7 +667,10 @@ class CaseDistrProposal:
 
         # 新增验证节点，进行质押
         result = self.okcli.create_validator(self.config["vaAddadmin16"])
-        result = self.okcli.edit_validator("0.5", self.config["vaAddadmin16"])
+        result = self.okcli.edit_validator("zzzzzzzz", self.config["vaAddadmin16"])
+        assert result != -1
+        result = self.okcli.edit_validator_rate("0.5", self.config["vaAddadmin16"])
+        assert result != -1
 
         result = self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][3][1])
         result = self.okcli.add_shares(self.valsall, self.config["proxys"][3][1])
@@ -733,7 +752,10 @@ class CaseDistrProposal:
 
         # 22222222
         # 验证节点1 设置分红比例1%
-        result = self.okcli.edit_validator("0.5", "va1")
+        result = self.okcli.edit_validator("zzzzzzzz", "va1")
+        assert result != -1
+        result = self.okcli.edit_validator_rate("0.5", "va1")
+        assert result != -1
         self.okcli.wait_ledger_than(20)
 
         # proxy1 的分红仍然为0
@@ -910,7 +932,10 @@ class CaseDistrProposal:
         self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][4][1])
 
         # 验证节点3 设置分红比例50%
-        result = self.okcli.edit_validator("0.5", "va3")
+        result = self.okcli.edit_validator("zzzzzzzz", "va3")
+        assert result != -1
+        result = self.okcli.edit_validator_rate("0.5", "va3")
+        assert result != -1
 
         result = self.okcli.deposit(self.config["addDepoistCoin"], self.config["proxys"][2][1])
         self.okcli.wait_ledger_than(20)
@@ -1146,7 +1171,10 @@ class CaseDistrProposal:
         # 再次申请验证节点
         ledger = self.okcli.get_ledger_seq()
         result = self.okcli.create_validator(self.config["vaAddadmin16"])
-        result = self.okcli.edit_validator("0.5", self.config["vaAddadmin16"])
+        result = self.okcli.edit_validator("zzzzzzzz", self.config["vaAddadmin16"])
+        assert result != -1
+        result = self.okcli.edit_validator_rate("0.5", self.config["vaAddadmin16"])
+        assert result == -1
         result = self.okcli.query_commission(self.config["vaadmin16"])
         logging.info("query_commission:" + result)
         result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
@@ -1319,6 +1347,17 @@ class CaseDistrProposal:
         afterAmount = self.okcli.query_account(self.config["proxys"][5][1])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
         self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
+
+
+        # proxy5 unbind 分红
+        self.okcli.query_total_rewards_gt(self.config["proxys"][5][1], self.config["vals"][1][3], 0)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["proxys"][5][1])
+        # result = self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1])
+        self.okcli.proxy_unbind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1])
+        afterAmount = self.okcli.query_account(self.config["proxys"][5][1])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
         
         logging.info("------------------------enabled_withdraw_reward end--------------------------------")
 
@@ -1332,18 +1371,33 @@ class CaseDistrProposal:
 
     def extension(self):
         logging.info("------------------------cextension start--------------------------------")
+
+        ## 如果为16节点，验证0和1的情况
+        if len(self.config["vals"]) > 10:
+            result = self.okcli.edit_validator_rate("0", "va10")
+            assert result != -1
+
+            result = self.okcli.edit_validator_rate("1", "va11")
+            assert result != -1
+            rateTestVals = self.config["vals"][9][3] + "," + self.config["vals"][10][3]
+            result = self.okcli.add_shares(rateTestVals, self.config["proxys"][2][1])
+            self.okcli.query_total_rewards_gt(self.config["proxys"][2][1], self.config["vals"][10][3], 1)
+            rewards = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][9][3])[0]["amount"]
+            assert rewards == "0.000000000000000000"
+
+
         # 使用deledator取出代理分红
         dictDV = {}
         for p in self.config["proxys"]:
             # 设置代理人的取款地址
-            # self.okcli.set_withdraw_addr(self.config["withdrawaddress"], p[1])
+            self.okcli.set_withdraw_addr(self.config["withdrawaddress"], p[1])
             for v in self.config["vals"]:
                 result = self.okcli.query_rewards(p[1], v[3])
                 if result != -1:
                     dictDV[p[1]] = v[3]
 
         # self.exit()
-        
+        count = 0
         while True:
             logging.info("total:" + str(len(dictDV)))
             time.sleep(1)
@@ -1368,6 +1422,11 @@ class CaseDistrProposal:
                 logging.info("d:" + k + ", v:" + dictDV[k] + ", before:" + str(before) + ", after:" + str(after) + ", reward:" + str(reward))
                 
                 assert addValue  == reward
+
+            count += 1
+            if count >= 100:
+                break
+
         logging.info("------------------------cextension end--------------------------------")
 
     def exit(self, stop = True):
