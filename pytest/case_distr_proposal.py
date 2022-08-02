@@ -121,6 +121,18 @@ class CaseDistrProposal:
         # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
         # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         # self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], self.config["vals"][1][3], 0)
+        
+
+        splitArray = self.config["rpc"].split(":")
+        url = splitArray[0] + ":" + splitArray[1]
+        
+        ledger = int(self.okcli.get_ledger_seq())
+        for i in range(self.config["nodeCount"]):
+            port = 26657 + i * 100
+            rpc = url + ":" + str(port)
+            other_ledger = int(self.okcli.get_ledger_seq(rpc))
+            assert (other_ledger - ledger) <= 5
+
         return
 
     def init_chain_before(self):
@@ -1359,6 +1371,17 @@ class CaseDistrProposal:
             count += 1
             if count >= 100:
                 break
+
+        # 所有节点高度一致
+        splitArray = self.config["rpc"].split(":")
+        url = splitArray[0] + ":" + splitArray[1]
+        
+        ledger = int(self.okcli.get_ledger_seq())
+        for i in range(self.config["nodeCount"]):
+            port = 26657 + i * 100
+            rpc = url + ":" + str(port)
+            other_ledger = int(self.okcli.get_ledger_seq(rpc))
+            assert (other_ledger - ledger) <= 5
 
         logging.info("------------------------cextension end--------------------------------")
 
