@@ -66,8 +66,8 @@ class CaseDistrProposal:
         self.init_staking()
 
         # 阶段三-1，升级程序，继续初始化投票交易
-        self.upgrate_bin_staking_before()
-        self.upgrate_bin_staking()
+        self.upgrate_bin_staking_step1_before()
+        self.upgrate_bin_staking_step1()
 
         # 阶段三-2，升级程序，继续初始化投票交易
         self.upgrate_bin_staking_step2_before()
@@ -183,16 +183,12 @@ class CaseDistrProposal:
             else:
                 self.okcli.recover(v[0], v[2])
         for v in self.config["delegators"]:
-            result = self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"])
-            assert result != -1
+            assert self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"]) != -1
         for v in self.config["proxys"]:
-            result = self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"])
-            assert result != -1
+            assert self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"]) != -1
         for v in self.config["proxydelegators"]:
-            result = self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"])
-            assert result != -1
-        result = self.okcli.transfer(self.config["captain"], self.config["vaAddadmin16"], self.config["initCoin"])
-        assert result != -1
+            assert self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"]) != -1
+        assert self.okcli.transfer(self.config["captain"], self.config["vaAddadmin16"], self.config["initCoin"]) != -1
         
         def do(account):
             result = self.okcli.query_account(account)
@@ -215,8 +211,8 @@ class CaseDistrProposal:
     def init_staking_before(self):
         logging.info("------------------------initStakingBefore start--------------------------------")
         if self.single_debug:
-            result = self.okcli.kill_all_process()
-            result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0)
+            self.okcli.kill_all_process()
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0)
             time.sleep(5)
         logging.info("------------------------initStakingBefore end--------------------------------")
 
@@ -277,17 +273,17 @@ class CaseDistrProposal:
 
         logging.info("------------------------initStaking end--------------------------------")
 
-    def upgrate_bin_staking_before(self):
-        logging.info("------------------------upgrate_bin_staking_before start--------------------------------")
+    def upgrate_bin_staking_step1_before(self):
+        logging.info("------------------------upgrate_bin_staking_step1_before start--------------------------------")
 
         self.okcli.kill_all_process()
         self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 2)
         time.sleep(10)
 
-        logging.info("------------------------upgrate_bin_staking_before end--------------------------------")
+        logging.info("------------------------upgrate_bin_staking_step1_before end--------------------------------")
 
-    def upgrate_bin_staking(self):
-        logging.info("------------------------upgrate_bin_staking start--------------------------------")
+    def upgrate_bin_staking_step1(self):
+        logging.info("------------------------upgrate_bin_staking_step1 start--------------------------------")
         
         # 质押delegator2 10000 okt，投票给va1
         assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][1][1]) != -1
@@ -299,7 +295,14 @@ class CaseDistrProposal:
         assert self.format_decimal(result["tokens"]) == self.config["depoistCoin"], result
         assert self.format_decimal(result["shares"]) == 0, result
 
-        logging.info("------------------------upgrate_bin_staking end--------------------------------")
+        # 发送新的失败交易，确保不会smb
+        # assert self.okcli.withdraw_rewards_no_sim(self.config["vals"][0][3], self.config["delegators"][0][1]) != -1
+        # assert self.okcli.withdraw_all_rewards_no_sim(self.config["delegators"][0][1]) != -1
+        # assert self.okcli.submit_change_type_proposal_offchain_no_sim(self.config["delegators"][0][1]) != -1
+        # assert self.okcli.submit_withdraw_reward_enabled_no_sim(self.config["delegators"][0][1]) != -1
+        # assert self.okcli.edit_validator_rate_no_sim("0.5", "va4") != -1
+
+        logging.info("------------------------upgrate_bin_staking_step1 end--------------------------------")
 
     def upgrate_bin_staking_step2_before(self):
         logging.info("------------------------upgrate_bin_staking_step2_before start--------------------------------")
@@ -1419,10 +1422,10 @@ if __name__ == '__main__':
     elif opt == "init_staking":
         case.init_staking()
     
-    elif opt == "upgrate_bin_staking_before":
-        case.upgrate_bin_staking_before()
-    elif opt == "upgrate_bin_staking":
-        case.upgrate_bin_staking()
+    elif opt == "upgrate_bin_staking_step1_before":
+        case.upgrate_bin_staking_step1_before()
+    elif opt == "upgrate_bin_staking_step1":
+        case.upgrate_bin_staking_step1()
 
     elif opt == "upgrate_bin_staking_step2_before":
         case.upgrate_bin_staking_step2_before()

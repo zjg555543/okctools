@@ -134,6 +134,10 @@ class OKCli:
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
+    def submit_change_type_proposal_offchain_no_sim(self, from_name):
+        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-0.json --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        return self.run_tx(cmd)
+
     def submit_change_type_proposal_onchain(self, from_name):
         cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-1.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
@@ -141,6 +145,7 @@ class OKCli:
         result = os.popen(cmd).read()
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+        
 
     def submit_withdraw_reward_enabled(self, from_name):
         cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-enabled.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
@@ -149,6 +154,11 @@ class OKCli:
         result = os.popen(cmd).read()
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+
+
+    def submit_withdraw_reward_enabled_no_sim(self, from_name):
+        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-enabled.json --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        return self.run_tx(cmd)
 
     def submit_withdraw_reward_disabled(self, from_name):
         cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-disabled.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
@@ -175,8 +185,16 @@ class OKCli:
         cmd = "exchaincli tx distr withdraw-rewards " + val + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"   + self.node_rpc
         return self.run_tx(cmd)
 
+    def withdraw_rewards_no_sim(self, val, from_name):
+        cmd = "exchaincli tx distr withdraw-rewards " + val + " --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"   + self.node_rpc
+        return self.run_tx(cmd)
+
     def withdraw_all_rewards(self, from_name):
         cmd = "exchaincli tx distr withdraw-all-rewards --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        return self.run_tx(cmd)
+
+    def withdraw_all_rewards_no_sim(self, from_name):
+        cmd = "exchaincli tx distr withdraw-all-rewards --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
     def create_validator(self, from_name):
@@ -189,6 +207,10 @@ class OKCli:
 
     def edit_validator_rate(self, rate, from_name):
         cmd = "exchaincli tx staking edit-validator-commission-rate " + str(rate) + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        return self.run_tx(cmd)
+
+    def edit_validator_rate_no_sim(self, rate, from_name):
+        cmd = "exchaincli tx staking edit-validator-commission-rate " + str(rate) + " --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
     
     def destroy_validator(self, from_name):
