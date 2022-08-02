@@ -593,11 +593,11 @@ class CaseDistrProposal:
         logging.info("commission_va2:" + str(commission_va2) + ", outstanding_va2:" + str(outstanding_va2))
         self.assert_compare_gt(outstanding_va2, commission_va2)
         assert self.okcli.withdraw_commission(self.config["vals"][1][3], "va2") != -1
+        ledger = self.okcli.get_ledger_seq()
         afterAmountVa2 = self.okcli.query_account(self.config["vals"][1][1])
         logging.info("afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2))
         result = "afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2)
         self.assert_compare_near(self.format_decimal(beforeAmountVa2) + self.format_decimal(commission_va2), self.format_decimal(afterAmountVa2))
-        ledger = self.okcli.get_ledger_seq()
         commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
         outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
         logging.info("commission_va2:" + str(commission_va2) + ", outstanding_va2:" + str(outstanding_va2))
