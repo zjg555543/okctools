@@ -5,9 +5,7 @@
 
 # 新分支修改
 ## makefile 文件修改
-
-Version=v1.6.1
--X $(GithubTop)/okex/exchain/libs/tendermint/types.MILESTONE_VENUS3_HEIGHT=$(Venus3Height)
+Version=v1.6.3
 
 
 ## okc.profile
@@ -15,20 +13,14 @@ OKCHAIN_TOP=/Users/oker/workspace/exchain
 
 ## testnet.sh
 (cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus3Height=200)
-echorun exchaind testnet --v $1 --r $2 --equal-voting-power -o cache -l \
-LOG_LEVEL=main:info,*:error,consensus:error,state:info,distr:debug,gov:debug,staking:debug
-  --consensus.timeout_commit 1000ms \
 
 
 # 老分支修改
 ## ./testnet.sh
-echorun exchaind testnet --v $1 --r $2 --equal-voting-power -o cache -l \
-
-LOG_LEVEL=main:debug,*:debug,consensus:debug,state:debug,distr:debug,gov:debug,staking:debug
-     --consensus.timeout_commit 1000ms \
+--consensus.timeout_commit 1000ms \
 
 ## okc.profile
-  OKCHAIN_TOP=/Users/oker/workspace/exchain-raw/
+OKCHAIN_TOP=/Users/oker/workspace/exchain-raw/
 
 
 

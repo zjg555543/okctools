@@ -1,6 +1,8 @@
 {
     "oldGitPath": "/Users/oker/workspace/exchain-raw",
     "newGitPath":"/Users/oker/workspace/exchain",
+    "oldVersion": "v1.6.2",
+    "newVersion": "v1.6.3",
     "nodes":"/Users/oker/workspace/nodes/",
     "initCoin": 1000000,
     "depoistCoin": 10000,

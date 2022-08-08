@@ -99,7 +99,7 @@ class CaseDistrProposal:
 
     
     def test(self):
-        # self.okcli.copy_node(1, "v1.6.1")
+        # self.okcli.copy_node(1, "v1.6.3")
         # for v in self.config["vals"]:
         #    self.okcli.recover(v[0], v[2])
         # self.okcli.kill_all_process()
@@ -147,7 +147,11 @@ class CaseDistrProposal:
         result = self.okcli.kill_all_process()
         self.okcli.copy_node("exchaind-dev")
         result = self.okcli.version("exchaind-dev") 
-        assert result == "v1.6.0", result
+        assert result == self.config["oldVersion"], result
+
+        self.okcli.copy_node_cli("exchaincli-dev")
+        result = self.okcli.version("exchaincli-dev") 
+        assert result == self.config["oldVersion"], result
 
         # 迁移命令行和迁移文件夹，重新启动
         result = self.okcli.run_cmd("rm -rf /Users/oker/workspace/nodes/; mkdir /Users/oker/workspace/nodes/;  cp -rf " + self.config["oldGitPath"] + "/dev/testnet/cache/* /Users/oker/workspace/nodes/")
@@ -157,9 +161,14 @@ class CaseDistrProposal:
         time.sleep(5)
         result = self.okcli.wait_ledger(1)
         result = self.okcli.kill_all_process()
+
         self.okcli.copy_node("exchaind-my")
         result = self.okcli.version("exchaind-my") 
-        assert result == "v1.6.1", result
+        assert result == self.config["newVersion"], result
+
+        self.okcli.copy_node_cli("exchaincli-my")
+        result = self.okcli.version("exchaincli-my") 
+        assert result == self.config["newVersion"], result
         
 
         result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0)
