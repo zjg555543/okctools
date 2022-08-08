@@ -102,41 +102,56 @@ class OKCli:
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 
-    def deposit(self, token, from_name):
-        cmd = "exchaincli tx staking deposit " + str(token) + "okt --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y" + self.node_rpc
+    def deposit(self, token, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+
+        cmd = "exchaincli tx staking deposit " + str(token) + "okt --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y" + self.node_rpc
         return self.run_tx(cmd)
 
-    def add_shares(self, vals, from_name):
-        cmd = "exchaincli tx staking add-shares " + vals + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def add_shares(self, vals, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking add-shares " + vals + " --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
     def transfer(self, from_name, to_name, tokens):
         cmd = "exchaincli tx send " + from_name + " " + to_name + " " + str(tokens) + "okt --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
-    def proxy_reg(self, from_name):
-        cmd = "exchaincli tx staking proxy reg --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def proxy_reg(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking proxy reg --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
-    def proxy_bind(self, proxy, from_name):
-        cmd = "exchaincli tx staking proxy bind "+ proxy +" --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def proxy_bind(self, proxy, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking proxy bind "+ proxy +" --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
     def proxy_unbind(self, from_name):
         cmd = "exchaincli tx staking proxy unbind --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
-    def submit_change_type_proposal_offchain(self, from_name):
-        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-0.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def submit_change_type_proposal_offchain(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-0.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+
         cmd = " exchaincli query tx " + tx  + self.node_rpc
         result = os.popen(cmd).read()
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
-
-    def submit_change_type_proposal_offchain_no_sim(self, from_name):
-        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-0.json --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
-        return self.run_tx(cmd)
 
     def submit_change_type_proposal_onchain(self, from_name):
         cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-1.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
@@ -147,18 +162,20 @@ class OKCli:
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
         
 
-    def submit_withdraw_reward_enabled(self, from_name):
-        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-enabled.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def submit_withdraw_reward_enabled(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+
+        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-enabled.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+
         cmd = " exchaincli query tx " + tx  + self.node_rpc
         result = os.popen(cmd).read()
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
-
-
-    def submit_withdraw_reward_enabled_no_sim(self, from_name):
-        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-enabled.json --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
-        return self.run_tx(cmd)
 
     def submit_withdraw_reward_disabled(self, from_name):
         cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-disabled.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
@@ -181,20 +198,18 @@ class OKCli:
         cmd = "exchaincli tx distr withdraw-rewards " + val + " --commission --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
-    def withdraw_rewards(self, val, from_name):
-        cmd = "exchaincli tx distr withdraw-rewards " + val + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"   + self.node_rpc
+    def withdraw_rewards(self, val, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx distr withdraw-rewards " + val + " --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"   + self.node_rpc
         return self.run_tx(cmd)
 
-    def withdraw_rewards_no_sim(self, val, from_name):
-        cmd = "exchaincli tx distr withdraw-rewards " + val + " --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"   + self.node_rpc
-        return self.run_tx(cmd)
-
-    def withdraw_all_rewards(self, from_name):
-        cmd = "exchaincli tx distr withdraw-all-rewards --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
-        return self.run_tx(cmd)
-
-    def withdraw_all_rewards_no_sim(self, from_name):
-        cmd = "exchaincli tx distr withdraw-all-rewards --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def withdraw_all_rewards(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx distr withdraw-all-rewards --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
     def create_validator(self, from_name):
@@ -205,12 +220,11 @@ class OKCli:
         cmd = "exchaincli tx staking edit-validator --details " + details + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
-    def edit_validator_rate(self, rate, from_name):
-        cmd = "exchaincli tx staking edit-validator-commission-rate " + str(rate) + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
-        return self.run_tx(cmd)
-
-    def edit_validator_rate_no_sim(self, rate, from_name):
-        cmd = "exchaincli tx staking edit-validator-commission-rate " + str(rate) + " --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def edit_validator_rate(self, rate, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking edit-validator-commission-rate " + str(rate) + " --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
     
     def destroy_validator(self, from_name):
@@ -452,11 +466,14 @@ class OKCli:
                 result_obj = json.loads(result)
                 if "gas_used" in result_obj:
                     logging.info("result, cmd:" + cmd + ", result:" + result)
-                    break
+                    if "code" in result_obj:
+                        return result_obj["code"]
+                    return 0
             except:
                 a = 1
                 # logging.info("result, cmd:" + cmd + ", result:" + result)
             time.sleep(1)
+            
 
     def set_withdraw_addr(self, new_addr, from_name):
         cmd = "exchaincli tx distr set-withdraw-addr " + new_addr + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc

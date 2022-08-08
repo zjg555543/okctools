@@ -297,11 +297,11 @@ class CaseDistrProposal:
         logging.info("------------------------upgrate_bin_staking_step1 start--------------------------------")
         
         # 发送新的交易，确保交易不会上链以及出现smb
-        assert self.okcli.withdraw_rewards_no_sim(self.config["vals"][0][3], self.config["delegators"][0][1]) == -1
-        assert self.okcli.withdraw_all_rewards_no_sim(self.config["delegators"][0][1]) == -1
-        assert self.okcli.submit_change_type_proposal_offchain_no_sim(self.config["delegators"][0][1]) == -1
-        assert self.okcli.submit_withdraw_reward_enabled_no_sim(self.config["delegators"][0][1]) == -1
-        assert self.okcli.edit_validator_rate_no_sim("0.5", "va4") == -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1], False) == -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.edit_validator_rate("0.5", "va4", False) == -1
 
         # 质押delegator2 10000 okt，投票给va1
         assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][1][1]) != -1
@@ -365,11 +365,11 @@ class CaseDistrProposal:
         assert self.okcli.query_rewards(self.config["delegators"][0][1], "") == -1
 
         # 发送新的交易，确保交易不会上链以及出现smb
-        assert self.okcli.withdraw_rewards_no_sim(self.config["vals"][0][3], self.config["delegators"][0][1]) == -1
-        assert self.okcli.withdraw_all_rewards_no_sim(self.config["delegators"][0][1]) == -1
-        assert self.okcli.submit_change_type_proposal_offchain_no_sim(self.config["delegators"][0][1]) == -1
-        assert self.okcli.submit_withdraw_reward_enabled_no_sim(self.config["delegators"][0][1]) == -1
-        assert self.okcli.edit_validator_rate_no_sim("0.5", "va4") == -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1], False) == -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.edit_validator_rate("0.5", "va4", False) == -1
 
         # 新的程序启动，区块升级之后，没有投票提案，仍然按照佣金100%提成计算，查询验证节点投票仍然可用，验证节点取款仍然有效
         assert self.okcli.get_ledger_seq() <= self.config["upgradeLedger"], str(self.okcli.get_ledger_seq())
@@ -1286,6 +1286,14 @@ class CaseDistrProposal:
         assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) == -1 # 无分红，正常
         assert self.okcli.proxy_reg(self.config["proxys"][5][1]) == -1
         assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) == -1
+
+        ## 禁止代理相关操作
+        assert self.okcli.query_tx(self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1], False)) == 167826
+        assert self.okcli.query_tx(self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False)) == 167826
+        assert self.okcli.query_tx(self.okcli.add_shares(self.vals4, self.config["delegators"][5][1], False)) == 111222  # 第二次，失败
+        assert self.okcli.query_tx(self.okcli.add_shares(self.vals4, self.config["proxys"][5][1], False)) == 111222 # 无分红，正常
+        assert self.okcli.query_tx(self.okcli.proxy_bind(self.config["proxys"][4][1], self.config["proxydelegators"][5][1], False)) == 111222
+
 
         # 发起投票提案，启用链上提取分红
         proposal_num = self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1])

@@ -19,6 +19,10 @@ OKCHAIN_TOP=/Users/oker/workspace/exchain
 ## ./testnet.sh
 --consensus.timeout_commit 1000ms \
 
+
+DefaultUnbondingTime time.Duration = time.Hour * 24 * 7 * 2
+DefaultUnbondingTime time.Duration = time.Hour
+
 ## okc.profile
 OKCHAIN_TOP=/Users/oker/workspace/exchain-raw/
 
