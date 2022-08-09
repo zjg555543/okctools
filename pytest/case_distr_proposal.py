@@ -122,10 +122,16 @@ class CaseDistrProposal:
         # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
         # self.okcli.query_total_rewards_gt(self.config["proxys"][1][1], self.config["vals"][1][3], 0)
         
+        # 验证节点设置0和1
+        # assert self.okcli.edit_validator_rate("0", "va1") != -1
+        # assert self.okcli.edit_validator_rate("1", "va2") != -1
+        # assert self.okcli.add_shares(self.vals2, self.config["proxys"][2][1]) != -1
+        # self.okcli.query_total_rewards_gt(self.config["proxys"][2][1], self.config["vals"][0][3], 1)
+        # assert len(self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][1][3])) == 0
 
+        # 查询节点区块高度是否一致
         splitArray = self.config["rpc"].split(":")
         url = splitArray[0] + ":" + splitArray[1]
-        
         ledger = int(self.okcli.get_ledger_seq())
         for i in range(self.config["nodeCount"]):
             port = 26657 + i * 100
@@ -1348,17 +1354,6 @@ class CaseDistrProposal:
 
     def extension(self):
         logging.info("------------------------cextension start--------------------------------")
-
-        ## 如果为16节点，验证0和1的情况
-        if len(self.config["vals"]) > 10:
-            assert self.okcli.edit_validator_rate("0", "va10") != -1
-            assert self.okcli.edit_validator_rate("1", "va11") != -1
-            rateTestVals = self.config["vals"][9][3] + "," + self.config["vals"][10][3]
-            assert self.okcli.add_shares(rateTestVals, self.config["proxys"][2][1]) != -1
-            self.okcli.query_total_rewards_gt(self.config["proxys"][2][1], self.config["vals"][10][3], 1)
-            rewards = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][9][3])[0]["amount"]
-            assert rewards == "0.000000000000000000"
-
 
         # 使用deledator取出代理分红
         dictDV = {}

@@ -17,6 +17,9 @@ OKCHAIN_TOP=/Users/oker/workspace/exchain
 
 # 老分支修改
 ## ./testnet.sh
+echorun exchaind testnet --v $1 --r $2 --equal-voting-power -o cache -l \
+
+
 --consensus.timeout_commit 1000ms \
 
 
