@@ -160,7 +160,13 @@ class CaseDistrProposal:
         assert result == self.config["oldVersion"], result
 
         # 迁移命令行和迁移文件夹，重新启动
-        result = self.okcli.run_cmd("rm -rf /Users/oker/workspace/nodes/; mkdir /Users/oker/workspace/nodes/;  cp -rf " + self.config["oldGitPath"] + "/dev/testnet/cache/* /Users/oker/workspace/nodes/")
+        if len(self.config["nodes"]) <= 0:
+            assert False
+        
+        if self.config["nodes"] == "/":
+            assert False
+
+        result = self.okcli.run_cmd("rm -rf " + self.config["nodes"] + "; mkdir " + self.config["nodes"] + ";  cp -rf " + self.config["oldGitPath"] + "/dev/testnet/cache/* " + self.config["nodes"])
 
         # 新版本编译
         result = self.okcli.run_cmd("cd " + self.config["newGitPath"] + "/dev/testnet/;./run4v1r.sh")
@@ -177,7 +183,7 @@ class CaseDistrProposal:
         assert result == self.config["newVersion"], result
         
 
-        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0)
+        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0, self.config["nodes"])
         
         logging.info("------------------------initChainBefore end--------------------------------")
 
@@ -229,7 +235,7 @@ class CaseDistrProposal:
         logging.info("------------------------initStakingBefore start--------------------------------")
         if self.single_debug:
             self.okcli.kill_all_process()
-            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0)
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0, self.config["nodes"])
             time.sleep(5)
         logging.info("------------------------initStakingBefore end--------------------------------")
 
@@ -294,7 +300,7 @@ class CaseDistrProposal:
         logging.info("------------------------upgrate_bin_staking_step1_before start--------------------------------")
 
         self.okcli.kill_all_process()
-        self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 2)
+        self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 2, self.config["nodes"])
         time.sleep(10)
 
         logging.info("------------------------upgrate_bin_staking_step1_before end--------------------------------")
@@ -324,7 +330,7 @@ class CaseDistrProposal:
     def upgrate_bin_staking_step2_before(self):
         logging.info("------------------------upgrate_bin_staking_step2_before start--------------------------------")
         self.okcli.kill_all_process()
-        self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+        self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
         time.sleep(10)
 
         logging.info("------------------------upgrate_bin_staking_step2_before end--------------------------------")
@@ -357,7 +363,7 @@ class CaseDistrProposal:
         logging.info("------------------------upgrate_ledger_staking_before start--------------------------------")
         if self.single_debug:
             self.okcli.kill_all_process()
-            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
             time.sleep(5)
 
         logging.info("------------------------upgrate_ledger_staking_before end--------------------------------")
@@ -440,7 +446,7 @@ class CaseDistrProposal:
         logging.info("------------------------after_distr_proposal_before start--------------------------------")
         if self.single_debug:
             self.okcli.kill_all_process()
-            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
             time.sleep(5)
         logging.info("------------------------after_distr_proposal_before start--------------------------------")
 
@@ -728,7 +734,7 @@ class CaseDistrProposal:
         logging.info("------------------------change_to_off_chain_before start--------------------------------")
         if self.single_debug:
             self.okcli.kill_all_process()
-            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
             time.sleep(5)
         logging.info("------------------------change_to_off_chain_before end--------------------------------")
 
@@ -882,7 +888,7 @@ class CaseDistrProposal:
     def change_to_on_chain_before(self):
         logging.info("------------------------change_to_on_chain_before start--------------------------------")
         if self.single_debug:
-            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
             time.sleep(5)
         
         
@@ -1252,7 +1258,7 @@ class CaseDistrProposal:
     def enabled_withdraw_reward_before(self):
         logging.info("------------------------enabled_withdraw_reward_before start--------------------------------")
         if self.single_debug:
-            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
             time.sleep(5)
         
         logging.info("------------------------enabled_withdraw_reward_before end--------------------------------")
@@ -1347,7 +1353,7 @@ class CaseDistrProposal:
     def extension_before(self):
         logging.info("------------------------cextension_before start--------------------------------")
         if self.single_debug:
-            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"])
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
             time.sleep(5)
         
         logging.info("------------------------cextension_before end--------------------------------")
@@ -1484,7 +1490,7 @@ if __name__ == '__main__':
         case.extension()
 
     elif opt == "start":
-        case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"], case.config["nodeCount"])
+        case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"], case.config["nodeCount"], self.config["nodes"])
     elif opt == "stop":
         case.okcli.kill_all_process()
     elif opt == "ps":

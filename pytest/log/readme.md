@@ -20,8 +20,6 @@ OKCHAIN_TOP=/Users/oker/workspace/exchain
 echorun exchaind testnet --v $1 --r $2 --equal-voting-power -o cache -l \
 
 
---consensus.timeout_commit 1000ms \
-
 
 DefaultUnbondingTime time.Duration = time.Hour * 24 * 7 * 2
 DefaultUnbondingTime time.Duration = time.Hour
