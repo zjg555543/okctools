@@ -83,11 +83,6 @@ class OKCli:
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 
-    # def copy_node(self, node_num):
-    #     cmd = "cp /Users/oker/go/bin//exchaind /Users/oker/workspace/nodes/node%d/exchaind/" % (node_num)
-    #     result = os.popen(cmd).read()
-    #     logging.info("result, cmd:" + cmd + ", result:" + result)
-
     def run_all_node(self, nums, block_time, newVersonNum, nodes):
         for i in range(nums):
             proName = "exchaind-dev"
@@ -426,21 +421,31 @@ class OKCli:
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 
-    def copy_node(self, toName):
-        cmd = "rm /Users/oker/go/bin//" + toName
+    def copy_node(self, toName, goBin):
+        if len(goBin) <= 0:
+            assert False
+        if goBin == "/":
+            assert False
+            
+        cmd = "rm " + goBin + toName
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
         
-        cmd = "cp /Users/oker/go/bin//exchaind /Users/oker/go/bin//" + toName
+        cmd = "cp " + goBin + "exchaind " + goBin + toName
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 
-    def copy_node_cli(self, toName):
-        cmd = "rm /Users/oker/go/bin//" + toName
+    def copy_node_cli(self, toName, goBin):
+        if len(goBin) <= 0:
+            assert False
+        if goBin == "/":
+            assert False
+
+        cmd = "rm " + goBin + toName
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
         
-        cmd = "cp /Users/oker/go/bin//exchaincli /Users/oker/go/bin//" + toName
+        cmd = "cp " + goBin + "exchaincli " + goBin + toName
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
 

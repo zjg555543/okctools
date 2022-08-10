@@ -151,11 +151,11 @@ class CaseDistrProposal:
         time.sleep(5)
         result = self.okcli.wait_ledger(1)
         result = self.okcli.kill_all_process()
-        self.okcli.copy_node("exchaind-dev")
+        self.okcli.copy_node("exchaind-dev", self.config["goBin"])
         result = self.okcli.version("exchaind-dev") 
         assert result == self.config["oldVersion"], result
 
-        self.okcli.copy_node_cli("exchaincli-dev")
+        self.okcli.copy_node_cli("exchaincli-dev", self.config["goBin"])
         result = self.okcli.version("exchaincli-dev") 
         assert result == self.config["oldVersion"], result
 
@@ -174,11 +174,11 @@ class CaseDistrProposal:
         result = self.okcli.wait_ledger(1)
         result = self.okcli.kill_all_process()
 
-        self.okcli.copy_node("exchaind-my")
+        self.okcli.copy_node("exchaind-my", self.config["goBin"])
         result = self.okcli.version("exchaind-my") 
         assert result == self.config["newVersion"], result
 
-        self.okcli.copy_node_cli("exchaincli-my")
+        self.okcli.copy_node_cli("exchaincli-my", self.config["goBin"])
         result = self.okcli.version("exchaincli-my") 
         assert result == self.config["newVersion"], result
         
@@ -1490,7 +1490,7 @@ if __name__ == '__main__':
         case.extension()
 
     elif opt == "start":
-        case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"], case.config["nodeCount"], self.config["nodes"])
+        case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"], case.config["nodeCount"], case.config["nodes"])
     elif opt == "stop":
         case.okcli.kill_all_process()
     elif opt == "ps":
