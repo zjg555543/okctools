@@ -1026,7 +1026,14 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
         assert len(result) > 0, result
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        # unreg 也会分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt(self.config["proxys"][2][1], self.config["vals"][0][3], 0)
         assert self.okcli.unreg(self.config["proxys"][2][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        addValue = self.format_decimal(after) - self.format_decimal(before)
+        assert addValue >= 1
         self.okcli.wait_ledger_than(2)
         result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
         self.assert_compare_near(result["total"][0]["amount"], 1)
@@ -1036,7 +1043,14 @@ class CaseDistrProposal:
         # 重新注册 proxy3 代理，分红仍然正常
         assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][2][1]) != -1
         assert self.okcli.add_shares(self.vals3, self.config["proxys"][2][1]) != -1
+        # reg也会分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt(self.config["proxys"][2][1], self.config["vals"][0][3], 0)
         assert self.okcli.proxy_reg(self.config["proxys"][2][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        addValue = self.format_decimal(after) - self.format_decimal(before)
+        assert addValue >= 1
         assert self.okcli.proxy_bind(self.config["proxys"][2][1], self.config["proxydelegators"][2][1]) != -1
         self.okcli.wait_ledger_than(2)
         resultProxydelegator3 = self.okcli.query_shares(self.config["proxydelegators"][2][1])
@@ -1206,6 +1220,15 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["delegators"][4][1], self.config["vaadmin16"])
         assert len(result) == 0, result
 
+        # add shares会进行分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][0][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt(self.config["proxys"][0][1], self.config["vals"][0][3], 0)
+        assert self.okcli.add_shares(self.vals3, self.config["proxys"][0][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        addValue = self.format_decimal(after) - self.format_decimal(before)
+        assert addValue >= 1
+
         # 查询抽成正常
         ledger = self.okcli.get_ledger_seq()
         result = self.okcli.query_commission(self.config["vals"][0][3], ledger)
@@ -1328,23 +1351,30 @@ class CaseDistrProposal:
         # 注册代理成功
         assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) != -1
         assert self.okcli.proxy_reg(self.config["proxys"][5][1]) != -1
+        # bind也会进行分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt(self.config["proxys"][5][1], self.config["vals"][0][3], 0)
         assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
-
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        addValue = self.format_decimal(after) - self.format_decimal(before)
+        assert addValue >= 1
+        
         # proxy5 取出va2的分红
         self.okcli.query_total_rewards_gt(self.config["proxys"][5][1], self.config["vals"][1][3], 0)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
-        beforeAmount = self.okcli.query_account(self.config["proxys"][5][1])
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
-        afterAmount = self.okcli.query_account(self.config["proxys"][5][1])
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
         assert (self.format_decimal(afterAmount)- (self.format_decimal(beforeAmount)) >= self.format_decimal(rewards))
 
         # proxy5 unbind 分红
         self.okcli.query_total_rewards_gt(self.config["proxys"][5][1], self.config["vals"][1][3], 0)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
-        beforeAmount = self.okcli.query_account(self.config["proxys"][5][1])
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
-        afterAmount = self.okcli.query_account(self.config["proxys"][5][1])
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
         assert (self.format_decimal(afterAmount)- (self.format_decimal(beforeAmount)) >= self.format_decimal(rewards))
         

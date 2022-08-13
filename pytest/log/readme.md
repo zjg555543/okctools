@@ -14,6 +14,8 @@ OKCHAIN_TOP=/Users/oker/workspace/exchain
 ## testnet.sh
 (cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus3Height=200)
 
+DefaultUnbondingTime time.Duration = time.Hour * 24 * 7 * 2
+DefaultUnbondingTime time.Duration = time.Hour
 
 # 老分支修改
 ## ./testnet.sh
