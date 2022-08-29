@@ -207,12 +207,18 @@ class OKCli:
         cmd = "exchaincli tx distr withdraw-all-rewards --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
-    def create_validator(self, from_name):
-        cmd = 'exchaincli tx staking create-validator --pubkey=$(exchaind tendermint show-validator) --moniker="zzzzzzzz" --from ' + from_name + ' --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y'  + self.node_rpc
+    def create_validator(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = 'exchaincli tx staking create-validator --pubkey=$(exchaind tendermint show-validator) --moniker="zzzzzzzz" --from ' + from_name + gas + '  --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y'  + self.node_rpc
         return self.run_tx(cmd)
     
-    def edit_validator(self, details, from_name):
-        cmd = "exchaincli tx staking edit-validator --details " + details + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def edit_validator(self, details, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking edit-validator --details " + details + " --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
     def edit_validator_rate(self, rate, from_name, sim=True):
@@ -484,12 +490,18 @@ class OKCli:
         cmd = "exchaincli tx distr set-withdraw-addr " + new_addr + " --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
-    def withdraw(self, amount, from_name):
-        cmd = "exchaincli tx staking withdraw " + str(amount) + "okt --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def withdraw(self, amount, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking withdraw " + str(amount) + "okt --from " + from_name  + gas + "  --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
-    def unreg(self, from_name):
-        cmd = "exchaincli tx staking  proxy unreg --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def unreg(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking  proxy unreg --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
     def format_decimal(self, num):

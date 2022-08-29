@@ -97,6 +97,8 @@ class CaseDistrProposal:
         self.extension_before()
         self.extension()
 
+        self.test()
+
     
     def test(self):
         # self.okcli.copy_node(1, "v1.6.3")
@@ -128,6 +130,26 @@ class CaseDistrProposal:
         # assert self.okcli.add_shares(self.vals2, self.config["proxys"][2][1]) != -1
         # self.okcli.query_total_rewards_gt(self.config["proxys"][2][1], self.config["vals"][0][3], 1)
         # assert len(self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][1][3])) == 0
+
+        ## 取出所有质押
+        for d in self.config["delegators"]:
+            result = self.okcli.query_shares(d[1])
+            if "tokens" in result:
+                self.okcli.withdraw(self.format_decimal(result["tokens"]), d[0], False)
+        for p in self.config["proxydelegators"]:
+            result = self.okcli.query_shares(p[1])
+            if "tokens" in result:
+                self.okcli.withdraw(self.format_decimal(result["tokens"]), p[0], False)
+        for p in self.config["proxys"]:
+            self.okcli.unreg(p[1], False)
+        for p in self.config["proxys"]:
+            result = self.okcli.query_shares(p[1])
+            if "tokens" in result:
+                self.okcli.withdraw(self.format_decimal(result["tokens"]), p[0], False)
+        for v in self.config["vals"]:
+            result = self.okcli.query_shares(v[1])
+            if "tokens" in result:
+                self.okcli.withdraw(self.format_decimal(result["tokens"]), v[0], False)
 
         # 查询节点区块高度是否一致
         splitArray = self.config["rpc"].split(":")
@@ -454,7 +476,7 @@ class CaseDistrProposal:
         # 11111
         logging.info("------------------------after_distr_proposal start--------------------------------")
         # 发起投票提案，修改提案，此时分红比例默认为100%，各个接口可以使用，验证节点查询抽成，提取抽成正常；委托人查询分红为0；代理人查询为0，无法提取抽成；
-        self.okcli.wait_ledger(65)
+        self.okcli.wait_ledger(200)
         proposal_num = self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1])
         for n in self.config["delegators"]:
             self.okcli.vote(n[1], proposal_num)
