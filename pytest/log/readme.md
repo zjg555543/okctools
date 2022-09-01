@@ -12,14 +12,14 @@ Version=v1.6.3
 OKCHAIN_TOP=/Users/oker/workspace/exchain
 
 ## testnet.sh
-(cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus3Height=200)
+(cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus2Height=200)
 
 DefaultUnbondingTime time.Duration = time.Hour * 24 * 7 * 2
 DefaultUnbondingTime time.Duration = time.Hour
 
 # 老分支修改
 ## ./testnet.sh
-echorun exchaind testnet --v $1 --r $2 --equal-voting-power -o cache -l \
+echorun exchaind testnet --v $1 --r $2 --equal-voting-power=true -o cache -l \
 
 
 

@@ -151,6 +151,9 @@ class OKCli:
     def submit_change_type_proposal_onchain(self, from_name):
         cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-1.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+
         cmd = " exchaincli query tx " + tx  + self.node_rpc
         result = os.popen(cmd).read()
         result_obj = json.loads(result)
@@ -170,11 +173,26 @@ class OKCli:
         cmd = " exchaincli query tx " + tx  + self.node_rpc
         result = os.popen(cmd).read()
         result_obj = json.loads(result)
+        if "code" in result_obj:
+            return result_obj["code"]
+
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
     def submit_withdraw_reward_disabled(self, from_name):
         cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-disabled.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+        cmd = " exchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+
+    def submit_community_pool_spend(self, from_name):
+        cmd = "exchaincli tx gov submit-proposal community-pool-spend proposal-community-pool-spend.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
         cmd = " exchaincli query tx " + tx  + self.node_rpc
         result = os.popen(cmd).read()
         result_obj = json.loads(result)
