@@ -148,8 +148,11 @@ class OKCli:
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
-    def submit_change_type_proposal_onchain(self, from_name):
-        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-1.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def submit_change_type_proposal_onchain(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-1.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
         if tx == -1:
             return -1
@@ -178,8 +181,12 @@ class OKCli:
 
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
-    def submit_withdraw_reward_disabled(self, from_name):
-        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-disabled.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+    def submit_withdraw_reward_disabled(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        
+        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-disabled.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
         if tx == -1:
             return -1
@@ -205,6 +212,15 @@ class OKCli:
             return
 
         cmd = "exchaincli tx gov vote " + str(num) + " yes --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        return self.run_tx(cmd)
+    
+    def vote_deposit(self, from_name, num, okt):
+        result = self.query_proposal(num)
+        if result != "DepositPeriod":
+            logging.info("proposal result:" + num + ", from_name:" + from_name + ", result" + result)
+            return
+
+        cmd = "exchaincli tx gov deposit " + str(num) + " " + str(okt) + "okt --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
     def withdraw_commission(self, val, from_name):

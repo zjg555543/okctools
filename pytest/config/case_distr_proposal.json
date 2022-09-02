@@ -11,7 +11,7 @@
     "rpc": "http://127.0.0.1:26657", 
     "nodeCount": 5,
     "ledgerTime":1000,
-    "upgradeLedger": 200,
+    "upgradeLedger": 400,
     "singleDebug": false,
     "chainId": "exchain-67",
     "val_recover_996": true,
@@ -161,6 +161,47 @@
         ]
     ],
     "captain":"ex1h0j8x0v9hs4eq6ppgamemfyu4vuvp2sl0q9p3v",
+    "captain-mnemonic":"puzzle glide follow cruel say burst deliver wild tragic galaxy lumber offer",
     "withdrawaddress":"ex1j0pa7dddqyt2kmpaepey0zxuw9d6ap82xgvqt5",
-    "mnemonicwithdrawaddress":"issue vessel merit violin wing glove original method census clever visit pipe"
+    "mnemonicwithdrawaddress":"issue vessel merit violin wing glove original method census clever visit pipe",
+
+    "exaccounts":{
+        "delegator-ex0":[
+            "ex1kk9v4g5uel5zwz074eewgty5qe94g2xe2fdyqr",
+            "weasel salad tortoise slogan submit explain axis budget private zoo swift dizzy"
+        ],
+        "delegator-ex1":[
+            "ex1y9ah7y6uwrk22w4ywkewt75aqywl22lqpct6sr",
+            "style panel humble level name similar nerve replace install elephant raven length"
+        ],
+        "delegator-ex2":[
+            "ex1za682ppaqpaetp3gy6kyt6ytuqng7374wcmssj",
+            "arrange maple title crater comic way ginger client benefit weapon labor bless"
+        ],
+        "proxydelegator-ex0":[
+            "ex1m63zsy0qm3222m882nfl6q4du35x5z7332m839",
+            "oppose away powder pole country tiny okay arrest sweet soup noodle play"
+        ],
+        "proxydelegator-ex1":[
+            "ex1vmvnpv3xgjkuzmcy0ckyyfsqseld52d3k2jlm5",
+            "loan curious bean keen churn ozone frog shine immense venue stumble hazard"
+        ],
+        "proxydelegator-ex2":[
+            "ex1wxp8zy2h5p3h4hvhj37cl077e527ejmpy7gjjg",
+            "ready never banana artwork manual marriage fabric tail layer oven three release"
+        ],
+        "proxy-ex0":[
+            "ex19smjqq09gqq3ruyreuleym3wk9u8ej5k2f3glq",
+            "liquid recipe jaguar witness evoke arch cart finish allow crater pyramid ostrich"
+        ],
+        "proxy-ex1":[
+            "ex1r5wxs27r86luslrkvfhh20032clyl8vawhqu4k",
+            "myth fringe rack kingdom walnut glow domain secret athlete camera federal lumber"
+        ],
+        "proxy-ex2":[
+            "ex14udvcrudchrdqy5h6vm93fnvk223w7fsq48drx",
+            "course rotate soon space donkey radio model ride draft drastic minimum crush"
+        ]
+    }
+    
 }

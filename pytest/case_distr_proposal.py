@@ -227,6 +227,18 @@ class CaseDistrProposal:
                 self.okcli.recover_val(v[0], v[2])
             else:
                 self.okcli.recover(v[0], v[2])
+
+        self.okcli.recover("captain",  self.config["captain-mnemonic"])
+        self.okcli.recover("delegator-ex0",  self.config["exaccounts"]["delegator-ex0"][1])
+        self.okcli.recover("delegator-ex1",  self.config["exaccounts"]["delegator-ex1"][1])
+        self.okcli.recover("delegator-ex2",  self.config["exaccounts"]["delegator-ex2"][1])
+        self.okcli.recover("proxydelegator-ex0",  self.config["exaccounts"]["proxydelegator-ex0"][1])
+        self.okcli.recover("proxydelegator-ex1",  self.config["exaccounts"]["proxydelegator-ex1"][1])
+        self.okcli.recover("proxydelegator-ex2",  self.config["exaccounts"]["proxydelegator-ex2"][1])
+        self.okcli.recover("proxy-ex0",  self.config["exaccounts"]["proxy-ex0"][1])
+        self.okcli.recover("proxy-ex1",  self.config["exaccounts"]["proxy-ex1"][1])
+        self.okcli.recover("proxy-ex2",  self.config["exaccounts"]["proxy-ex2"][1])
+
         for v in self.config["delegators"]:
             assert self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"]) != -1
         for v in self.config["proxys"]:
@@ -235,6 +247,16 @@ class CaseDistrProposal:
             assert self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"]) != -1
         assert self.okcli.transfer(self.config["captain"], self.config["vaAddadmin16"], self.config["initCoin"]) != -1
         
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex0"][0], self.config["initCoin"]) != -1
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex1"][0], self.config["initCoin"]) != -1
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex2"][0], self.config["initCoin"]) != -1
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxydelegator-ex0"][0], self.config["initCoin"]) != -1
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxydelegator-ex1"][0], self.config["initCoin"]) != -1
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxydelegator-ex2"][0], self.config["initCoin"]) != -1
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxy-ex0"][0], self.config["initCoin"]) != -1
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxy-ex1"][0], self.config["initCoin"]) != -1
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxy-ex2"][0], self.config["initCoin"]) != -1
+
         def do(account):
             result = self.okcli.query_account(account)
             assert self.format_decimal(result) > 0, result
@@ -329,14 +351,43 @@ class CaseDistrProposal:
 
     def upgrate_bin_staking_step1(self):
         logging.info("------------------------upgrate_bin_staking_step1 start--------------------------------")
-        
+        # 只升级两个节点，保证新老交易不会产生smb
         # 发送新的交易，确保交易不会上链以及出现smb
         assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1], False) == -1
         assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False) == -1
         assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1], False) == -1
         assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == -1
-        assert self.okcli.submit_withdraw_reward_enabled(self.config["vals"][0][1], False) == -1
+        assert self.okcli.submit_withdraw_reward_disabled(self.config["vals"][0][1], False) == -1
         assert self.okcli.edit_validator_rate("0.5", "va4", False) == -1
+
+        # 发送老的交易，不会出现smb
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex0"][0], self.config["initCoin"]) != -1
+        assert self.okcli.deposit(10, self.config["exaccounts"]["delegator-ex0"][0]) != -1
+        assert self.okcli.deposit(10, self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
+        assert self.okcli.deposit(10, self.config["exaccounts"]["proxy-ex0"][0]) != -1
+        assert self.okcli.add_shares(self.vals2, self.config["exaccounts"]["proxy-ex0"][0]) != -1
+        assert self.okcli.proxy_reg(self.config["exaccounts"]["proxy-ex0"][0]) != -1
+        assert self.okcli.proxy_bind(self.config["exaccounts"]["proxy-ex0"][0], self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
+        assert self.okcli.proxy_unbind(self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
+        assert self.okcli.unreg(self.config["exaccounts"]["proxy-ex0"][0]) != -1
+        assert self.okcli.withdraw(10, self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["exaccounts"]["delegator-ex0"][0]) != -1
+        assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
+        assert self.okcli.edit_validator("zzzzzzzz", "va2") != -1
+        proposal_num = self.okcli.submit_community_pool_spend(self.config["exaccounts"]["delegator-ex0"][0])
+        self.okcli.vote_deposit(self.config["exaccounts"]["delegator-ex0"][0], proposal_num, "100")
+        assert int(proposal_num) > 0
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
+        self.okcli.vote(self.config["exaccounts"]["delegator-ex0"][0], proposal_num)
+        self.okcli.vote(self.config["exaccounts"]["proxydelegator-ex0"][0], proposal_num)
+        self.okcli.vote(self.config["exaccounts"]["proxy-ex0"][0], proposal_num)
 
         # 质押delegator2 10000 okt，投票给va1
         assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][1][1]) != -1
