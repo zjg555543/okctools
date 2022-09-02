@@ -6,29 +6,16 @@
 # 新分支修改
 ## makefile 文件修改
 Version=v1.6.3
-
-
 ## okc.profile
 OKCHAIN_TOP=/Users/oker/workspace/exchain
-
 ## testnet.sh
 (cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus2Height=200)
-
-DefaultUnbondingTime time.Duration = time.Hour * 24 * 7 * 2
-DefaultUnbondingTime time.Duration = time.Hour
 
 # 老分支修改
 ## ./testnet.sh
 echorun exchaind testnet --v $1 --r $2 --equal-voting-power=true -o cache -l \
-
-
-
-DefaultUnbondingTime time.Duration = time.Hour * 24 * 7 * 2
-DefaultUnbondingTime time.Duration = time.Hour
-
 ## okc.profile
 OKCHAIN_TOP=/Users/oker/workspace/exchain-raw/
-
 
 
 - 所有账户要初始化，包括验证节点
