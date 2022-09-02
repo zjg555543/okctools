@@ -1,8 +1,9 @@
 {
-    "devGitPath": "/Users/oker/workspace/exchain-raw",
-    "newGitPaht":"/Users/oker/workspace/exchain",
+    "oldGitPath": "/Users/oker/workspace/exchain-raw",
+    "newGitPath":"/Users/oker/workspace/exchain",
     "oldVersion": "v1.6.2",
     "newVersion": "v1.6.3",
+    "goBin":"/Users/oker/go/bin/",
     "nodes":"/Users/oker/workspace/nodes/",
     "initCoin": 1000000,
     "depoistCoin": 10000,
@@ -10,8 +11,9 @@
     "rpc": "http://52.199.88.250:26657", 
     "nodeCount": 5,
     "ledgerTime":1000,
-    "upgradeLedger": 78000,
+    "upgradeLedger": 7000,
     "singleDebug": false,
+    "chainId": "exchain-64",
     "val_recover_996": false,
     "vals":[
         [

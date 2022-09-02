@@ -22,6 +22,10 @@ OKCHAIN_TOP=/Users/oker/workspace/exchain-raw/
 - 导入超级节点账户私钥要注意格式
 
 
+CAPTAIN_MNEMONIC="resource eyebrow twelve private raccoon mass renew clutch when monster taste tide"
+
+exchaincli keys add --recover delegator1 -m "resource eyebrow twelve private raccoon mass renew clutch when monster taste tide" -y
+
 - delegator 10 操作记录
 
 exchaincli tx staking add-shares exvaloper1pt7xrmxul7sx54ml44lvv403r06clrdkehd8z7,exvaloper1q6ls3h64gkxq0r73u2eqwwr7d5mp583fm325zu,exvaloper1ve4mwgq9967gk338yptsg2fheur4ke322gzynt,exvaloper1gd6avvrg0jp5wxpfyfa4c84fygtl6cn9dage6d --from ex10t7hhfjya9k7yn9ymdg79n68zeuk224xn27fx8 --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y
