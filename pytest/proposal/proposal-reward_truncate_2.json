@@ -1,0 +1,9 @@
+{
+	"title": "Set reward truncated precision",
+	"description": "Set distribution reward truncated precision",
+	"deposit": [{
+		"denom": "okt",
+		"amount": "100.000000000000000000"
+	}],
+	"precision": "2"
+}
