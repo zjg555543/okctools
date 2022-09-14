@@ -40,6 +40,25 @@ class CaseDistrProposal:
         # self.okcli.query_proxy("ex1fye6qatnuxc4lprwpwzrza382dyp3xgkjqh6eh")
 
 
+    def voting(self):
+        # delegatorsMap = {}
+
+        validators = self.okcli.query_staking_validators()
+        for v in validators:
+            delegators = self.okcli.query_shares_added_to(v["operator_address"])
+            logging.info("debug-validator:" + v["operator_address"] + "\r" + "delegators:" + str(delegators))
+            if delegators == -1 or delegators == None:
+                continue
+
+            for d in delegators:
+                dInfo = self.okcli.query_shares(d["delegator_address"])
+                # if d["delegator_address"] in delegatorsMap:
+                #     # logging.info("debug-delegator-exsit: v:" + v["operator_address"] + "\r, dInfo:" + str(dInfo))
+                #     continue
+
+                # delegatorsMap[d["delegator_address"]] = True
+                logging.info("debug-delegator: v:" + v["operator_address"] + "\r, dInfo:" + str(dInfo))
+
     def exit(self, stop = True):
         #if stop:
             #case.okcli.kill_process("exchaind")
@@ -60,6 +79,9 @@ if __name__ == '__main__':
 
     if opt == "test":
         case.test()
+
+    if opt == "voting":
+        case.voting()
 
     elif opt == "start":
         case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"])

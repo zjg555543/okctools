@@ -138,7 +138,7 @@ class OKCli:
         gas = " --gas auto "
         if sim == False:
             gas = " --gas=30000000 "
-        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-0.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal/proposal-change-distr-type-0.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
         if tx == -1:
             return -1
@@ -152,7 +152,7 @@ class OKCli:
         gas = " --gas auto "
         if sim == False:
             gas = " --gas=30000000 "
-        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal-change-distr-type-1.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        cmd = "exchaincli tx gov submit-proposal change-distr-type proposal/proposal-change-distr-type-1.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
         if tx == -1:
             return -1
@@ -168,7 +168,7 @@ class OKCli:
         if sim == False:
             gas = " --gas=30000000 "
 
-        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-enabled.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal/proposal-withdraw-enabled.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
         if tx == -1:
             return -1
@@ -186,7 +186,35 @@ class OKCli:
         if sim == False:
             gas = " --gas=30000000 "
         
-        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal-withdraw-disabled.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        cmd = "exchaincli tx gov submit-proposal withdraw-reward-enabled proposal/proposal-withdraw-disabled.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+        cmd = " exchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+
+    def submit_reward_truncate_2(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        
+        cmd = "exchaincli tx gov submit-proposal reward-truncate-precision proposal/proposal-reward_truncate_2.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+        cmd = " exchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+
+    def submit_reward_truncate_0(self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        
+        cmd = "exchaincli tx gov submit-proposal reward-truncate-precision proposal/proposal-reward_truncate_0.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
         if tx == -1:
             return -1
@@ -196,7 +224,7 @@ class OKCli:
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
     def submit_community_pool_spend(self, from_name):
-        cmd = "exchaincli tx gov submit-proposal community-pool-spend proposal-community-pool-spend.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        cmd = "exchaincli tx gov submit-proposal community-pool-spend proposal/proposal-community-pool-spend.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
         if tx == -1:
             return -1
@@ -276,13 +304,15 @@ class OKCli:
         return result_obj
 
     def query_shares(self, delegator):
-        cmd = " exchaincli query staking delegator " + delegator  + self.node_rpc
-        result = os.popen(cmd).read()
-        logging.info("result, cmd:" + cmd + ", result:" + result)
-
-        result_obj = json.loads(result)
-
-        return result_obj
+        for i in range(10):
+            try: 
+                cmd = " exchaincli query staking delegator " + delegator  + self.node_rpc
+                result = os.popen(cmd).read()
+                logging.info("result, cmd:" + cmd + ", result:" + result)
+                result_obj = json.loads(result)
+                return result_obj
+            except: 
+                time.sleep(1)
 
     def query_proxy(self, delegator):
         cmd = " exchaincli query staking proxy " + delegator  + self.node_rpc
@@ -382,6 +412,31 @@ class OKCli:
                 logging.error(result)
             time.sleep(1)
 
+    def query_total_rewards_gt_precision2(self, delegator, validator, amount):
+        while True:
+            cmd = " exchaincli query distr rewards   " + delegator +  " " + validator  + self.node_rpc
+            result = os.popen(cmd).read()
+            logging.info("result, cmd:" + cmd + ", result:" + result)
+            
+            try:
+                if len(validator) > 0:
+                    result_obj = json.loads(result)
+                    a = self.format_decimal_precision2(result_obj[0]["amount"])
+                    b = self.format_decimal_precision2(amount)
+                    logging.info("a:" + str(result_obj[0]["amount"]) + ",b:" + str(amount))
+                    if a > b:
+                        break
+                else:
+                    result_obj = json.loads(result)
+                    a = self.format_decimal_precision2(result_obj["total"][0]["amount"])
+                    b = self.format_decimal_precision2(amount)
+                    logging.info("a:" + str(result_obj["total"][0]["amount"]) + ",b:" + str(amount))
+                    if a > b:
+                        break
+            except:
+                logging.error(result)
+            time.sleep(1)
+
     def query_withdraw(self, address):
         cmd = " exchaincli query distr withdraw-addr   " + address  + self.node_rpc
         result = os.popen(cmd).read()
@@ -438,15 +493,16 @@ class OKCli:
             time.sleep(1)
 
     def query_shares_added_to(self, val):
-        cmd = " exchaincli query staking shares-added-to   " + val + " " + self.node_rpc
-        result = os.popen(cmd).read()
-        logging.info("result, cmd:" + cmd + ", result:" + result)
-        try:
-            result_obj = json.loads(result)
-        except:
-            return -1
-
-        return result_obj
+        for i in range(10):
+            try:
+                cmd = " exchaincli query staking shares-added-to   " + val + " " + self.node_rpc
+                result = os.popen(cmd).read()
+                logging.info("result, cmd:" + cmd + ", result:" + result)
+                result_obj = json.loads(result)
+                return result_obj
+            except:
+                time.sleep(1)
+            
 
     def query_distr_params(self):
         cmd = " exchaincli query distr params   "  + self.node_rpc
@@ -545,4 +601,11 @@ class OKCli:
             return int(a)
         else:
             return int(str_num)
+    
+    def format_decimal_precision2(self, num):
+        str_num = str(num)
+        if "." in str_num:
+            return float(str_num[0:(str_num.index('.')+3)])
+        else:
+            return float(str_num)
 

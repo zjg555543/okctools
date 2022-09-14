@@ -38,6 +38,13 @@ class CaseDistrProposal:
         else:
             return int(str_num)
 
+    def format_decimal_precision2(self, num):
+        str_num = str(num)
+        if "." in str_num:
+            return float(str_num[0:(str_num.index('.')+3)])
+        else:
+            return float(str_num)
+
     def assert_compare_near(self, num1, num2):
         a = self.format_decimal(num1)
         b = self.format_decimal(num2)
@@ -92,6 +99,10 @@ class CaseDistrProposal:
         # 阶段八，禁用启用提取分红
         self.enabled_withdraw_reward_before()
         self.enabled_withdraw_reward()
+
+        # 阶段九，禁用启用提取分红
+        self.reward_truncate_before()
+        self.reward_truncate()
 
         # 阶段九，补充测试用例
         self.extension_before()
@@ -357,9 +368,13 @@ class CaseDistrProposal:
         assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False) == -1
         assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1], False) == -1
         assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_offchain(self.config["vals"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["vals"][0][1], False) == -1
         assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == -1
         assert self.okcli.submit_withdraw_reward_disabled(self.config["vals"][0][1], False) == -1
         assert self.okcli.edit_validator_rate("0.5", "va4", False) == -1
+        assert self.okcli.submit_reward_truncate_0(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_reward_truncate_0(self.config["vals"][0][1], False) == -1
 
         # 发送老的交易，不会出现smb
         assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex0"][0], self.config["initCoin"]) != -1
@@ -454,8 +469,13 @@ class CaseDistrProposal:
         assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1], False) == -1
         assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False) == -1
         assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_offchain(self.config["vals"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["vals"][0][1], False) == -1
         assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == -1
         assert self.okcli.submit_withdraw_reward_enabled(self.config["vals"][0][1], False) == -1
+        assert self.okcli.submit_reward_truncate_0(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_reward_truncate_0(self.config["vals"][0][1], False) == -1
         assert self.okcli.edit_validator_rate("0.5", "va4", False) == -1
 
         # 新的程序启动，区块升级之后，没有投票提案，仍然按照佣金100%提成计算，查询验证节点投票仍然可用，验证节点取款仍然有效
@@ -1478,6 +1498,129 @@ class CaseDistrProposal:
         
         logging.info("------------------------enabled_withdraw_reward end--------------------------------")
 
+    def reward_truncate_before(self):
+        logging.info("------------------------reward_truncate_before start--------------------------------")
+        if self.single_debug:
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
+            time.sleep(5)
+        
+        logging.info("------------------------reward_truncate_before end--------------------------------")
+
+    def reward_truncate(self):
+        logging.info("------------------------reward_truncate start--------------------------------")
+
+        # 普通人无法发起提案
+        assert self.okcli.submit_reward_truncate_2(self.config["delegators"][0][1]) == -1
+
+        result = self.okcli.query_distr_params()
+        assert result["reward_truncate_precision"] == "0", result
+        # 发起分红截断提案，精度为 2
+        proposal_num = self.okcli.submit_reward_truncate_2(self.config["vals"][0][1])
+        self.okcli.query_proposal(proposal_num)
+        
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
+
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
+
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
+
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_distr_params()
+        assert result["reward_truncate_precision"] == "2", result
+        
+        # 先取出分红
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+
+        # bind也会进行分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt_precision2(self.config["proxys"][5][1], self.config["vals"][0][3], 0)
+        assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        addValue = self.format_decimal_precision2(after) - self.format_decimal_precision2(before)
+        assert addValue < 1, addValue
+        assert addValue > 0.1, addValue
+        
+        # proxy5 取出va2的分红
+        self.okcli.query_total_rewards_gt_precision2(self.config["proxys"][5][1], self.config["vals"][1][3], 0)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        assert (self.format_decimal_precision2(afterAmount)- (self.format_decimal_precision2(beforeAmount)) >= self.format_decimal_precision2(rewards))
+        assert float(rewards) > 0.01, rewards
+        assert float(rewards) < 1, rewards
+        assert (self.format_decimal_precision2(afterAmount)- (self.format_decimal_precision2(beforeAmount)) <= 1)
+
+        # proxy5 unbind 分红
+        self.okcli.query_total_rewards_gt_precision2(self.config["proxys"][5][1], self.config["vals"][1][3], 0)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        assert (self.format_decimal_precision2(afterAmount)- (self.format_decimal_precision2(beforeAmount)) >= self.format_decimal_precision2(rewards))
+        assert float(rewards) > 0.01, rewards
+        assert float(rewards) < 1, rewards
+        assert (self.format_decimal_precision2(afterAmount)- (self.format_decimal_precision2(beforeAmount)) <= 1)
+
+        # 发起分红截断提案，精度为 0
+        proposal_num = self.okcli.submit_reward_truncate_0(self.config["vals"][0][1])
+        self.okcli.query_proposal(proposal_num)
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
+
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
+
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
+
+        self.okcli.query_proposal(proposal_num)
+
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_distr_params()
+        assert result["reward_truncate_precision"] == "0", result
+
+         # 先取出分红
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+
+        # bind也会进行分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt(self.config["proxys"][5][1], self.config["vals"][0][3], 0)
+        assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        addValue = self.format_decimal(after) - self.format_decimal(before)
+        assert addValue >= 1, addValue
+        
+        # proxy5 取出va2的分红
+        self.okcli.query_total_rewards_gt(self.config["proxys"][5][1], self.config["vals"][1][3], 0)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        assert (self.format_decimal(afterAmount)- (self.format_decimal(beforeAmount)) >= self.format_decimal(rewards))
+        assert rewards >= 1, rewards
+
+        # proxy5 unbind 分红
+        self.okcli.query_total_rewards_gt(self.config["proxys"][5][1], self.config["vals"][1][3], 0)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        assert (self.format_decimal(afterAmount)- (self.format_decimal(beforeAmount)) >= self.format_decimal(rewards))
+        assert rewards >= 1, rewards
+        
+        logging.info("------------------------reward_truncate end--------------------------------")
+
     def extension_before(self):
         logging.info("------------------------extension_before start--------------------------------")
         if self.single_debug:
@@ -1614,6 +1757,11 @@ if __name__ == '__main__':
         case.enabled_withdraw_reward_before()
     elif opt == "enabled_withdraw_reward":
         case.enabled_withdraw_reward()
+
+    elif opt == "reward_truncate_before":
+        case.reward_truncate_before()
+    elif opt == "reward_truncate":
+        case.reward_truncate()
 
     elif opt == "extension_before":
         case.extension_before()
