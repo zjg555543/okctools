@@ -11,7 +11,7 @@
     "rpc": "http://52.199.88.250:26657", 
     "nodeCount": 5,
     "ledgerTime":1000,
-    "upgradeLedger": 5500,
+    "upgradeLedger": 5200,
     "singleDebug": false,
     "chainId": "exchain-64",
     "val_recover_996": false,

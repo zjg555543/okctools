@@ -273,7 +273,7 @@ class OKCli:
         gas = " --gas auto "
         if sim == False:
             gas = " --gas=30000000 "
-        cmd = 'exchaincli tx staking create-validator --pubkey=$(exchaind tendermint show-validator) --moniker="zzzzzzzz" --from ' + from_name + gas + '  --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y'  + self.node_rpc
+        cmd = 'exchaincli tx staking create-validator --pubkey=$(exchaind tendermint show-validator) --moniker="test0916" --from ' + from_name + gas + '  --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y'  + self.node_rpc
         return self.run_tx(cmd)
     
     def edit_validator(self, details, from_name, sim=True):
