@@ -242,6 +242,15 @@ class OKCli:
         cmd = "exchaincli tx gov vote " + str(num) + " yes --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
     
+    def vote_no(self, from_name, num):
+        result = self.query_proposal(num)
+        if result == "Passed":
+            logging.info("passed proposal:" + num + ", from_name:" + from_name)
+            return
+
+        cmd = "exchaincli tx gov vote " + str(num) + " no --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        return self.run_tx(cmd)
+    
     def vote_deposit(self, from_name, num, okt):
         result = self.query_proposal(num)
         if result != "DepositPeriod":
@@ -387,32 +396,32 @@ class OKCli:
         except:
             return -1
 
-    def query_total_rewards_gt(self, delegator, validator, amount):
-        while True:
-            cmd = " exchaincli query distr rewards   " + delegator +  " " + validator  + self.node_rpc
-            result = os.popen(cmd).read()
-            logging.info("result, cmd:" + cmd + ", result:" + result)
+    # def query_total_rewards_gt(self, delegator, validator, amount):
+    #     while True:
+    #         cmd = " exchaincli query distr rewards   " + delegator +  " " + validator  + self.node_rpc
+    #         result = os.popen(cmd).read()
+    #         logging.info("result, cmd:" + cmd + ", result:" + result)
             
-            try:
-                if len(validator) > 0:
-                    result_obj = json.loads(result)
-                    a = self.format_decimal(result_obj[0]["amount"])
-                    b = self.format_decimal(amount)
-                    logging.info("a:" + str(result_obj[0]["amount"]) + ",b:" + str(amount))
-                    if a > b:
-                        break
-                else:
-                    result_obj = json.loads(result)
-                    a = self.format_decimal(result_obj["total"][0]["amount"])
-                    b = self.format_decimal(amount)
-                    logging.info("a:" + str(result_obj["total"][0]["amount"]) + ",b:" + str(amount))
-                    if a > b:
-                        break
-            except:
-                logging.error(result)
-            time.sleep(1)
+    #         try:
+    #             if len(validator) > 0:
+    #                 result_obj = json.loads(result)
+    #                 a = self.format_decimal(result_obj[0]["amount"])
+    #                 b = self.format_decimal(amount)
+    #                 logging.info("a:" + str(result_obj[0]["amount"]) + ",b:" + str(amount))
+    #                 if a > b:
+    #                     break
+    #             else:
+    #                 result_obj = json.loads(result)
+    #                 a = self.format_decimal(result_obj["total"][0]["amount"])
+    #                 b = self.format_decimal(amount)
+    #                 logging.info("a:" + str(result_obj["total"][0]["amount"]) + ",b:" + str(amount))
+    #                 if a > b:
+    #                     break
+    #         except:
+    #             logging.error(result)
+    #         time.sleep(1)
 
-    def query_total_rewards_gt_precision2(self, delegator, validator, amount):
+    def query_total_rewards_gt_precision(self, delegator, validator, amount, precision):
         while True:
             cmd = " exchaincli query distr rewards   " + delegator +  " " + validator  + self.node_rpc
             result = os.popen(cmd).read()
@@ -421,15 +430,15 @@ class OKCli:
             try:
                 if len(validator) > 0:
                     result_obj = json.loads(result)
-                    a = self.format_decimal_precision2(result_obj[0]["amount"])
-                    b = self.format_decimal_precision2(amount)
+                    a = self.format_decimal_precision(result_obj[0]["amount"], precision)
+                    b = self.format_decimal_precision(amount, precision)
                     logging.info("a:" + str(result_obj[0]["amount"]) + ",b:" + str(amount))
                     if a > b:
                         break
                 else:
                     result_obj = json.loads(result)
-                    a = self.format_decimal_precision2(result_obj["total"][0]["amount"])
-                    b = self.format_decimal_precision2(amount)
+                    a = self.format_decimal_precision(result_obj["total"][0]["amount"], precision)
+                    b = self.format_decimal_precision(amount, precision)
                     logging.info("a:" + str(result_obj["total"][0]["amount"]) + ",b:" + str(amount))
                     if a > b:
                         break
@@ -602,10 +611,11 @@ class OKCli:
         else:
             return int(str_num)
     
-    def format_decimal_precision2(self, num):
+    def format_decimal_precision(self, num, precision):
+        precision = precision + 1
         str_num = str(num)
         if "." in str_num:
-            return float(str_num[0:(str_num.index('.')+3)])
+            return float(str_num[0:(str_num.index('.')+precision)])
         else:
             return float(str_num)
 
