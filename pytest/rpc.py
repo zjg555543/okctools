@@ -105,12 +105,24 @@ class OKCli:
         cmd = "exchaincli tx staking deposit " + str(token) + "okt --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y" + self.node_rpc
         return self.run_tx(cmd)
 
+    def deposit_press(self, token, from_name):
+        gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking deposit " + str(token) + "okt --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 --broadcast-mode=async -y" + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:  " + cmd + " , result:" + result)
+
     def add_shares(self, vals, from_name, sim=True):
         gas = " --gas auto "
         if sim == False:
             gas = " --gas=30000000 "
         cmd = "exchaincli tx staking add-shares " + vals + " --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
+
+    def add_shares_press(self, vals, from_name):
+        gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking add-shares " + vals + " --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 --broadcast-mode=async -y"  + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:  " + cmd + " , result:" + result)
 
     def transfer(self, from_name, to_name, tokens):
         cmd = "exchaincli tx send " + from_name + " " + to_name + " " + str(tokens) + "okt --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
@@ -123,6 +135,12 @@ class OKCli:
         cmd = "exchaincli tx staking proxy reg --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
+    def proxy_reg_press(self, from_name):
+        gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking proxy reg --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3  --broadcast-mode=async -y"  + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:  " + cmd + " , result:" + result)
+
     def proxy_bind(self, proxy, from_name, sim=True):
         gas = " --gas auto "
         if sim == False:
@@ -130,9 +148,20 @@ class OKCli:
         cmd = "exchaincli tx staking proxy bind "+ proxy +" --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
 
+    def proxy_bind_press(self, proxy, from_name):
+        gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking proxy bind "+ proxy +" --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 --broadcast-mode=async -y"  + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:  " + cmd + " , result:" + result)
+
     def proxy_unbind(self, from_name):
         cmd = "exchaincli tx staking proxy unbind --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
+
+    def proxy_unbind_press(self, from_name):
+        cmd = "exchaincli tx staking proxy unbind --from " + from_name + " --gas=30000000 --gas-prices 0.0000000001okt --gas-adjustment 1.3 --broadcast-mode=async -y"  + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:  " + cmd + " , result:" + result)
 
     def submit_change_type_proposal_offchain(self, from_name, sim=True):
         gas = " --gas auto "
@@ -277,6 +306,12 @@ class OKCli:
             gas = " --gas=30000000 "
         cmd = "exchaincli tx distr withdraw-all-rewards --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         return self.run_tx(cmd)
+
+    def withdraw_all_rewards_press(self, from_name):
+        gas = " --gas=30000000 "
+        cmd = "exchaincli tx distr withdraw-all-rewards --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 --broadcast-mode=async -y"  + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:  " + cmd + " , result:" + result)
 
     def create_validator(self, from_name, sim=True):
         gas = " --gas auto "
@@ -558,8 +593,6 @@ class OKCli:
         cmd = 'exchaincli keys add --recover '  + name + ' -m "' + mnemonic + '" -y'
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
-        # result_obj = json.loads(result)
-        # return result_obj["name"]
 
     def recover_val(self, name, mnemonic):
         cmd = 'exchaincli keys add --recover '  + name + ' -m "' + mnemonic + '" --coin-type 996 -y'
@@ -600,8 +633,14 @@ class OKCli:
         gas = " --gas auto "
         if sim == False:
             gas = " --gas=30000000 "
-        cmd = "exchaincli tx staking  proxy unreg --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        cmd = "exchaincli tx staking  proxy unreg --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3  -y"  + self.node_rpc
         return self.run_tx(cmd)
+
+    def unreg_press(self, from_name):
+        gas = " --gas=30000000 "
+        cmd = "exchaincli tx staking  proxy unreg --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 --broadcast-mode=async -y"  + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:  " + cmd + " , result:" + result)
 
     def format_decimal(self, num):
         str_num = str(num)
@@ -618,4 +657,9 @@ class OKCli:
             return float(str_num[0:(str_num.index('.')+precision)])
         else:
             return float(str_num)
+
+    def create_account(self, num):
+        cmd = " exchaincli keys mnemonic "
+        for i in range(num): 
+            os.popen(cmd).read()
 
