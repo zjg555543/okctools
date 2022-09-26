@@ -1389,7 +1389,6 @@ class CaseDistrProposal:
         # delegator4 不再有分红
         result = self.okcli.query_rewards(self.config["delegators"][3][1], self.config["vaadmin16"])
         assert result == -1, result
-        self.okcli.query_total_rewards_gt_precision(self.config["delegators"][3][1], self.config["vals"][2][3], 0, self.PRECISION)
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         self.okcli.withdraw_all_rewards(self.config["delegators"][3][1])
         self.okcli.wait_ledger_than(2)
