@@ -252,6 +252,20 @@ class OKCli:
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
+    def submit_reward_truncate(self, from_name, persion, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        
+        cmd = "exchaincli tx gov submit-proposal reward-truncate-precision proposal/proposal-reward_truncate_" + str(persion) + ".json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+        cmd = " exchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+
     def submit_community_pool_spend(self, from_name):
         cmd = "exchaincli tx gov submit-proposal community-pool-spend proposal/proposal-community-pool-spend.json --from " + from_name + " --gas auto --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)

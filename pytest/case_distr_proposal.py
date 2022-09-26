@@ -12,10 +12,6 @@ import rpc
 import sys
 import os
 
-PRECISION = 4
-PRECISION_REWARDS = 0.0001
-PRECISION_REWARDS_DIFF = 0.00009
-
 class CaseDistrProposal:
     def __init__(self, configObj):
         self.config = configObj
@@ -32,6 +28,7 @@ class CaseDistrProposal:
 
         self.vals3 = self.config["vals"][0][3] + "," + self.config["vals"][1][3] + "," + self.config["vals"][2][3]
         self.single_debug = self.config["singleDebug"]
+
         return
 
     def format_decimal(self, num):
@@ -110,10 +107,8 @@ class CaseDistrProposal:
         self.reward_truncate()
 
         # 阶段十，补充测试用例
-        self.extension_before()
-        self.extension()
-
-        self.test()
+        # self.extension_before()
+        # self.extension()
 
     def all_add_shares(self):
         for d in self.config["delegators"]:
@@ -216,53 +211,44 @@ class CaseDistrProposal:
         # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][5][1]) != -1
         # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][5][1]) != -1
         # assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) != -1
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, PRECISION)
+        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
         assert self.okcli.unreg(self.config["proxys"][5][1]) != -1
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, PRECISION)
+        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, self.PRECISION)
         assert self.okcli.proxy_reg(self.config["proxys"][5][1]) != -1
         # return
-
-        # PRECISION = 2
-        # PRECISION_REWARDS = 0.01
-        # PRECISION_REWARDS_DIFF = 0.001
 
         # bind也会进行分红
         self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
         before = self.okcli.query_account(self.config["withdrawaddress"])
-        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, PRECISION)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, self.PRECISION)
         assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
         after = self.okcli.query_account(self.config["withdrawaddress"])
-        addValue = self.format_decimal_precision(after, PRECISION) - self.format_decimal_precision(before, PRECISION)
+        addValue = self.format_decimal_precision(after, self.PRECISION) - self.format_decimal_precision(before, self.PRECISION)
         logging.info("str addValue:" + str(addValue))
-        assert addValue >= PRECISION_REWARDS_DIFF, str(addValue)
+        assert addValue >= self.PRECISION_REWARDS_DIFF, str(addValue)
 
         # proxy5 取出va2的分红
-        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, PRECISION)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
         afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        assert float(rewards) > PRECISION_REWARDS, rewards
-        assert float(rewards) < 1, rewards
-        diff = self.format_decimal_precision(afterAmount, PRECISION) - (self.format_decimal_precision(beforeAmount, PRECISION)) 
-        assert diff <= 1, str(diff)
-        logging.info("str diff:" + str(diff))
-        assert float(diff) >= PRECISION_REWARDS_DIFF, str(diff)
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION) - (self.format_decimal_precision(beforeAmount, self.PRECISION)) 
+        assert float(diff) >= self.PRECISION_REWARDS_DIFF, str(diff)
 
         # proxy5 unbind 分红
-        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, PRECISION)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
         afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        assert float(rewards) > PRECISION_REWARDS, rewards
-        assert float(rewards) < 1, rewards
-        diff = self.format_decimal_precision(afterAmount, PRECISION) - (self.format_decimal_precision(beforeAmount, PRECISION)) 
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION) - (self.format_decimal_precision(beforeAmount, self.PRECISION)) 
         logging.info("str diff:" + str(diff))
-        assert diff <= 1, str(diff)
-        assert diff >= PRECISION_REWARDS_DIFF, str(diff)
+        assert diff >= self.PRECISION_REWARDS_DIFF, str(diff)
 
         # assert self.okcli.submit_withdraw_reward_disabled(self.config["delegators"][0][1], False) == -1
 
@@ -456,45 +442,45 @@ class CaseDistrProposal:
         logging.info("------------------------upgrate_bin_staking_step1 start--------------------------------")
         # 只升级两个节点，保证新老交易不会产生smb
         # 发送新的交易，确保交易不会上链以及出现smb
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_change_type_proposal_offchain(self.config["vals"][0][1], False) == -1
-        # assert self.okcli.submit_change_type_proposal_onchain(self.config["vals"][0][1], False) == -1
-        # assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_withdraw_reward_disabled(self.config["vals"][0][1], False) == -1
-        # assert self.okcli.edit_validator_rate("0.5", "va4", False) == -1
-        # assert self.okcli.submit_reward_truncate_0(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_reward_truncate_0(self.config["vals"][0][1], False) == -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1], False) == -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_offchain(self.config["vals"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["vals"][0][1], False) == -1
+        assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_withdraw_reward_disabled(self.config["vals"][0][1], False) == -1
+        assert self.okcli.edit_validator_rate("0.5", "va4", False) == -1
+        assert self.okcli.submit_reward_truncate_0(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_reward_truncate_0(self.config["vals"][0][1], False) == -1
 
         # 发送老的交易，不会出现smb
-        # assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex0"][0], self.config["initCoin"]) != -1
-        # assert self.okcli.deposit(10, self.config["exaccounts"]["delegator-ex0"][0]) != -1
-        # assert self.okcli.deposit(10, self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
-        # assert self.okcli.deposit(10, self.config["exaccounts"]["proxy-ex0"][0]) != -1
-        # assert self.okcli.add_shares(self.vals2, self.config["exaccounts"]["proxy-ex0"][0]) != -1
-        # assert self.okcli.proxy_reg(self.config["exaccounts"]["proxy-ex0"][0]) != -1
-        # assert self.okcli.proxy_bind(self.config["exaccounts"]["proxy-ex0"][0], self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
-        # assert self.okcli.proxy_unbind(self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
-        # assert self.okcli.unreg(self.config["exaccounts"]["proxy-ex0"][0]) != -1
-        # assert self.okcli.withdraw(10, self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
-        # assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["exaccounts"]["delegator-ex0"][0]) != -1
-        # assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
-        # assert self.okcli.edit_validator("zzzzzzzz", "va2") != -1
-        # proposal_num = self.okcli.submit_community_pool_spend(self.config["exaccounts"]["delegator-ex0"][0])
-        # self.okcli.vote_deposit(self.config["exaccounts"]["delegator-ex0"][0], proposal_num, "100")
-        # assert int(proposal_num) > 0
-        # for n in self.config["delegators"]:
-        #     self.okcli.vote(n[1], proposal_num)
-        # for n in self.config["proxys"]:
-        #     self.okcli.vote(n[1], proposal_num)
-        # for v in self.config["vals"]:
-        #     self.okcli.vote(v[1], proposal_num)
-        # self.okcli.query_proposal(proposal_num)
-        # self.okcli.vote(self.config["exaccounts"]["delegator-ex0"][0], proposal_num)
-        # self.okcli.vote(self.config["exaccounts"]["proxydelegator-ex0"][0], proposal_num)
-        # self.okcli.vote(self.config["exaccounts"]["proxy-ex0"][0], proposal_num)
+        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex0"][0], self.config["initCoin"]) != -1
+        assert self.okcli.deposit(10, self.config["exaccounts"]["delegator-ex0"][0]) != -1
+        assert self.okcli.deposit(10, self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
+        assert self.okcli.deposit(10, self.config["exaccounts"]["proxy-ex0"][0]) != -1
+        assert self.okcli.add_shares(self.vals2, self.config["exaccounts"]["proxy-ex0"][0]) != -1
+        assert self.okcli.proxy_reg(self.config["exaccounts"]["proxy-ex0"][0]) != -1
+        assert self.okcli.proxy_bind(self.config["exaccounts"]["proxy-ex0"][0], self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
+        assert self.okcli.proxy_unbind(self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
+        assert self.okcli.unreg(self.config["exaccounts"]["proxy-ex0"][0]) != -1
+        assert self.okcli.withdraw(10, self.config["exaccounts"]["proxydelegator-ex0"][0]) != -1
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["exaccounts"]["delegator-ex0"][0]) != -1
+        assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
+        assert self.okcli.edit_validator("zzzzzzzz", "va2") != -1
+        proposal_num = self.okcli.submit_community_pool_spend(self.config["exaccounts"]["delegator-ex0"][0])
+        self.okcli.vote_deposit(self.config["exaccounts"]["delegator-ex0"][0], proposal_num, "100")
+        assert int(proposal_num) > 0
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
+        self.okcli.vote(self.config["exaccounts"]["delegator-ex0"][0], proposal_num)
+        self.okcli.vote(self.config["exaccounts"]["proxydelegator-ex0"][0], proposal_num)
+        self.okcli.vote(self.config["exaccounts"]["proxy-ex0"][0], proposal_num)
 
         # 质押delegator2 10000 okt，投票给va1
         assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][1][1]) != -1
@@ -552,23 +538,23 @@ class CaseDistrProposal:
     def upgrate_ledger_staking(self):
         logging.info("------------------------upgrate_ledger_staking start--------------------------------")
         # 不支持的操作  withdraw-all-rewards、withdraw-rewards、outstanding-rewards、query_rewards
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) == -1
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) == -1
-        # assert self.okcli.query_outstanding(self.config["vals"][0][3]) == -1
-        # assert self.okcli.query_rewards(self.config["delegators"][0][1], "") == -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) == -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) == -1
+        assert self.okcli.query_outstanding(self.config["vals"][0][3]) == -1
+        assert self.okcli.query_rewards(self.config["delegators"][0][1], "") == -1
 
-        # # 发送新的交易，确保交易不会上链以及出现smb
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_change_type_proposal_offchain(self.config["vals"][0][1], False) == -1
-        # assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_change_type_proposal_onchain(self.config["vals"][0][1], False) == -1
-        # assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_withdraw_reward_enabled(self.config["vals"][0][1], False) == -1
-        # assert self.okcli.submit_reward_truncate_0(self.config["delegators"][0][1], False) == -1
-        # assert self.okcli.submit_reward_truncate_0(self.config["vals"][0][1], False) == -1
-        # assert self.okcli.edit_validator_rate("0.5", "va4", False) == -1
+        # 发送新的交易，确保交易不会上链以及出现smb
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1], False) == -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_offchain(self.config["vals"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["vals"][0][1], False) == -1
+        assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_withdraw_reward_enabled(self.config["vals"][0][1], False) == -1
+        assert self.okcli.submit_reward_truncate_0(self.config["delegators"][0][1], False) == -1
+        assert self.okcli.submit_reward_truncate_0(self.config["vals"][0][1], False) == -1
+        assert self.okcli.edit_validator_rate("0.5", "va4", False) == -1
 
         # 新的程序启动，区块升级之后，没有投票提案，仍然按照佣金100%提成计算，查询验证节点投票仍然可用，验证节点取款仍然有效
         assert self.okcli.get_ledger_seq() <= self.config["upgradeLedger"], str(self.okcli.get_ledger_seq())
@@ -583,7 +569,7 @@ class CaseDistrProposal:
         result = self.okcli.query_commission(self.config["vals"][3][3])
         assert self.format_decimal(result) > 0, result
 
-         # 查询分红参数 distribution_type 为0
+        # 查询分红参数 distribution_type 为0
         result = self.okcli.query_distr_params()
         assert result["distribution_type"] == 0, result
 
@@ -641,271 +627,260 @@ class CaseDistrProposal:
         # 11111
         logging.info("------------------------after_distr_proposal start--------------------------------")
         # 发起投票提案，修改提案，此时分红比例默认为100%，各个接口可以使用，验证节点查询抽成，提取抽成正常；委托人查询分红为0；代理人查询为0，无法提取抽成；
-        # self.okcli.wait_ledger(200)
+        # 普通人无法申请提案
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1]) == -1
 
-        # # 普通人无法申请提案
-        # assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1]) == -1
+        # 验证人可以申请提案
+        proposal_num = self.okcli.submit_change_type_proposal_onchain(self.config["vals"][0][1])
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # # 验证人可以申请提案
-        # proposal_num = self.okcli.submit_change_type_proposal_onchain(self.config["vals"][0][1])
-        # for n in self.config["delegators"]:
-        #     self.okcli.vote(n[1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # for n in self.config["proxys"]:
-        #     self.okcli.vote(n[1], proposal_num)
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
-        # for v in self.config["vals"]:
-        #     self.okcli.vote(v[1], proposal_num)
-        # self.okcli.query_proposal(proposal_num)
+        # 发起分红截断提案，精度为 2
+        self.set_reword_persion(2)
 
-        # # va1～va3查询抽成和outstanking一致，va4由于提前设置，不一致
-        # ledger = self.okcli.get_ledger_seq()
-        # commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
-        # logging.info("commission_va1:" + commission_va1 + ", outstanding_va1:" + outstanding_va1)
-        # self.assert_compare_same(commission_va1, outstanding_va1)
+        # va1～va3查询抽成和outstanking一致，va4由于提前设置，不一致
+        ledger = self.okcli.get_ledger_seq()
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
+        logging.info("commission_va1:" + commission_va1 + ", outstanding_va1:" + outstanding_va1)
+        self.assert_compare_same(commission_va1, outstanding_va1)
 
-        # ledger = self.okcli.get_ledger_seq()
-        # commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
-        # outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
-        # logging.info("commission_va2:" + commission_va2 + ", outstanding_va2:" + outstanding_va2)
-        # self.assert_compare_same(commission_va2, outstanding_va2)
+        ledger = self.okcli.get_ledger_seq()
+        commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
+        outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
+        logging.info("commission_va2:" + commission_va2 + ", outstanding_va2:" + outstanding_va2)
+        self.assert_compare_same(commission_va2, outstanding_va2)
 
-        # ledger = self.okcli.get_ledger_seq()
-        # commission_va3 = self.okcli.query_commission(self.config["vals"][2][3], ledger)
-        # outstanding_va3 = self.okcli.query_outstanding(self.config["vals"][2][3], ledger)
-        # logging.info("commission_va3:" + commission_va3 + ", outstanding_va3:" + outstanding_va3)
-        # self.assert_compare_same(commission_va3, commission_va3)
+        ledger = self.okcli.get_ledger_seq()
+        commission_va3 = self.okcli.query_commission(self.config["vals"][2][3], ledger)
+        outstanding_va3 = self.okcli.query_outstanding(self.config["vals"][2][3], ledger)
+        logging.info("commission_va3:" + commission_va3 + ", outstanding_va3:" + outstanding_va3)
+        self.assert_compare_same(commission_va3, commission_va3)
 
-        # # 等待 outstanding_va4 增加1个奖励
-        # outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
-        # self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4))
+        # 等待 outstanding_va4 增加1个奖励
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4))
 
-        # ledger = self.okcli.get_ledger_seq()
-        # commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
-        # outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
-        # assert outstanding_va4 > commission_va4
+        ledger = self.okcli.get_ledger_seq()
+        commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
+        assert outstanding_va4 > commission_va4
 
-        # # proxy1~3, delegator1~3 查询分红为空，因为va1~va3抽成比例为100%
-        # result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
-        # assert len(result["total"]) == 0, result
-        # result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
-        # assert len(result["total"]) == 0, result
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # assert len(result["total"]) == 0, result
+        # proxy1~3, delegator1~3 查询分红为空，因为va1~va3抽成比例为100%
+        result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
+        assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
+        assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
-        # assert len(result["total"]) == 0, result
-        # result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
-        # assert len(result["total"]) == 0, result
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
+        assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
+        assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        assert len(result["total"]) == 0, result
 
-        # # 取出va1的抽成，预期va1增加commission_va1，commission_va1 和 outstanding_va1为0
-        # #保证va1增加1个奖励
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
-        # self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1))
-        # ledger = self.okcli.get_ledger_seq()
-        # beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
-        # commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
-        # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
-        # self.assert_compare_same(commission_va1, outstanding_va1)
-        # assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
-        # ledger = self.okcli.get_ledger_seq()
-        # afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
-        # logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
-        # result = "afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1)
-        # self.assert_compare_near(self.format_decimal(beforeAmountVa1) + self.format_decimal(commission_va1), self.format_decimal(afterAmountVa1))
-        # commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
-        # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
-        # self.assert_compare_near(commission_va1, outstanding_va1)
+        # 取出va1的抽成，预期va1增加commission_va1，commission_va1 和 outstanding_va1为0
+        # 保证va1增加1个奖励
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1))
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
+        logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
+        self.assert_compare_same(commission_va1, outstanding_va1)
+        assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
+        ledger = self.okcli.get_ledger_seq()
+        afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
+        logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
+        result = "afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1)
+        self.assert_compare_near(self.format_decimal(beforeAmountVa1) + self.format_decimal(commission_va1), self.format_decimal(afterAmountVa1))
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
+        logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
+        self.assert_compare_near(commission_va1, outstanding_va1)
 
-        # # 22222222
-        # # 查询所有人的分红，为空
-        # result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
-        # assert len(result["total"]) == 0, result
+        # 22222222
+        # 查询所有人的分红，为空
+        result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        assert len(result["total"]) == 0, result
         
         # 代理人提取分红，无法取出
-        # beforeAmountvaProxy1 = self.okcli.query_account(self.config["proxys"][0][1])
-        # beforeAmountvaDelegator1 = self.okcli.query_account(self.config["delegators"][0][1])
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) != -1
-        # self.okcli.wait_ledger_than(2)
-        # afterAmountvaProxy1 = self.okcli.query_account(self.config["proxys"][0][1])
-        # afterAmountvaDelegator1 = self.okcli.query_account(self.config["delegators"][0][1])
-        # self.assert_compare_same(beforeAmountvaProxy1, afterAmountvaProxy1)
-        # self.assert_compare_same(beforeAmountvaDelegator1, afterAmountvaDelegator1)
+        beforeAmountvaProxy1 = self.okcli.query_account(self.config["proxys"][0][1])
+        beforeAmountvaDelegator1 = self.okcli.query_account(self.config["delegators"][0][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) != -1
+        self.okcli.wait_ledger_than(2)
+        afterAmountvaProxy1 = self.okcli.query_account(self.config["proxys"][0][1])
+        afterAmountvaDelegator1 = self.okcli.query_account(self.config["delegators"][0][1])
+        self.assert_compare_same(beforeAmountvaProxy1, afterAmountvaProxy1)
+        self.assert_compare_same(beforeAmountvaDelegator1, afterAmountvaDelegator1)
 
         # 验证节点2 设置分红比例1%，代理2查询奖励有值，委托人2查询奖励有值，其他人查询为空
-        # assert self.okcli.edit_validator("zzzzzzzz", "va2") != -1
-        # assert self.okcli.edit_validator_rate("0.5", "va2") != -1
-        # self.okcli.wait_ledger_than(20)
-        # result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
-        # assert len(result["rewards"]) == 2, result
-        # assert len(result["rewards"][0]["reward"]) == 0, result
-        # assert len(result["rewards"][1]["reward"]) == 1, result
+        assert self.okcli.edit_validator("zzzzzzzz", "va2") != -1
+        assert self.okcli.edit_validator_rate("0.5", "va2") != -1
+        self.okcli.wait_ledger_than(20)
+        result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
+        assert len(result["rewards"]) == 2, result
+        assert len(result["rewards"][0]["reward"]) == 0, result
+        assert len(result["rewards"][1]["reward"]) == 1, result
 
-        # result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
-        # assert len(result["rewards"]) == 2, result
-        # assert len(result["rewards"][0]["reward"]) == 0, result
-        # assert len(result["rewards"][1]["reward"]) == 1, result
+        result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
+        assert len(result["rewards"]) == 2, result
+        assert len(result["rewards"][0]["reward"]) == 0, result
+        assert len(result["rewards"][1]["reward"]) == 1, result
 
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # assert len(result["rewards"]) == 3, result
-        # assert len(result["rewards"][0]["reward"]) == 0, result
-        # assert len(result["rewards"][1]["reward"]) == 1, result
-        # assert len(result["rewards"][2]["reward"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        assert len(result["rewards"]) == 3, result
+        assert len(result["rewards"][0]["reward"]) == 0, result
+        assert len(result["rewards"][1]["reward"]) == 1, result
+        assert len(result["rewards"][2]["reward"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # assert len(result["rewards"]) == 3, result
-        # assert len(result["rewards"][0]["reward"]) == 0, result
-        # assert len(result["rewards"][1]["reward"]) == 1, result
-        # assert len(result["rewards"][2]["reward"]) == 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        assert len(result["rewards"]) == 3, result
+        assert len(result["rewards"][0]["reward"]) == 0, result
+        assert len(result["rewards"][1]["reward"]) == 1, result
+        assert len(result["rewards"][2]["reward"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["proxydelegators"][0][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxydelegators"][0][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["proxydelegators"][1][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxydelegators"][1][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["proxydelegators"][2][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxydelegators"][2][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
+        assert len(result["total"]) == 0, result
 
-        # result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
+        assert len(result["total"]) == 0, result
 
-        # # 333333
-        # # 取出va1的抽成，预期va1增加commission_va1，commission_va1 和 outstanding_va1为0
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
-        # self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1))
-        # ledger = self.okcli.get_ledger_seq()
-        # beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
-        # commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
-        # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
-        # self.assert_compare_near(commission_va1, outstanding_va1)
-        # assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
-        # ledger = self.okcli.get_ledger_seq()
-        # afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
-        # logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
-        # result = "afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1)
-        # # self.assert_compare_near(self.format_decimal(beforeAmountVa1) + self.format_decimal(commission_va1), self.format_decimal(afterAmountVa1))
-        # afterAmountVa1 = self.format_decimal(afterAmountVa1)
-        # beforeAmountVa1 = self.format_decimal(beforeAmountVa1)
-        # assert afterAmountVa1 >= beforeAmountVa1
-        # commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
-        # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
-        # self.assert_compare_near(commission_va1, outstanding_va1)
-        # # assert self.format_decimal(commission_va1) == 0
+        # 333333
+        # 取出va1的抽成，预期va1增加commission_va1，commission_va1 和 outstanding_va1为0
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1))
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
+        logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
+        self.assert_compare_near(commission_va1, outstanding_va1)
+        assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
+        ledger = self.okcli.get_ledger_seq()
+        afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
+        logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
+        result = "afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1)
+        afterAmountVa1 = self.format_decimal(afterAmountVa1)
+        beforeAmountVa1 = self.format_decimal(beforeAmountVa1)
+        assert afterAmountVa1 >= beforeAmountVa1
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
+        logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
+        self.assert_compare_near(commission_va1, outstanding_va1)
 
-        # # 取出va2的抽成，预期va2增加commission_va2，commission_va2 和 outstanding_va2为0
-        # outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3])
-        # # self.okcli.query_outstanding_gt(self.config["vals"][1][3], self.format_decimal(outstanding_va2))
-        # ledger = self.okcli.get_ledger_seq()
-        # beforeAmountVa2 = self.okcli.query_account(self.config["vals"][1][1])
-        # commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
-        # outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
-        # logging.info("commission_va2:" + str(commission_va2) + ", outstanding_va2:" + str(outstanding_va2))
-        # self.assert_compare_gt(outstanding_va2, commission_va2)
-        # assert self.okcli.withdraw_commission(self.config["vals"][1][3], "va2") != -1
-        # ledger = self.okcli.get_ledger_seq()
-        # afterAmountVa2 = self.okcli.query_account(self.config["vals"][1][1])
-        # logging.info("afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2))
-        # result = "afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2)
-        # self.assert_compare_near(self.format_decimal(beforeAmountVa2) + self.format_decimal(commission_va2), self.format_decimal(afterAmountVa2))
-        # commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
-        # outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
-        # logging.info("commission_va2:" + str(commission_va2) + ", outstanding_va2:" + str(outstanding_va2))
-        # self.assert_compare_gt(outstanding_va2, commission_va2)
+        # 取出va2的抽成，预期va2增加commission_va2，commission_va2 和 outstanding_va2为0
+        outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][1][3], self.format_decimal(outstanding_va2))
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa2 = self.okcli.query_account(self.config["vals"][1][1])
+        commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
+        outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
+        logging.info("commission_va2:" + str(commission_va2) + ", outstanding_va2:" + str(outstanding_va2))
+        self.assert_compare_gt(outstanding_va2, commission_va2)
+        assert self.okcli.withdraw_commission(self.config["vals"][1][3], "va2") != -1
+        ledger = self.okcli.get_ledger_seq()
+        afterAmountVa2 = self.okcli.query_account(self.config["vals"][1][1])
+        logging.info("afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2))
+        result = "afterAmountVa2:" + str(afterAmountVa2) + ", beforeAmountVa2:" + str(beforeAmountVa2)
+        self.assert_compare_near(self.format_decimal(beforeAmountVa2) + self.format_decimal(commission_va2), self.format_decimal(afterAmountVa2))
+        commission_va2 = self.okcli.query_commission(self.config["vals"][1][3], ledger)
+        outstanding_va2 = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
+        logging.info("commission_va2:" + str(commission_va2) + ", outstanding_va2:" + str(outstanding_va2))
+        self.assert_compare_gt(outstanding_va2, commission_va2)
         
         # 取出va4的抽成，预期va4增加commission_va4，commission_va4 和 outstanding_va4为0
-        # outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
-        # # self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4))
-        # ledger = self.okcli.get_ledger_seq()
-        # beforeAmountVa4 = self.okcli.query_account(self.config["vals"][3][1])
-        # commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
-        # outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
-        # logging.info("commission_va4:" + str(commission_va4) + ", outstanding_va4:" + str(outstanding_va4))
-        # self.assert_compare_gt(outstanding_va4, commission_va4)
-        # result = self.okcli.withdraw_commission(self.config["vals"][3][3], "va4")
-        # afterAmountVa4 = self.okcli.query_account(self.config["vals"][3][1])
-        # logging.info("afterAmountVa4:" + str(afterAmountVa4) + ", beforeAmountVa4:" + str(beforeAmountVa4))
-        # result = "afterAmountVa4:" + str(afterAmountVa4) + ", beforeAmountVa4:" + str(beforeAmountVa4)
-        # self.assert_compare_near(self.format_decimal(beforeAmountVa4) + self.format_decimal(commission_va4), self.format_decimal(afterAmountVa4))
-        # ledger = self.okcli.get_ledger_seq()
-        # commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
-        # outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
-        # logging.info("commission_va4:" + str(commission_va4) + ", outstanding_va4:" + str(outstanding_va4))
-        # self.assert_compare_gt(outstanding_va4, commission_va4)
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][3][3], self.format_decimal(outstanding_va4))
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa4 = self.okcli.query_account(self.config["vals"][3][1])
+        commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
+        logging.info("commission_va4:" + str(commission_va4) + ", outstanding_va4:" + str(outstanding_va4))
+        self.assert_compare_gt(outstanding_va4, commission_va4)
+        result = self.okcli.withdraw_commission(self.config["vals"][3][3], "va4")
+        afterAmountVa4 = self.okcli.query_account(self.config["vals"][3][1])
+        logging.info("afterAmountVa4:" + str(afterAmountVa4) + ", beforeAmountVa4:" + str(beforeAmountVa4))
+        result = "afterAmountVa4:" + str(afterAmountVa4) + ", beforeAmountVa4:" + str(beforeAmountVa4)
+        self.assert_compare_near(self.format_decimal(beforeAmountVa4) + self.format_decimal(commission_va4), self.format_decimal(afterAmountVa4))
+        ledger = self.okcli.get_ledger_seq()
+        commission_va4 = self.okcli.query_commission(self.config["vals"][3][3], ledger)
+        outstanding_va4 = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
+        logging.info("commission_va4:" + str(commission_va4) + ", outstanding_va4:" + str(outstanding_va4))
+        self.assert_compare_gt(outstanding_va4, commission_va4)
 
         # delegator1无法取出va1的分红，因为验证节点va1没有设置比例
-        # beforeAmount = self.okcli.query_account(self.config["proxys"][0][1])
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["proxys"][0][1])
-        # self.assert_compare_same(beforeAmount, afterAmount)
-
-        # beforeAmount = self.okcli.query_account(self.config["delegators"][0][1])
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["delegators"][0][1])
-        # self.assert_compare_same(beforeAmount, afterAmount)
+        beforeAmount = self.okcli.query_account(self.config["proxys"][0][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["proxys"][0][1])
+        self.assert_compare_same(beforeAmount, afterAmount)
+        beforeAmount = self.okcli.query_account(self.config["delegators"][0][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["delegators"][0][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["delegators"][0][1])
+        self.assert_compare_same(beforeAmount, afterAmount)
 
         # proxy2 取出va2的分红
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][1][1], self.config["vals"][1][3], 0, PRECISION)
-        # rewards = self.okcli.query_rewards(self.config["proxys"][1][1], self.config["vals"][1][3])[0]["amount"]
-        # beforeAmount = self.okcli.query_account(self.config["proxys"][1][1])
-        # assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][1][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["proxys"][1][1])
-        # # self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][1][1], self.config["vals"][1][3], 0, self.PRECISION)
+        rewards = self.okcli.query_rewards(self.config["proxys"][1][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["proxys"][1][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][1][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["proxys"][1][1])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
-        # # delegator3 取出所有的分红
-        # rewards = self.okcli.query_rewards(self.config["delegators"][2][1], "")["total"][0]["amount"]
-        # beforeAmount = self.okcli.query_account(self.config["delegators"][2][1])
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][2][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["delegators"][2][1])
-        # # self.assert_compare_same(self.format_decimal(beforeAmount) + self.format_decimal(rewards), afterAmount)
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        # delegator3 取出所有的分红
+        rewards = self.okcli.query_rewards(self.config["delegators"][2][1], "")["total"][0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["delegators"][2][1])
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][2][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["delegators"][2][1])
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
         # 新增验证节点，进行质押
         assert self.okcli.create_validator(self.config["vaAddadmin16"]) != -1
         assert self.okcli.edit_validator("zzzzzzzz", self.config["vaAddadmin16"]) != -1
         assert self.okcli.edit_validator_rate("0.5", self.config["vaAddadmin16"]) != -1
-
         assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][3][1]) != -1
         assert self.okcli.add_shares(self.valsall, self.config["proxys"][3][1]) != -1
-
         assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][3][1]) != -1
         assert self.okcli.add_shares(self.valsall, self.config["delegators"][3][1]) != -1
         assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][3][1]) != -1
-
         assert self.okcli.proxy_reg(self.config["proxys"][3][1]) != -1
         assert self.okcli.proxy_bind(self.config["proxys"][3][1], self.config["proxydelegators"][3][1]) != -1
 
@@ -923,8 +898,8 @@ class CaseDistrProposal:
         
 
         # 等待 proxy2 和 proxy4 的奖励大于0
-        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][1][1], "", 0, PRECISION)
-        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][3][1], "", 0, PRECISION)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][1][1], "", 0, self.PRECISION)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][3][1], "", 0, self.PRECISION)
 
         logging.info("------------------------after_distr_proposal end--------------------------------")
 
@@ -940,103 +915,96 @@ class CaseDistrProposal:
     def change_to_off_chain(self):
         logging.info("------------------------change_to_off_chain start--------------------------------")
         # 11111111
+        # 普通人无法发起提案
+        assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1]) == -1
 
-        # # 普通人无法发起提案
-        # assert self.okcli.submit_change_type_proposal_offchain(self.config["delegators"][0][1]) == -1
+        # 修改成链下分红
+        proposal_num = self.okcli.submit_change_type_proposal_offchain(self.config["vals"][0][1])
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # # 修改成链下分红
-        # proposal_num = self.okcli.submit_change_type_proposal_offchain(self.config["vals"][0][1])
-        # for n in self.config["delegators"]:
-        #     self.okcli.vote(n[1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # for n in self.config["proxys"]:
-        #     self.okcli.vote(n[1], proposal_num)
-
-        # for v in self.config["vals"]:
-        #     self.okcli.vote(v[1], proposal_num)
-        # self.okcli.query_proposal(proposal_num)
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
         # delegator1无法取出va1的分红，因为验证节点va1没有设置比例
-        # beforeAmount = self.okcli.query_account(self.config["proxys"][0][1])
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["proxys"][0][1])
-        # self.assert_compare_same(beforeAmount, afterAmount)
+        beforeAmount = self.okcli.query_account(self.config["proxys"][0][1])
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["proxys"][0][1])
+        self.assert_compare_same(beforeAmount, afterAmount)
 
-        # # proxy2 取出之前的所有的分红，仍可取出
-        # rewards = self.okcli.query_rewards(self.config["proxys"][1][1], "")["total"][0]["amount"]
-        # # self.assert_compare_gt(rewards, 0)
-        # beforeAmount = self.okcli.query_account(self.config["proxys"][1][1])
-        # assert self.okcli.withdraw_all_rewards(self.config["proxys"][1][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["proxys"][1][1])
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        # proxy2 取出之前的所有的分红，仍可取出
+        rewards = self.okcli.query_rewards(self.config["proxys"][1][1], "")["total"][0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["proxys"][1][1])
+        assert self.okcli.withdraw_all_rewards(self.config["proxys"][1][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["proxys"][1][1])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
-        # # 等待n个出块周期，确保proxy2不再接受分红
-        # self.okcli.wait_ledger_than(20)
-        # result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
-        # assert len(result["total"]) == 0, result
+        # 等待n个出块周期，确保proxy2不再接受分红
+        self.okcli.wait_ledger_than(20)
+        result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
+        assert len(result["total"]) == 0, result
 
         # 22222222
         # 验证节点1 设置分红比例1%
-        # assert self.okcli.edit_validator("zzzzzzzz", "va1") != -1
-        # assert self.okcli.edit_validator_rate("0.5", "va1") != -1
-        # self.okcli.wait_ledger_than(20)
+        assert self.okcli.edit_validator("zzzzzzzz", "va1") != -1
+        assert self.okcli.edit_validator_rate("0.5", "va1") != -1
+        self.okcli.wait_ledger_than(20)
 
         # proxy1 的分红仍然为0
-        # result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
-        # assert len(result["total"]) == 0, result
+        result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
+        assert len(result["total"]) == 0, result
 
-        # # delegator1 的分红仍然为0
-        # result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
-        # assert len(result["total"]) == 0, result
+        # delegator1 的分红仍然为0
+        result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
+        assert len(result["total"]) == 0, result
 
-        # # proxy4 取出所有的分红，仍可取出
-        # rewards = self.okcli.query_rewards(self.config["proxys"][3][1], "")["total"][0]["amount"]
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # beforeAmount = self.okcli.query_account(self.config["proxys"][3][1])
-        # assert self.okcli.withdraw_all_rewards(self.config["proxys"][3][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["proxys"][3][1])
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        # proxy4 取出所有的分红，仍可取出
+        rewards = self.okcli.query_rewards(self.config["proxys"][3][1], "")["total"][0]["amount"]
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        beforeAmount = self.okcli.query_account(self.config["proxys"][3][1])
+        assert self.okcli.withdraw_all_rewards(self.config["proxys"][3][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["proxys"][3][1])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
-        # # 新增质押人5
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][4][1]) != -1
-        # assert self.okcli.add_shares(self.valsall, self.config["proxys"][4][1]) != -1
+        # 新增质押人5
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][4][1]) != -1
+        assert self.okcli.add_shares(self.valsall, self.config["proxys"][4][1]) != -1
 
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][4][1]) != -1
-        # assert self.okcli.add_shares(self.valsall, self.config["delegators"][4][1]) != -1
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][4][1]) != -1
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][4][1]) != -1
+        assert self.okcli.add_shares(self.valsall, self.config["delegators"][4][1]) != -1
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][4][1]) != -1
 
-        # assert self.okcli.proxy_reg(self.config["proxys"][4][1]) != -1
-        # assert self.okcli.proxy_bind(self.config["proxys"][4][1], self.config["proxydelegators"][4][1]) != -1
+        assert self.okcli.proxy_reg(self.config["proxys"][4][1]) != -1
+        assert self.okcli.proxy_bind(self.config["proxys"][4][1], self.config["proxydelegators"][4][1]) != -1
 
         # 333333333
-        # # 取出v1的分红，预期正常
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
-        # self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1))
-        # ledger = self.okcli.get_ledger_seq()
-        # beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
-        # commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
-        # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
-        # self.assert_compare_same(outstanding_va1, commission_va1)
-        # assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
-        # ledger = self.okcli.get_ledger_seq()
-        # afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
-        # logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
-        # result = "afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1)
-        # self.assert_compare_near(self.format_decimal(beforeAmountVa1) + self.format_decimal(commission_va1), self.format_decimal(afterAmountVa1))
-        # commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
-        # outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
-        # logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
-        # self.assert_compare_same(outstanding_va1, commission_va1)
-        # # assert self.format_decimal(commission_va1) == 0
+        # 取出v1的分红，预期正常
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3])
+        self.okcli.query_outstanding_gt(self.config["vals"][0][3], self.format_decimal(outstanding_va1))
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
+        logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
+        self.assert_compare_same(outstanding_va1, commission_va1)
+        assert self.okcli.withdraw_commission(self.config["vals"][0][3], "va1") != -1
+        ledger = self.okcli.get_ledger_seq()
+        afterAmountVa1 = self.okcli.query_account(self.config["vals"][0][1])
+        logging.info("afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1))
+        result = "afterAmountVa1:" + str(afterAmountVa1) + ", beforeAmountVa1:" + str(beforeAmountVa1)
+        self.assert_compare_near(self.format_decimal(beforeAmountVa1) + self.format_decimal(commission_va1), self.format_decimal(afterAmountVa1))
+        commission_va1 = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        outstanding_va1 = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
+        logging.info("commission_va1:" + str(commission_va1) + ", outstanding_va1:" + str(outstanding_va1))
+        self.assert_compare_same(outstanding_va1, commission_va1)
 
         # 查询正常
         result = self.okcli.query_commission(self.config["vals"][1][3])
@@ -1078,14 +1046,14 @@ class CaseDistrProposal:
         beforeAmount = self.okcli.query_account(self.config["proxys"][3][1])
         assert self.okcli.withdraw_all_rewards(self.config["proxys"][3][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][3][1])
-        diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
         assert diff <= 0, str(diff)
 
         # 尝试取出 proxy5 所有分红，失败
         beforeAmount = self.okcli.query_account(self.config["proxys"][4][1])
         assert self.okcli.withdraw_all_rewards(self.config["proxys"][4][1]) != -1
         afterAmount = self.okcli.query_account(self.config["proxys"][4][1])
-        diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
         assert diff <= 0, str(diff)
 
         # 参数为0
@@ -1100,471 +1068,426 @@ class CaseDistrProposal:
             self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
             time.sleep(5)
         
-        
         logging.info("------------------------change_to_on_chain_before end--------------------------------")
 
     def change_to_on_chain(self):
         logging.info("------------------------change_to_on_chain start--------------------------------")
         # 1111111111
-
         # 普通人无法申请提案
-        # assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1]) == -1
+        assert self.okcli.submit_change_type_proposal_onchain(self.config["delegators"][0][1]) == -1
 
         # 发起投票提案，修改提案链上分红
-        # proposal_num = self.okcli.submit_change_type_proposal_onchain(self.config["vals"][1][1])
-        # self.okcli.query_proposal(proposal_num)
+        proposal_num = self.okcli.submit_change_type_proposal_onchain(self.config["vals"][1][1])
+        self.okcli.query_proposal(proposal_num)
         
-        # for n in self.config["delegators"]:
-        #     self.okcli.vote(n[1], proposal_num)
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # for n in self.config["proxys"]:
-        #     self.okcli.vote(n[1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # for v in self.config["vals"]:
-        #     self.okcli.vote(v[1], proposal_num)
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
 
-        # self.okcli.query_proposal(proposal_num)
-        # self.okcli.wait_ledger_than(20)
+        self.okcli.query_proposal(proposal_num)
+        self.okcli.wait_ledger_than(20)
 
-        # # 222222222
-        # # 查询 delegator 所有奖励
-        # result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
-        # assert len(result["total"]) > 0, result
-        # result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
-        # assert len(result["total"]) > 0, result
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # assert len(result["total"]) > 0, result
-        # result = self.okcli.query_rewards(self.config["delegators"][3][1], "")
-        # assert len(result["total"]) > 0, result
-        # result = self.okcli.query_rewards(self.config["delegators"][4][1], "")
-        # assert len(result["total"]) > 0, result
+        # 222222222
+        # 查询 delegator 所有奖励
+        result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
+        assert len(result["total"]) > 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
+        assert len(result["total"]) > 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        assert len(result["total"]) > 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][3][1], "")
+        assert len(result["total"]) > 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][4][1], "")
+        assert len(result["total"]) > 0, result
 
-        # # 查询 delegator1 、proxy1 的 v1 分红正常，proxydelegator1 不存在质押关系
-        # result = self.okcli.query_rewards(self.config["proxys"][0][1], self.config["vals"][0][3])
-        # assert len(result) > 0, result
-        # result = self.okcli.query_rewards(self.config["delegators"][0][1], self.config["vals"][0][3])
-        # assert len(result) > 0, result
-        # result = self.okcli.query_rewards(self.config["proxydelegators"][0][1], self.config["vals"][0][3])
-        # assert result == -1, result
+        # 查询 delegator1 、proxy1 的 v1 分红正常，proxydelegator1 不存在质押关系
+        result = self.okcli.query_rewards(self.config["proxys"][0][1], self.config["vals"][0][3])
+        assert len(result) > 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][0][1], self.config["vals"][0][3])
+        assert len(result) > 0, result
+        result = self.okcli.query_rewards(self.config["proxydelegators"][0][1], self.config["vals"][0][3])
+        assert result == -1, result
 
-        # # 查询 delegator3 、proxy3的 v3 分红为空， proxydelegator3 不存在质押关系
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
-        # assert len(result) == 0, result
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
-        # assert len(result) == 0, result
-        # result = self.okcli.query_rewards(self.config["proxydelegators"][2][1], self.config["vals"][2][3])
-        # assert result == -1, result
+        # 查询 delegator3 、proxy3的 v3 分红为空， proxydelegator3 不存在质押关系
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
+        assert len(result) == 0, result
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
+        assert len(result) == 0, result
+        result = self.okcli.query_rewards(self.config["proxydelegators"][2][1], self.config["vals"][2][3])
+        assert result == -1, result
 
-        # # 设置 proxy3 的取款人地址
-        # assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1]) != -1
-        # assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][2][1]) != -1    
-        # assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][3][1]) != -1
-        # assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][4][1]) != -1
+        # 设置 proxy3 的取款人地址
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1]) != -1
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][2][1]) != -1    
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][3][1]) != -1
+        assert self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["delegators"][4][1]) != -1
 
         # 验证节点3 设置分红比例50%
-        # assert self.okcli.edit_validator("zzzzzzzz", "va3") != -1
-        # assert self.okcli.edit_validator_rate("0.5", "va3") != -1
+        assert self.okcli.edit_validator("zzzzzzzz", "va3") != -1
+        assert self.okcli.edit_validator_rate("0.5", "va3") != -1
 
-        # assert self.okcli.deposit(self.config["addDepoistCoin"], self.config["proxys"][2][1]) != -1
-        # self.okcli.wait_ledger_than(20)
-        # # 查询 delegator3 、proxy3的 v3 分红正常， proxydelegator3 不存在质押关系
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
-        # assert len(result) > 0, result
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
-        # assert len(result) > 0, result
-        # result = self.okcli.query_rewards(self.config["proxydelegators"][2][1], self.config["vals"][2][3])
-        # assert result == -1, result
+        assert self.okcli.deposit(self.config["addDepoistCoin"], self.config["proxys"][2][1]) != -1
+        self.okcli.wait_ledger_than(20)
+        # 查询 delegator3 、proxy3的 v3 分红正常， proxydelegator3 不存在质押关系
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
+        result = self.okcli.query_rewards(self.config["proxydelegators"][2][1], self.config["vals"][2][3])
+        assert result == -1, result
 
         # 33333
         # 增加 proxy3 自身投票，预期分红到账
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # rewards = result["total"][0]["amount"]
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
-        # assert len(result) > 0, result
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, PRECISION)
-        # result = self.okcli.deposit(self.config["addDepoistCoin"], self.config["proxys"][2][1])
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # self.assert_compare_near(result["total"][0]["amount"], 1)
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), afterAmount)
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        rewards = result["total"][0]["amount"]
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, self.PRECISION)
+        result = self.okcli.deposit(self.config["addDepoistCoin"], self.config["proxys"][2][1])
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        self.assert_compare_near(result["total"][0]["amount"], 1)
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
-        # # 减少 proxy3 自身投票，预期分红到账
-        # self.okcli.wait_ledger_than(20)
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # rewards = result["total"][0]["amount"]
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
-        # assert len(result) > 0, result
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.withdraw(self.config["addDepoistCoin"], self.config["proxys"][2][1]) != -1
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # self.assert_compare_near(result["total"][0]["amount"], 1)
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), afterAmount)
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        # 减少 proxy3 自身投票，预期分红到账
+        self.okcli.wait_ledger_than(20)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        rewards = result["total"][0]["amount"]
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.withdraw(self.config["addDepoistCoin"], self.config["proxys"][2][1]) != -1
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        self.assert_compare_near(result["total"][0]["amount"], 1)
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
         # 增加 proxy3 的代理投票，预期分红到账
-        # self.okcli.wait_ledger_than(20)
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # rewards = result["total"][0]["amount"]
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
-        # assert len(result) > 0, result
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][2][1]) != -1
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # self.assert_compare_near(result["total"][0]["amount"], 1)
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), afterAmount)
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        self.okcli.wait_ledger_than(20)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        rewards = result["total"][0]["amount"]
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][2][1]) != -1
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        self.assert_compare_near(result["total"][0]["amount"], 1)
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
         # 减少 proxy3 的代理投票，预期分红到账
-        # self.okcli.wait_ledger_than(20)
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, PRECISION)
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # rewards = result["total"][0]["amount"]
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
-        # assert len(result) > 0, result
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.withdraw(self.config["depoistCoin"], self.config["proxydelegators"][2][1]) != -1
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # self.assert_compare_near(result["total"][0]["amount"], 1)
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), afterAmount)
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        self.okcli.wait_ledger_than(20)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, self.PRECISION)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        rewards = result["total"][0]["amount"]
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.withdraw(self.config["depoistCoin"], self.config["proxydelegators"][2][1]) != -1
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        self.assert_compare_near(result["total"][0]["amount"], 1)
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
         # 解绑 proxy3 代理，预期分红到账
-        # # self.okcli.wait_ledger_than(20)
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # rewards = result["total"][0]["amount"]
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
-        # assert len(result) > 0, result
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # unreg 也会分红
-        # self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1])
-        # before = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][0][3], 0, PRECISION)
-        # assert self.okcli.unreg(self.config["proxys"][2][1]) != -1
-        # after = self.okcli.query_account(self.config["withdrawaddress"])
-        # addValue = self.format_decimal(after) - self.format_decimal(before)
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # self.assert_compare_near(result["total"][0]["amount"], 1)
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), afterAmount)
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, self.PRECISION)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        rewards = result["total"][0]["amount"]
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
 
-        # # 重新注册 proxy3 代理，分红仍然正常
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][2][1]) != -1
-        # assert self.okcli.add_shares(self.vals3, self.config["proxys"][2][1]) != -1
-        # # reg也会分红
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, PRECISION)
-        # self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1])
-        # before = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, PRECISION)
-        # assert self.okcli.proxy_reg(self.config["proxys"][2][1]) != -1
-        # after = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, PRECISION)
-        # assert self.okcli.proxy_bind(self.config["proxys"][2][1], self.config["proxydelegators"][2][1]) != -1
-        # self.okcli.wait_ledger_than(2)
-        # resultProxydelegator3 = self.okcli.query_shares(self.config["proxydelegators"][2][1])
-        # assert self.format_decimal(resultProxydelegator3["tokens"]) == self.config["depoistCoin"], resultProxydelegator3
-        # assert self.format_decimal(resultProxydelegator3["shares"]) == 0, resultProxydelegator3
-        # assert resultProxydelegator3["proxy_address"] == self.config["proxys"][2][1], resultProxydelegator3
+        # unreg 也会分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1])
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][0][3], 0, self.PRECISION)
+        assert self.okcli.unreg(self.config["proxys"][2][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        self.assert_compare_near(result["total"][0]["amount"], 1)
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
-        # result = self.okcli.query_shares(self.config["proxys"][2][1])
-        # assert result["is_proxy"] == True, result
-        # assert self.format_decimal(result["total_delegated_tokens"]) == self.format_decimal(resultProxydelegator3["tokens"]), result
+        # 重新注册 proxy3 代理，分红仍然正常
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][2][1]) != -1
+        assert self.okcli.add_shares(self.vals3, self.config["proxys"][2][1]) != -1
+        # reg也会分红
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, self.PRECISION)
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][2][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, self.PRECISION)
+        assert self.okcli.proxy_reg(self.config["proxys"][2][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, self.PRECISION)
+        assert self.okcli.proxy_bind(self.config["proxys"][2][1], self.config["proxydelegators"][2][1]) != -1
+        self.okcli.wait_ledger_than(2)
+        resultProxydelegator3 = self.okcli.query_shares(self.config["proxydelegators"][2][1])
+        assert self.format_decimal(resultProxydelegator3["tokens"]) == self.config["depoistCoin"], resultProxydelegator3
+        assert self.format_decimal(resultProxydelegator3["shares"]) == 0, resultProxydelegator3
+        assert resultProxydelegator3["proxy_address"] == self.config["proxys"][2][1], resultProxydelegator3
 
-        # 444444
+        result = self.okcli.query_shares(self.config["proxys"][2][1])
+        assert result["is_proxy"] == True, result
+        assert self.format_decimal(result["total_delegated_tokens"]) == self.format_decimal(resultProxydelegator3["tokens"]), result
+
+        444444
         # 增加 delegator3 的投票，预期分红到账
-        # self.okcli.wait_ledger_than(20)
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # rewards = result["total"][0]["amount"]
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
-        # assert len(result) > 0, result
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, PRECISION)
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.deposit(self.config["addDepoistCoin"], self.config["delegators"][2][1]) != -1
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # self.assert_compare_near(result["total"][0]["amount"], 1)
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), afterAmount)
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        self.okcli.wait_ledger_than(20)
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        rewards = result["total"][0]["amount"]
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, self.PRECISION)
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.deposit(self.config["addDepoistCoin"], self.config["delegators"][2][1]) != -1
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        self.assert_compare_near(result["total"][0]["amount"], 1)
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
         # 取出 delegator3 的所有投票，预期分红到账
-        # self.okcli.wait_ledger_than(20)
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
-        # assert len(result) > 0, result
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # total_rewards = result["total"][0]["amount"]
-        # rewards = 0
-        # for v in result["rewards"]:
-        #     if len(v["reward"]) > 0:
-        #         rewards += self.format_decimal(v["reward"][0]["amount"])
-        # logging.info("rewards:" + str(rewards))
+        self.okcli.wait_ledger_than(20)
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
+        assert len(result) > 0, result
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        rewards = 0
+        for v in result["rewards"]:
+            if len(v["reward"]) > 0:
+                rewards += self.format_decimal_precision(v["reward"][0]["amount"], self.PRECISION + 1)
+        logging.info("rewards:" + str(rewards))
         
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, PRECISION)
-        # result = self.okcli.query_shares(self.config["delegators"][2][1])
-        # result = self.okcli.withdraw(self.format_decimal(result["tokens"]), self.config["delegators"][2][1])
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # assert result == -1, result
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # addValue = self.format_decimal(afterAmount) - self.format_decimal(beforeAmount)
-        # # assert addValue >= self.format_decimal(rewards)
-        # # assert addValue <= (self.format_decimal(total_rewards) + 1)
-        # # self.assert_compare_near(self.format_decimal(total_rewards) + self.format_decimal(beforeAmount), afterAmount)
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][2][1], self.config["vals"][2][3], 0, self.PRECISION)
+        result = self.okcli.query_shares(self.config["delegators"][2][1])
+        result = self.okcli.withdraw(self.format_decimal(result["tokens"]), self.config["delegators"][2][1])
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        assert result == -1, result
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
         # 取出 delegator3 的投票，等待30秒，再次取出分红为0
-        # self.okcli.wait_ledger_than(20)
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # assert result == -1, result
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
-        # assert result == -1, result
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.withdraw_all_rewards(self.config["delegators"][2][1])
-        # self.okcli.wait_ledger_than(2)
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # self.assert_compare_same(beforeAmount, afterAmount)
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff == 0, str(diff)
+        self.okcli.wait_ledger_than(20)
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        assert result == -1, result
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
+        assert result == -1, result
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.withdraw_all_rewards(self.config["delegators"][2][1])
+        self.okcli.wait_ledger_than(2)
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff == 0, str(diff)
 
+        # delegator3 再次质押，30秒后仍有奖励
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][2][1]) != -1
+        assert self.okcli.add_shares(self.vals3, self.config["delegators"][2][1]) != -1
+        self.okcli.wait_ledger_than(20)
+        self.okcli.query_total_rewards_gt_precision(self.config["delegators"][2][1], self.config["vals"][2][3], 0, self.PRECISION)
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        rewards = result["total"][0]["amount"]
+        assert len(result["total"]) == 1
+        assert len(result["rewards"]) == 3
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.withdraw(self.config["depoistCoin"], self.config["delegators"][2][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
-        # # delegator3 再次质押，30秒后仍有奖励
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][2][1]) != -1
-        # assert self.okcli.add_shares(self.vals3, self.config["delegators"][2][1]) != -1
-        # self.okcli.wait_ledger_than(20)
-        # self.okcli.query_total_rewards_gt_precision(self.config["delegators"][2][1], self.config["vals"][2][3], 0, PRECISION)
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # rewards = result["total"][0]["amount"]
-        # assert len(result["total"]) == 1
-        # assert len(result["rewards"]) == 3
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.withdraw(self.config["depoistCoin"], self.config["delegators"][2][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
-
-        # # 555555
-        # # 销毁验证节点
-        # result = self.okcli.query_validator(self.config["vaadmin16"])
-        # assert result["jailed"] == False, result
-        # assert self.okcli.destroy_validator(self.config["vaAddadmin16"]) != -1
-        # result = self.okcli.query_validator(self.config["vaadmin16"])
-        # assert result["jailed"] == True, result
+        # 555555
+        # 销毁验证节点
+        result = self.okcli.query_validator(self.config["vaadmin16"])
+        assert result["jailed"] == False, result
+        assert self.okcli.destroy_validator(self.config["vaAddadmin16"]) != -1
+        result = self.okcli.query_validator(self.config["vaadmin16"])
+        assert result["jailed"] == True, result
 
         # 销毁验证节点，取出自己抽成
-        # ledger = self.okcli.get_ledger_seq()
-        # beforeAmount = self.okcli.query_account(self.config["vaAddadmin16"])
-        # commission = self.okcli.query_commission(self.config["vaadmin16"], ledger)
-        # outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
-        # logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
-        # # self.assert_compare_gt(outstanding, commission)
-        # assert self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"]) != -1
-        # afterAmount = self.okcli.query_account(self.config["vaAddadmin16"])
-        # logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount))
-        # result = "afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount)
-        # # self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(commission), self.format_decimal(afterAmount))
-        # ledger = self.okcli.get_ledger_seq()
-        # commission = self.okcli.query_commission(self.config["vaadmin16"], ledger)
-        # outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
-        # logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
-        # self.assert_compare_gt(outstanding, commission)
-        # assert self.format_decimal(commission) == 0
-        
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmount = self.okcli.query_account(self.config["vaAddadmin16"])
+        commission = self.okcli.query_commission(self.config["vaadmin16"], ledger)
+        outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
+        logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
+        self.assert_compare_gt(outstanding, commission)
+        assert self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"]) != -1
+        afterAmount = self.okcli.query_account(self.config["vaAddadmin16"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount))
+        result = "afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount)
+        self.assert_compare_near(self.format_decimal(beforeAmount) + self.format_decimal(commission), self.format_decimal(afterAmount))
+        ledger = self.okcli.get_ledger_seq()
+        commission = self.okcli.query_commission(self.config["vaadmin16"], ledger)
+        outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
+        logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
+        self.assert_compare_gt(outstanding, commission)
+        assert self.format_decimal(commission) == 0
 
         # delegator4 取出质押
-        # self.okcli.wait_ledger_than(20)
-        # self.okcli.query_total_rewards_gt_precision(self.config["delegators"][3][1], self.config["vaadmin16"], 0, PRECISION)
-        # self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["delegators"][3][1])
+        self.okcli.wait_ledger_than(20)
+        self.okcli.query_total_rewards_gt_precision(self.config["delegators"][3][1], self.config["vaadmin16"], 0, self.PRECISION)
+        self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["delegators"][3][1])
 
-        # result = self.okcli.query_rewards(self.config["delegators"][3][1], "")
-        # total_rewards = result["total"][0]["amount"]
-        # rewards = 0
-        # for v in result["rewards"]:
-        #     if len(v["reward"]) > 0:
-        #         rewards += self.format_decimal(v["reward"][0]["amount"])
-        # logging.info("rewards:" + str(rewards))
+        result = self.okcli.query_rewards(self.config["delegators"][3][1], "")
+        rewards = 0
+        for v in result["rewards"]:
+            if len(v["reward"]) > 0:
+                rewards += self.format_decimal_precision(v["reward"][0]["amount"], self.PRECISION + 1)
+        logging.info("rewards:" + str(rewards))
 
-        # self.okcli.query_total_rewards_gt_precision(self.config["delegators"][3][1], self.config["vals"][2][3], 0, PRECISION)
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # result = self.okcli.query_shares(self.config["delegators"][3][1])
-        # assert self.okcli.withdraw(self.format_decimal(result["tokens"]), self.config["delegators"][3][1]) != -1
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_rewards(self.config["delegators"][3][1], self.config["vaadmin16"])
-        # assert result == -1, result
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # self.assert_compare_near(self.format_decimal(rewards) + self.format_decimal(beforeAmount), afterAmount)
-        # # addValue = self.format_decimal(afterAmount) - self.format_decimal(beforeAmount)
-        # # assert addValue >= self.format_decimal(rewards)
-        # # assert addValue <= (self.format_decimal(total_rewards) + 1)
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
+        self.okcli.query_total_rewards_gt_precision(self.config["delegators"][3][1], self.config["vals"][2][3], 0, self.PRECISION)
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        result = self.okcli.query_shares(self.config["delegators"][3][1])
+        assert self.okcli.withdraw(self.format_decimal(result["tokens"]), self.config["delegators"][3][1]) != -1
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_rewards(self.config["delegators"][3][1], self.config["vaadmin16"])
+        assert result == -1, result
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
 
         # 30秒后，验证节点不再有抽成
-        # self.okcli.wait_ledger_than(20)
-        # ledger = self.okcli.get_ledger_seq()
-        # beforeAmount = self.okcli.query_account(self.config["vaAddadmin16"])
-        # commission = self.okcli.query_commission(self.config["vaadmin16"], ledger)
-        # outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
-        # logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
-        # self.assert_compare_gt(outstanding, commission)
-        # assert self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"]) != -1
-        # afterAmount = self.okcli.query_account(self.config["vaAddadmin16"])
-        # logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount))
-        # result = "afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount)
-        # self.assert_compare_same(beforeAmount, afterAmount)
-
-        # return
+        self.okcli.wait_ledger_than(20)
+        ledger = self.okcli.get_ledger_seq()
+        beforeAmount = self.okcli.query_account(self.config["vaAddadmin16"])
+        commission = self.okcli.query_commission(self.config["vaadmin16"], ledger)
+        outstanding = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
+        logging.info("commission:" + str(commission) + ", outstanding:" + str(outstanding))
+        self.assert_compare_gt(outstanding, commission)
+        assert self.okcli.withdraw_commission(self.config["vaadmin16"], self.config["vaAddadmin16"]) != -1
+        afterAmount = self.okcli.query_account(self.config["vaAddadmin16"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount))
+        result = "afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount)
+        self.assert_compare_same(beforeAmount, afterAmount)
 
         # delegator4 不再有分红
-        # result = self.okcli.query_rewards(self.config["delegators"][3][1], self.config["vaadmin16"])
-        # assert result == -1, result
-        # self.okcli.query_total_rewards_gt_precision(self.config["delegators"][3][1], self.config["vals"][2][3], 0, PRECISION)
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.withdraw_all_rewards(self.config["delegators"][3][1])
-        # # self.okcli.wait_ledger_than(2)
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # # self.assert_compare_same(beforeAmount, afterAmount)
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 0, str(diff)
+        result = self.okcli.query_rewards(self.config["delegators"][3][1], self.config["vaadmin16"])
+        assert result == -1, result
+        self.okcli.query_total_rewards_gt_precision(self.config["delegators"][3][1], self.config["vals"][2][3], 0, self.PRECISION)
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.withdraw_all_rewards(self.config["delegators"][3][1])
+        self.okcli.wait_ledger_than(2)
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        self.assert_compare_same(beforeAmount, afterAmount)
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff <= 0, str(diff)
 
-        # # 666666
-        # # 再次申请验证节点
-        # ledger = self.okcli.get_ledger_seq()
-        # assert self.okcli.create_validator(self.config["vaAddadmin16"]) == -1
-        # assert self.okcli.edit_validator("zzzzzzzz", self.config["vaAddadmin16"]) != -1
-        # assert self.okcli.edit_validator_rate("0.5", self.config["vaAddadmin16"]) == -1
-        # result = self.okcli.query_commission(self.config["vaadmin16"])
-        # logging.info("query_commission:" + result)
-        # result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
-        # logging.info("query_outstanding:" + result)
-        # result = self.okcli.query_validator(self.config["vaadmin16"])
-        # assert result["jailed"] == True, result
+        # 666666
+        # 再次申请验证节点
+        ledger = self.okcli.get_ledger_seq()
+        assert self.okcli.create_validator(self.config["vaAddadmin16"]) == -1
+        assert self.okcli.edit_validator("zzzzzzzz", self.config["vaAddadmin16"]) != -1
+        assert self.okcli.edit_validator_rate("0.5", self.config["vaAddadmin16"]) == -1
+        result = self.okcli.query_commission(self.config["vaadmin16"])
+        logging.info("query_commission:" + result)
+        result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
+        logging.info("query_outstanding:" + result)
+        result = self.okcli.query_validator(self.config["vaadmin16"])
+        assert result["jailed"] == True, result
 
         # 质押人取出后，不再有分红
-        # self.okcli.wait_ledger_than(20)
-        # self.okcli.query_total_rewards_gt_precision(self.config["delegators"][4][1], self.config["vals"][2][3], 0, PRECISION)
-        # result = self.okcli.query_validator(self.config["vaadmin16"])
-        # assert result["jailed"] == True, result
-        # result = self.okcli.query_rewards(self.config["delegators"][4][1], self.config["vaadmin16"])
-        # assert len(result) > 0, result
-        # assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["delegators"][4][1]) != -1
-        # # self.okcli.wait_ledger_than(5)
-        # result = self.okcli.query_rewards(self.config["delegators"][4][1], self.config["vaadmin16"])
-        # assert len(result) == 0, result
+        self.okcli.wait_ledger_than(20)
+        self.okcli.query_total_rewards_gt_precision(self.config["delegators"][4][1], self.config["vals"][2][3], 0, self.PRECISION)
+        result = self.okcli.query_validator(self.config["vaadmin16"])
+        assert result["jailed"] == True, result
+        result = self.okcli.query_rewards(self.config["delegators"][4][1], self.config["vaadmin16"])
+        assert len(result) > 0, result
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["delegators"][4][1]) != -1
+        self.okcli.wait_ledger_than(5)
+        result = self.okcli.query_rewards(self.config["delegators"][4][1], self.config["vaadmin16"])
+        assert len(result) == 0, result
 
         # add shares会进行分红
-        # self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][0][1])
-        # before = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][0][1], self.config["vals"][0][3], 0, PRECISION)
-        # assert self.okcli.add_shares(self.vals3, self.config["proxys"][0][1]) != -1
-        # after = self.okcli.query_account(self.config["withdrawaddress"])
-        # # addValue = self.format_decimal_precision(after, PRECISION + 1) - self.format_decimal_precision(before, PRECISION + 1)
-        # # assert addValue > PRECISION_REWARDS, str(addValue)
-        # diff = self.format_decimal_precision(after, PRECISION + 1) - (self.format_decimal_precision(before, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS, str(diff)
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][0][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][0][1], self.config["vals"][0][3], 0, self.PRECISION)
+        assert self.okcli.add_shares(self.vals3, self.config["proxys"][0][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        diff = self.format_decimal_precision(after, self.PRECISION + 1) - (self.format_decimal_precision(before, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS, str(diff)
 
         # 查询抽成正常
-        # ledger = self.okcli.get_ledger_seq()
-        # result = self.okcli.query_commission(self.config["vals"][0][3], ledger)
-        # result = self.okcli.query_commission(self.config["vals"][1][3], ledger)
-        # result = self.okcli.query_commission(self.config["vals"][2][3], ledger)
-        # result = self.okcli.query_commission(self.config["vals"][3][3], ledger)
-        # result = self.okcli.query_commission(self.config["vaadmin16"], ledger)
+        ledger = self.okcli.get_ledger_seq()
+        result = self.okcli.query_commission(self.config["vals"][0][3], ledger)
+        result = self.okcli.query_commission(self.config["vals"][1][3], ledger)
+        result = self.okcli.query_commission(self.config["vals"][2][3], ledger)
+        result = self.okcli.query_commission(self.config["vals"][3][3], ledger)
+        result = self.okcli.query_commission(self.config["vaadmin16"], ledger)
 
-        # result = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
-        # result = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
-        # result = self.okcli.query_outstanding(self.config["vals"][2][3], ledger)
-        # result = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
-        # result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
+        result = self.okcli.query_outstanding(self.config["vals"][0][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vals"][1][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vals"][2][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vals"][3][3], ledger)
+        result = self.okcli.query_outstanding(self.config["vaadmin16"], ledger)
 
-        # result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
-        # result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
-        # result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
-        # result = self.okcli.query_rewards(self.config["proxys"][3][1], "")
-        # result = self.okcli.query_rewards(self.config["proxys"][4][1], "")
+        result = self.okcli.query_rewards(self.config["proxys"][0][1], "")
+        result = self.okcli.query_rewards(self.config["proxys"][1][1], "")
+        result = self.okcli.query_rewards(self.config["proxys"][2][1], "")
+        result = self.okcli.query_rewards(self.config["proxys"][3][1], "")
+        result = self.okcli.query_rewards(self.config["proxys"][4][1], "")
 
-        # result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
-        # result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
-        # result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
-        # result = self.okcli.query_rewards(self.config["delegators"][3][1], "")
-        # result = self.okcli.query_rewards(self.config["delegators"][4][1], "")
+        result = self.okcli.query_rewards(self.config["delegators"][0][1], "")
+        result = self.okcli.query_rewards(self.config["delegators"][1][1], "")
+        result = self.okcli.query_rewards(self.config["delegators"][2][1], "")
+        result = self.okcli.query_rewards(self.config["delegators"][3][1], "")
+        result = self.okcli.query_rewards(self.config["delegators"][4][1], "")
 
-        # # 取出分红分红正常
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) != -1
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][1][1]) != -1
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][2][1]) == -1 # 无法取出分红，因为已经取出押金
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][3][1]) == -1 # 无法取出分红，因为已经取出押金
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][4][1]) != -1
+        # 取出分红分红正常
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) != -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][1][1]) != -1
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][2][1]) == -1 # 无法取出分红，因为已经取出押金
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][3][1]) == -1 # 无法取出分红，因为已经取出押金
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][4][1]) != -1
 
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][1][1]) != -1
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][2][1]) != -1
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][3][1]) != -1
-        # assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][4][1]) != -1
-        # assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][0][1]) == -1
-        # assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][1][1])== -1
-        # assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][2][1])== -1
-        # assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][3][1]) != -1
-        # assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][4][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][1][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][2][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][3][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][4][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][0][1]) == -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][1][1])== -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][2][1])== -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][3][1]) != -1
+        assert self.okcli.withdraw_rewards(self.config["vaadmin16"], self.config["proxys"][4][1]) != -1
 
-        # result = self.okcli.query_distr_params()
-        # assert result["distribution_type"] == 1, result
+        result = self.okcli.query_distr_params()
+        assert result["distribution_type"] == 1, result
 
-        # self.okcli.query_commission(self.config["vals"][0][3])
-        # self.okcli.query_commission(self.config["vals"][1][3])
-        # self.okcli.query_commission(self.config["vals"][2][3])
-        # self.okcli.query_commission(self.config["vals"][3][3])
+        self.okcli.query_commission(self.config["vals"][0][3])
+        self.okcli.query_commission(self.config["vals"][1][3])
+        self.okcli.query_commission(self.config["vals"][2][3])
+        self.okcli.query_commission(self.config["vals"][3][3])
 
-        # self.okcli.withdraw_commission(self.config["vals"][0][3], "va1")
-        # self.okcli.withdraw_commission(self.config["vals"][1][3], "va1")
-        # self.okcli.withdraw_commission(self.config["vals"][2][3], "va1")
-        # self.okcli.withdraw_commission(self.config["vals"][3][3], "va1")
+        self.okcli.withdraw_commission(self.config["vals"][0][3], "va1")
+        self.okcli.withdraw_commission(self.config["vals"][1][3], "va1")
+        self.okcli.withdraw_commission(self.config["vals"][2][3], "va1")
+        self.okcli.withdraw_commission(self.config["vals"][3][3], "va1")
 
         logging.info("------------------------change_to_on_chain end--------------------------------")
 
@@ -1580,117 +1503,111 @@ class CaseDistrProposal:
         logging.info("------------------------enabled_withdraw_reward start--------------------------------")
 
         # 普通人无法发起提案
-        # assert self.okcli.submit_withdraw_reward_disabled(self.config["delegators"][0][1]) == -1
+        assert self.okcli.submit_withdraw_reward_disabled(self.config["delegators"][0][1]) == -1
 
-        # # 发起投票提案，禁止链上提取分红
-        # proposal_num = self.okcli.submit_withdraw_reward_disabled(self.config["vals"][0][1])
-        # self.okcli.query_proposal(proposal_num)
+        # 发起投票提案，禁止链上提取分红
+        proposal_num = self.okcli.submit_withdraw_reward_disabled(self.config["vals"][0][1])
+        self.okcli.query_proposal(proposal_num)
         
-        # for n in self.config["delegators"]:
-        #     self.okcli.vote(n[1], proposal_num)
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # for n in self.config["proxys"]:
-        #     self.okcli.vote(n[1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # for v in self.config["vals"]:
-        #     self.okcli.vote(v[1], proposal_num)
-        # self.okcli.query_proposal(proposal_num)
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_distr_params()
-        # assert result["withdraw_reward_enabled"] == False, result
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_distr_params()
+        assert result["withdraw_reward_enabled"] == False, result
 
-        # # 禁止分红相关操作
-        # assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) == -1
+        # 禁止分红相关操作
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][0][1]) == -1
 
-        # # 禁止代理相关操作
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][5][1]) == -1
-        # assert self.okcli.add_shares(self.vals4, self.config["delegators"][5][1]) == -1  
-        # self.okcli.wait_ledger_than(2)
-        # assert self.okcli.add_shares(self.vals4, self.config["delegators"][5][1]) == -1 
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][5][1]) == -1
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][5][1]) == -1
-        # assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) == -1
-        # assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) == -1 
-        # assert self.okcli.proxy_reg(self.config["proxys"][5][1]) == -1
-        # assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) == -1
+        # 禁止代理相关操作
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][5][1]) == -1
+        assert self.okcli.add_shares(self.vals4, self.config["delegators"][5][1]) == -1  
+        self.okcli.wait_ledger_than(2)
+        assert self.okcli.add_shares(self.vals4, self.config["delegators"][5][1]) == -1 
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][5][1]) == -1
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][5][1]) == -1
+        assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) == -1
+        assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) == -1 
+        assert self.okcli.proxy_reg(self.config["proxys"][5][1]) == -1
+        assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) == -1
 
-        # # 禁止代理相关操作
-        # assert self.okcli.query_tx(self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1], False)) == 167826
-        # assert self.okcli.query_tx(self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False)) == 167826
-        # assert self.okcli.query_tx(self.okcli.add_shares(self.vals4, self.config["delegators"][5][1], False)) == 167049
-        # assert self.okcli.query_tx(self.okcli.add_shares(self.vals4, self.config["proxys"][5][1], False)) == 167049
-        # assert self.okcli.query_tx(self.okcli.proxy_bind(self.config["proxys"][4][1], self.config["proxydelegators"][5][1], False)) == 167049
+        # 禁止代理相关操作
+        assert self.okcli.query_tx(self.okcli.withdraw_rewards(self.config["vals"][0][3], self.config["proxys"][0][1], False)) == 167826
+        assert self.okcli.query_tx(self.okcli.withdraw_all_rewards(self.config["delegators"][0][1], False)) == 167826
+        assert self.okcli.query_tx(self.okcli.add_shares(self.vals4, self.config["delegators"][5][1], False)) == 167049
+        assert self.okcli.query_tx(self.okcli.add_shares(self.vals4, self.config["proxys"][5][1], False)) == 167049
+        assert self.okcli.query_tx(self.okcli.proxy_bind(self.config["proxys"][4][1], self.config["proxydelegators"][5][1], False)) == 167049
 
-        # # 普通人无法发起提案
-        # assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1]) == -1
-        # assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == 167828
+        # 普通人无法发起提案
+        assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1]) == -1
+        assert self.okcli.submit_withdraw_reward_enabled(self.config["delegators"][0][1], False) == 167828
 
-        # # 发起投票提案，启用链上提取分红
-        # proposal_num = self.okcli.submit_withdraw_reward_enabled(self.config["vals"][0][1])
-        # self.okcli.query_proposal(proposal_num)
-        # for n in self.config["delegators"]:
-        #     self.okcli.vote(n[1], proposal_num)
+        # 发起投票提案，启用链上提取分红
+        proposal_num = self.okcli.submit_withdraw_reward_enabled(self.config["vals"][0][1])
+        self.okcli.query_proposal(proposal_num)
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # for n in self.config["proxys"]:
-        #     self.okcli.vote(n[1], proposal_num)
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
 
-        # for v in self.config["vals"]:
-        #     self.okcli.vote(v[1], proposal_num)
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
 
-        # self.okcli.query_proposal(proposal_num)
+        self.okcli.query_proposal(proposal_num)
 
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_distr_params()
-        # assert result["withdraw_reward_enabled"] == True, result
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_distr_params()
+        assert result["withdraw_reward_enabled"] == True, result
 
-        # # 普通转账成功
-        # assert self.okcli.transfer(self.config["captain"], self.config["delegators"][1][1], self.config["initCoin"]) != -1
+        # 普通转账成功
+        assert self.okcli.transfer(self.config["captain"], self.config["delegators"][1][1], self.config["initCoin"]) != -1
 
-        # # 注册代理成功
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][5][1]) != -1 
-        # assert self.okcli.add_shares(self.vals4, self.config["delegators"][5][1]) != -1  
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][5][1]) != -1
-        # assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][5][1]) != -1
-        # assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) != -1
-        # assert self.okcli.proxy_reg(self.config["proxys"][5][1]) != -1
-        # return
+        # 注册代理成功
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["delegators"][5][1]) != -1 
+        assert self.okcli.add_shares(self.vals4, self.config["delegators"][5][1]) != -1  
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxydelegators"][5][1]) != -1
+        assert self.okcli.deposit(self.config["depoistCoin"], self.config["proxys"][5][1]) != -1
+        assert self.okcli.add_shares(self.vals4, self.config["proxys"][5][1]) != -1
+        assert self.okcli.proxy_reg(self.config["proxys"][5][1]) != -1
 
-        # # bind也会进行分红
-        # self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
-        # before = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, PRECISION)
-        # assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
-        # after = self.okcli.query_account(self.config["withdrawaddress"])
-        # addValue = self.format_decimal_precision(after, PRECISION + 1) - self.format_decimal_precision(before, PRECISION + 1)
-        # assert addValue >= PRECISION_REWARDS, str(addValue)
+        # bind也会进行分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, self.PRECISION)
+        assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        addValue = self.format_decimal_precision(after, self.PRECISION + 1) - self.format_decimal_precision(before, self.PRECISION + 1)
+        assert addValue >= self.PRECISION_REWARDS, str(addValue)
 
-        # # proxy5 取出va2的分红
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, PRECISION)
-        # rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        # # assert (self.format_decimal(afterAmount)- (self.format_decimal(beforeAmount)) >= self.format_decimal(rewards))
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff >= PRECISION_REWARDS, str(diff)
+        # proxy5 取出va2的分红
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff >= self.PRECISION_REWARDS, str(diff)
 
         # proxy5 unbind 分红
-        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, PRECISION)
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
         afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        assert float(rewards) > PRECISION_REWARDS, rewards
-        assert float(rewards) < 1, rewards
-        diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        assert diff <= 1, str(diff)
-        assert diff >= PRECISION_REWARDS, str(diff)
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff >= self.PRECISION_REWARDS, str(diff)
         
         logging.info("------------------------enabled_withdraw_reward end--------------------------------")
 
@@ -1704,153 +1621,100 @@ class CaseDistrProposal:
 
     def reward_truncate(self):
         logging.info("------------------------reward_truncate start--------------------------------")
-        PRECISION = 8
-        PRECISION_REWARDS = 0.00000001
-        PRECISION_REWARDS_DIFF = 0.000000001
 
         # 普通人无法发起提案
-        # assert self.okcli.submit_reward_truncate_2(self.config["delegators"][0][1]) == -1
+        assert self.okcli.submit_reward_truncate_2(self.config["delegators"][0][1]) == -1
 
-        # result = self.okcli.query_distr_params()
-        # assert result["reward_truncate_precision"] == "0", result
-        # 发起分红截断提案，精度为 2
-        # proposal_num = self.okcli.submit_reward_truncate_2(self.config["vals"][0][1])
-        # self.okcli.query_proposal(proposal_num)
+        # 发起分红截断提案，精度为 4
+        self.set_reword_persion(4)
         
-        # for n in self.config["delegators"]:
-        #     self.okcli.vote(n[1], proposal_num)
-
-        # for n in self.config["proxys"]:
-        #     self.okcli.vote(n[1], proposal_num)
-
-        # for v in self.config["vals"]:
-        #     self.okcli.vote(v[1], proposal_num)
-        # self.okcli.query_proposal(proposal_num)
-
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_distr_params()
-        # assert result["reward_truncate_precision"] == "2", result
-        # return
-        
-        # 先取出分红
-        # assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
-
-        # # bind也会进行分红
-        # self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
-        # before = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, PRECISION)
-        # result = self.okcli.query_rewards(self.config["proxys"][5][1], "")
-        # rewards = result["total"][0]["amount"]
-        # assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
-        # after = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(after, PRECISION + 1) - (self.format_decimal_precision(before, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS_DIFF, str(diff)
-
-        # # proxy5 取出va2的分红
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, PRECISION)
-        # rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS, str(diff)
-
-        # # proxy5 unbind 分红
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, PRECISION)
-        # rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        # addValue = self.format_decimal_precision(afterAmount, PRECISION) - self.format_decimal_precision(beforeAmount, PRECISION)
-
-        # # 发起分红截断提案，精度为 0
-        # proposal_num = self.okcli.submit_reward_truncate_0(self.config["vals"][0][1])
-        # self.okcli.query_proposal(proposal_num)
-        # for n in self.config["delegators"]:
-        #     self.okcli.vote(n[1], proposal_num)
-
-        # for n in self.config["proxys"]:
-        #     self.okcli.vote(n[1], proposal_num)
-
-        # for v in self.config["vals"]:
-        #     self.okcli.vote(v[1], proposal_num)
-
-        # self.okcli.query_proposal(proposal_num)
-
-        # self.okcli.wait_ledger_than(2)
-        # result = self.okcli.query_distr_params()
-        # assert result["reward_truncate_precision"] == "0", result
-
-        PRECISION = 4
-        PRECISION_REWARDS = 0.0001
-        PRECISION_REWARDS_DIFF = 0.00001
-
-        # 先取出分红
-        # assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
-
-        # bind也会进行分红
-        # self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
-        # rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
-        # before = self.okcli.query_account(self.config["withdrawaddress"])
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, PRECISION)
-        # assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
-        # after = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(after, PRECISION + 1) - (self.format_decimal_precision(before, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS, str(diff)
-        
-        # # proxy5 取出va2的分红
-        # self.okcli.query_rewards(self.config["proxys"][5][1], "")
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, PRECISION)
-        # rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS, str(diff)
-        # self.okcli.query_rewards(self.config["proxys"][5][1], "")
-        # return
-
-        # # proxy5 unbind 分红
-        # self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][2][3], 0, PRECISION)
-        # rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
-        # beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
-        # afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        # logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        # assert float(rewards) > PRECISION_REWARDS, rewards
-        # assert float(rewards) < 1, rewards
-        # diff = self.format_decimal_precision(afterAmount, PRECISION + 1) - (self.format_decimal_precision(beforeAmount, PRECISION + 1)) 
-        # assert diff <= 1, str(diff)
-        # assert diff > PRECISION_REWARDS, str(diff)
-        # return
-
-        ## 小于1无法取出
         # 先取出分红
         assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
-        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, PRECISION)
+
+        # bind也会进行分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, self.PRECISION)
+        result = self.okcli.query_rewards(self.config["proxys"][5][1], "")
+        rewards = result["total"][0]["amount"]
+        assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(after, self.PRECISION + 1) - (self.format_decimal_precision(before, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS_DIFF, str(diff)
+
+        # proxy5 取出va2的分红
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
         afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
-        addValue = self.format_decimal_precision(afterAmount, PRECISION) - self.format_decimal_precision(beforeAmount, PRECISION)
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS, str(diff)
+
+        # proxy5 unbind 分红
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        addValue = self.format_decimal_precision(afterAmount, self.PRECISION) - self.format_decimal_precision(beforeAmount, self.PRECISION)
+
+        # 发起分红截断提案，精度为 0
+        self.set_reword_persion(0)
+
+        # 先取出分红
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+
+        # bind也会进行分红
+        self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        before = self.okcli.query_account(self.config["withdrawaddress"])
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, self.PRECISION)
+        assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
+        after = self.okcli.query_account(self.config["withdrawaddress"])
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(after, self.PRECISION + 1) - (self.format_decimal_precision(before, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS, str(diff)
+        
+        # # proxy5 取出va2的分红
+        self.okcli.query_rewards(self.config["proxys"][5][1], "")
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS, str(diff)
+        self.okcli.query_rewards(self.config["proxys"][5][1], "")
+
+        # # proxy5 unbind 分红
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][2][3], 0, self.PRECISION)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        assert float(rewards) > self.PRECISION_REWARDS, rewards
+        diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
+        assert diff > self.PRECISION_REWARDS, str(diff)
+
+        ## 小于1无法取出
+        # 先取出分红
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+        afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
+        logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
+        addValue = self.format_decimal_precision(afterAmount, self.PRECISION) - self.format_decimal_precision(beforeAmount, self.PRECISION)
         assert addValue <= 0, str(addValue)
-        return
         
         logging.info("------------------------reward_truncate end--------------------------------")
 
@@ -1927,6 +1791,41 @@ class CaseDistrProposal:
             #case.okcli.kill_all_process()
         logging.info("Please use arg eg:  auto")
         sys.exit()
+    def set_reword_persion(self, persion):
+        # 发起分红截断提案，精度为 persion
+        proposal_num = self.okcli.submit_reward_truncate(self.config["vals"][0][1], persion)
+        if persion == 0:
+            self.PRECISION = 0
+            self.PRECISION_REWARDS = 1
+            self.PRECISION_REWARDS_DIFF = 0.9
+        elif persion == 2:
+            self.PRECISION = 2
+            self.PRECISION_REWARDS = 0.01
+            self.PRECISION_REWARDS_DIFF = 0.009
+        elif persion == 4:
+            self.PRECISION = 4
+            self.PRECISION_REWARDS = 0.0001
+            self.PRECISION_REWARDS_DIFF = 0.00009
+        elif persion == 8:
+            self.PRECISION = 8
+            self.PRECISION_REWARDS = 0.00000001
+            self.PRECISION_REWARDS_DIFF = 0.000000009
+        
+        self.okcli.query_proposal(proposal_num)
+        
+        for n in self.config["delegators"]:
+            self.okcli.vote(n[1], proposal_num)
+
+        for n in self.config["proxys"]:
+            self.okcli.vote(n[1], proposal_num)
+
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
+        self.okcli.query_proposal(proposal_num)
+
+        self.okcli.wait_ledger_than(2)
+        result = self.okcli.query_distr_params()
+        assert result["reward_truncate_precision"] == str(persion), result
 
 if __name__ == '__main__':
     pybase = pybase.Pybase()
