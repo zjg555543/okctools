@@ -9,7 +9,7 @@
     "depoistCoin": 10000,
     "addDepoistCoin": 300000,
     "rpc": "http://127.0.0.1:26657", 
-    "nodeCount": 22,
+    "nodeCount": 5,
     "ledgerTime":1000,
     "upgradeLedger": 400,
     "singleDebug": false,
