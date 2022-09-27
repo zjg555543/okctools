@@ -1670,9 +1670,9 @@ class CaseDistrProposal:
 
         # bind也会进行分红
         self.okcli.set_withdraw_addr(self.config["withdrawaddress"], self.config["proxys"][5][1])
-        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
         before = self.okcli.query_account(self.config["withdrawaddress"])
         self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][0][3], 0, self.PRECISION)
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][0][3])[0]["amount"]
         assert self.okcli.proxy_bind(self.config["proxys"][5][1], self.config["proxydelegators"][5][1]) != -1
         after = self.okcli.query_account(self.config["withdrawaddress"])
         assert float(rewards) > self.PRECISION_REWARDS, rewards
@@ -1689,12 +1689,12 @@ class CaseDistrProposal:
         logging.info("afterAmount:" + str(afterAmount) + ", beforeAmount:" + str(beforeAmount) + ", rewards:" + str(rewards))
         assert float(rewards) > self.PRECISION_REWARDS, rewards
         diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
-        assert diff > self.PRECISION_REWARDS, str(diff)
+        assert diff >= self.PRECISION_REWARDS, str(diff)
         self.okcli.query_rewards(self.config["proxys"][5][1], "")
 
-        # # proxy5 unbind 分红
+        # proxy5 unbind 分红
         self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][2][3], 0, self.PRECISION)
-        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
+        rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][2][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         assert self.okcli.proxy_unbind(self.config["proxydelegators"][5][1]) != -1
         afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
@@ -1706,7 +1706,6 @@ class CaseDistrProposal:
         ## 小于1无法取出
         # 先取出分红
         assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
-        self.okcli.query_total_rewards_gt_precision(self.config["proxys"][5][1], self.config["vals"][1][3], 0, self.PRECISION)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
