@@ -106,6 +106,10 @@ class CaseDistrProposal:
         self.reward_truncate_before()
         self.reward_truncate()
 
+        # 阶段十，取出所有分红
+        self.withdrawallrewards_before()
+        self.withdrawallrewards()
+
         # 阶段十，补充测试用例
         # self.extension_before()
         # self.extension()
@@ -1299,7 +1303,7 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["delegators"][2][1], self.config["vals"][2][3])
         assert result == -1, result
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        self.okcli.withdraw_all_rewards(self.config["delegators"][2][1])
+        self.okcli.withdraw_all_rewards(self.config["delegators"][2][1]) != -1
         self.okcli.wait_ledger_than(2)
         afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
         diff = self.format_decimal_precision(afterAmount, self.PRECISION + 1) - (self.format_decimal_precision(beforeAmount, self.PRECISION + 1)) 
@@ -1390,7 +1394,7 @@ class CaseDistrProposal:
         result = self.okcli.query_rewards(self.config["delegators"][3][1], self.config["vaadmin16"])
         assert result == -1, result
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
-        self.okcli.withdraw_all_rewards(self.config["delegators"][3][1])
+        self.okcli.withdraw_all_rewards(self.config["delegators"][3][1]) != -1
         self.okcli.wait_ledger_than(2)
         afterAmount = self.okcli.query_account(self.config["withdrawaddress"])
         self.assert_compare_same(beforeAmount, afterAmount)
@@ -1716,6 +1720,47 @@ class CaseDistrProposal:
         
         logging.info("------------------------reward_truncate end--------------------------------")
 
+    def withdrawallrewards_before(self):
+        logging.info("------------------------withdrawallrewards_before start--------------------------------")
+        if self.single_debug:
+            self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], self.config["nodeCount"], self.config["nodes"])
+            time.sleep(5)
+        
+        logging.info("------------------------withdrawallrewards_before end--------------------------------")
+
+    def withdrawallrewards(self):
+        logging.info("------------------------withdrawallrewards start--------------------------------")
+        assert self.okcli.withdraw_all_rewards(self.config["delegators"][4][1]) != -1
+
+        for d in self.config["delegators"]:
+            result = self.okcli.query_shares(d[1])
+            if self.format_decimal(result["shares"]) <= 0:
+                assert self.okcli.withdraw_all_rewards(d[0]) == -1
+                assert self.okcli.withdraw_all_rewards(d[0]) == -1
+            else:
+                assert self.okcli.withdraw_all_rewards(d[0]) != -1
+                assert self.okcli.withdraw_all_rewards(d[0]) != -1
+
+        for d in self.config["proxydelegators"]:
+            result = self.okcli.query_shares(d[1])
+            if self.format_decimal(result["shares"]) <= 0:
+                assert self.okcli.withdraw_all_rewards(d[0]) == -1
+                assert self.okcli.withdraw_all_rewards(d[0]) == -1
+            else:
+                assert self.okcli.withdraw_all_rewards(d[0]) != -1
+                assert self.okcli.withdraw_all_rewards(d[0]) != -1
+        
+        for d in self.config["proxys"]:
+            result = self.okcli.query_shares(d[1])
+            if self.format_decimal(result["shares"]) <= 0:
+                assert self.okcli.withdraw_all_rewards(d[0]) == -1
+                assert self.okcli.withdraw_all_rewards(d[0]) == -1
+            else:
+                assert self.okcli.withdraw_all_rewards(d[0]) != -1
+                assert self.okcli.withdraw_all_rewards(d[0]) != -1
+
+        logging.info("------------------------withdrawallrewards end--------------------------------")
+
     def extension_before(self):
         logging.info("------------------------extension_before start--------------------------------")
         if self.single_debug:
@@ -1892,6 +1937,11 @@ if __name__ == '__main__':
         case.reward_truncate_before()
     elif opt == "reward_truncate":
         case.reward_truncate()
+
+    elif opt == "withdrawallrewards_before":
+        case.withdrawallrewards_before()
+    elif opt == "withdrawallrewards":
+        case.withdrawallrewards()
 
     elif opt == "extension_before":
         case.extension_before()
