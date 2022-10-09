@@ -1709,9 +1709,9 @@ class CaseDistrProposal:
 
         ## 小于1无法取出
         # 先取出分红
-
         self.okcli.wait_ledger_than(1)
         assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
+        self.okcli.wait_ledger_than(1)
         rewards = self.okcli.query_rewards(self.config["proxys"][5][1], self.config["vals"][1][3])[0]["amount"]
         beforeAmount = self.okcli.query_account(self.config["withdrawaddress"])
         assert self.okcli.withdraw_rewards(self.config["vals"][1][3], self.config["proxys"][5][1]) != -1
