@@ -14,6 +14,8 @@ gBlockPerYear =      7884000         # 年区块总数 365*24*60*60/4
 gBlockReward =       0.5             # 区块奖励
 gRewardsPerYear =    3942000         # 年区块奖励     7884000 * 0.5    
 gSharesPerOkt =      7341748         # 1 OKT兑换的票数
+gVoteOktNums  =      100             # 质押的OKT个数
+gVoteValidatorNum =  30               # 投票的验证节点个数
 gTopNum =            21              # 出块节点个数
 gValidatorCommission = 0             # 验证节点抽成
 
@@ -27,14 +29,16 @@ class Validator:
         self.rewards75PerYear = 0           # 节点年收益(75%部分)
         self.rewardsPerYear = 0             # 节点年收益25 + 75
         self.commissionRate = 0.0           # 抽成比例
+        self.depositOktNums = 0             # 质押okt个数
+        self.depositOktRewardPerYear = 0    # 一年收益
         self.APR = 0.0                      # 年化收益率
         self.beTop21 = False                # 节点名称
         
     def get_property_str(self):
-        return "name" + "," + "address" + ", " + "shares" + ", " + "ratePerOneOKT" + ", " + "rewards25PerYear" + ", " + "rewards75PerYear" + ", " + "rewardsPerYear" + ", " + "commissionRate" + ", " + "APR" + ", " + "top21"
+        return "name" + "," + "address" + ", " + "shares" + ", " + "ratePerOneOKT" + "," + "rewards25PerYear" + ", " + "rewards75PerYear" + ", " + "rewardsPerYear" + ", " + "commissionRate" + ", " + "depositOktNums" + ", " + "depositOktRewardPerYear" + ", " + "APR" + ", " + "top21"
     
     def to_str(self):
-        return self.name + "," + self.address + ", " + str(self.shares) + ", " + str(self.ratePerOneOKT) + ", " + str(self.rewards25PerYear) + ", " + str(self.rewards75PerYear) + ", " + str(self.rewardsPerYear) + ", " + str(self.commissionRate) + ", " + str(self.APR) + ", " + str(self.beTop21)
+        return self.name + "," + self.address + ", " + str(self.shares) + ", " + str(self.ratePerOneOKT) + ", " + str(self.rewards25PerYear) + ", " + str(self.rewards75PerYear) + ", " + str(self.rewardsPerYear) + ", " + str(self.commissionRate) + ", "  + str(self.depositOktNums) + ", "  + str(self.depositOktRewardPerYear) + ", " + str(self.APR) + "%, " + str(self.beTop21)
 
     def update_rewards_25(self):
         self.beTop21 = True
@@ -45,7 +49,15 @@ class Validator:
         self.rewardsPerYear = "%.4f" % (float(self.rewards25PerYear) + float(self.rewards75PerYear))  
 
     def update_arp(self):
-        self.APR = "%.8f" % (float(self.ratePerOneOKT) *  float(self.rewardsPerYear) * (1 - self.commissionRate) * 100) + "%"
+        self.ratePerOneOKT = "%.18f" % (gSharesPerOkt / self.shares)
+        self.APR = "%.8f" % (float(self.ratePerOneOKT) *  float(self.rewardsPerYear) * (1 - self.commissionRate) * 100)
+    
+    def update_okt_nums(self, depositOktNums):
+        self.depositOktNums = depositOktNums
+        self.shares = self.shares + depositOktNums * gSharesPerOkt
+
+    def update_okt_rewards(self):
+        self.depositOktRewardPerYear = "%.8f" % (float(self.ratePerOneOKT) * self.depositOktNums * float(self.rewardsPerYear) * (1 - self.commissionRate))
 
 class CaseDistrProposal:
     def __init__(self, configObj):
@@ -66,29 +78,40 @@ class CaseDistrProposal:
         logging.info(str(int(x)))
 
     def earn(self):
-        csv_file = open("data/earn.csv", "w")
+        fileName = "data/vnums" + str(gVoteValidatorNum) +"_earn.csv"
+        csv_file = open(fileName, "w")
         
         validators = self.okcli.query_staking_validators()
         jailed_str = ""
-        normal_str = ""
         logging.info("----------start----------")
-        totalShares = 0
 
+        #init
         validators_map = {}
         for v in validators:
             if v["jailed"]:
                 jailed_str += "\n" + v["description"]["moniker"] + ",   " + v["operator_address"] + ",  " + v["delegator_shares"]
             else:
                 shares = self.format_decimal(v["delegator_shares"])
-                totalShares += shares
                 validator = Validator()
                 validator.name = v["description"]["moniker"]
                 validator.address = v["operator_address"]
                 validator.shares = shares
-                validator.ratePerOneOKT = "%.18f" % (gSharesPerOkt / shares)
                 validator.commissionRate = gValidatorCommission
                 validators_map[shares] = validator
 
+        #voting shares
+        index = 0
+        for i in sorted (validators_map, reverse=True) : 
+            if index < gVoteValidatorNum:
+                validators_map[i].update_okt_nums(gVoteOktNums)
+            index = index + 1
+
+        #get totalShares
+        totalShares = 0
+        for i in sorted (validators_map, reverse=True) : 
+            totalShares += validators_map[i].shares
+
+        # update
         index = 0
         for i in sorted (validators_map, reverse=True) : 
             if index == 0:
@@ -98,7 +121,23 @@ class CaseDistrProposal:
             index = index + 1
             validators_map[i].update_all_rewards(totalShares)
             validators_map[i].update_arp()
+            validators_map[i].update_okt_rewards()
             csv_file.write(validators_map[i].to_str() + "\r")
+
+        csv_file.write("\r\r\r\r")
+        csv_file.write("--------\r")
+
+
+        # total arp
+        index = 0
+        totalArp = 0
+        for i in sorted (validators_map, reverse=True) : 
+            if index < gVoteValidatorNum:
+                totalArp = totalArp + float(validators_map[i].APR)
+            index = index + 1
+        
+        csv_file.write("voteOktNums,totalARP\r")
+        csv_file.write(str(gVoteValidatorNum) +  ", " + "%.8f" % totalArp + "%" + "\r")
 
         logging.info("----------end----------")
         csv_file.close()
