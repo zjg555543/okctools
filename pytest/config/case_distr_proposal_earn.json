@@ -1,9 +1,4 @@
 {
     "rpc": "https://exchaintmrpc.okex.org",
-    "chainId": "exchain-67",
-    "productBlockTime": 4,
-    "daySeconds": 86400,
-    "yearsDays": 365,
-    "sharesPerOkt": 7341748,
-    "blockReward": 0.5
+    "chainId": "exchain-67"
 }

@@ -7,6 +7,45 @@ from os import system
 import sys
 import pybase
 import rpc
+# -*- coding: UTF-8 -*-
+
+gProductBlockTime =  4               # 出块时间 4秒
+gBlockPerYear =      7884000         # 年区块总数 365*24*60*60/4
+gBlockReward =       0.5             # 区块奖励
+gRewardsPerYear =    3942000         # 年区块奖励     7884000 * 0.5    
+gSharesPerOkt =      7341748         # 1 OKT兑换的票数
+gTopNum =            21              # 出块节点个数
+gValidatorCommission = 0             # 验证节点抽成
+
+class Validator:
+    def __init__(self):
+        self.name = ''                      # 节点名称
+        self.address = ''                   # 地址
+        self.shares = 0                     # 节点票数
+        self.ratePerOneOKT = 0.0            # 1 okt兑换票占比
+        self.rewards25PerYear = 0           # 节点年收益(25%部分)
+        self.rewards75PerYear = 0           # 节点年收益(75%部分)
+        self.rewardsPerYear = 0             # 节点年收益25 + 75
+        self.commissionRate = 0.0           # 抽成比例
+        self.APR = 0.0                      # 年化收益率
+        self.beTop21 = False                # 节点名称
+        
+    def get_property_str(self):
+        return "name" + "," + "address" + ", " + "shares" + ", " + "ratePerOneOKT" + ", " + "rewards25PerYear" + ", " + "rewards75PerYear" + ", " + "rewardsPerYear" + ", " + "commissionRate" + ", " + "APR" + ", " + "top21"
+    
+    def to_str(self):
+        return self.name + "," + self.address + ", " + str(self.shares) + ", " + str(self.ratePerOneOKT) + ", " + str(self.rewards25PerYear) + ", " + str(self.rewards75PerYear) + ", " + str(self.rewardsPerYear) + ", " + str(self.commissionRate) + ", " + str(self.APR) + ", " + str(self.beTop21)
+
+    def update_rewards_25(self):
+        self.beTop21 = True
+        self.rewards25PerYear = "%.4f" % (gRewardsPerYear * 0.25 / gTopNum)
+
+    def update_all_rewards(self, total_shares):
+        self.rewards75PerYear = "%.4f" % (gRewardsPerYear * 0.75 * (self.shares / total_shares) )
+        self.rewardsPerYear = "%.4f" % (float(self.rewards25PerYear) + float(self.rewards75PerYear))  
+
+    def update_arp(self):
+        self.APR = "%.8f" % (float(self.ratePerOneOKT) *  float(self.rewardsPerYear) * (1 - self.commissionRate) * 100) + "%"
 
 class CaseDistrProposal:
     def __init__(self, configObj):
@@ -24,32 +63,45 @@ class CaseDistrProposal:
 
     def test(self):
         x = 1238888888888888888888888123
-        
         logging.info(str(int(x)))
 
     def earn(self):
-
+        csv_file = open("data/earn.csv", "w")
+        
         validators = self.okcli.query_staking_validators()
         jailed_str = ""
         normal_str = ""
         logging.info("----------start----------")
         totalShares = 0
-        
+
+        validators_map = {}
         for v in validators:
             if v["jailed"]:
                 jailed_str += "\n" + v["description"]["moniker"] + ",   " + v["operator_address"] + ",  " + v["delegator_shares"]
             else:
                 shares = self.format_decimal(v["delegator_shares"])
-                arp = self.config["sharesPerOkt"] / shares
-                normal_str += "\n" + v["description"]["moniker"] + ",   " + v["operator_address"] + ",  " + str(shares) + ",  " + "%.18f" % arp
                 totalShares += shares
-        logging.info("----------normal----------")
-        logging.info(normal_str)
-        logging.info("----------jailed----------")
-        logging.info(jailed_str)
-        logging.info("----------total shares----------")
-        logging.info(str(totalShares))
+                validator = Validator()
+                validator.name = v["description"]["moniker"]
+                validator.address = v["operator_address"]
+                validator.shares = shares
+                validator.ratePerOneOKT = "%.18f" % (gSharesPerOkt / shares)
+                validator.commissionRate = gValidatorCommission
+                validators_map[shares] = validator
+
+        index = 0
+        for i in sorted (validators_map, reverse=True) : 
+            if index == 0:
+                csv_file.write(validators_map[i].get_property_str() + "\r")
+            if index < gTopNum:
+                validators_map[i].update_rewards_25()
+            index = index + 1
+            validators_map[i].update_all_rewards(totalShares)
+            validators_map[i].update_arp()
+            csv_file.write(validators_map[i].to_str() + "\r")
+
         logging.info("----------end----------")
+        csv_file.close()
 
 if __name__ == '__main__':
     pybase = pybase.Pybase()
