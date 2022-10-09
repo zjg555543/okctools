@@ -77,8 +77,8 @@ class CaseDistrProposal:
         x = 1238888888888888888888888123
         logging.info(str(int(x)))
 
-    def earn(self):
-        fileName = "data/vnums" + str(gVoteValidatorNum) +"_earn.csv"
+    def reward(self):
+        fileName = "data/vnums" + str(gVoteValidatorNum) +"_reward.csv"
         csv_file = open(fileName, "w")
         
         validators = self.okcli.query_staking_validators()
@@ -145,7 +145,7 @@ class CaseDistrProposal:
 if __name__ == '__main__':
     pybase = pybase.Pybase()
 
-    file = open('config/case_distr_proposal_earn.json', 'r', encoding='UTF-8')
+    file = open('config/case_distr_proposal_reward.json', 'r', encoding='UTF-8')
     moduleConfig = json.loads(file.read())
     file.close()
     case = CaseDistrProposal(moduleConfig)
@@ -154,5 +154,5 @@ if __name__ == '__main__':
     if opt == "test":
         case.test()
 
-    if opt == "earn":
-        case.earn()
+    if opt == "reward":
+        case.reward()
