@@ -14,8 +14,8 @@ gBlockPerYear =      7884000         # 年区块总数 365*24*60*60/4
 gBlockReward =       0.5             # 区块奖励
 gRewardsPerYear =    3942000         # 年区块奖励     7884000 * 0.5    
 gSharesPerOkt =      7341748         # 1 OKT兑换的票数
-gVoteOktNums  =      100             # 质押的OKT个数
-gVoteValidatorNum =  30               # 投票的验证节点个数
+gDepoistOKT  =      1000             # 质押的OKT个数 🏁🏁🏁🏁🏁
+gVoteValidatorNum =  30              # 投票的验证节点个数 🏁🏁🏁🏁🏁
 gTopNum =            21              # 出块节点个数
 gValidatorCommission = 0             # 验证节点抽成
 
@@ -103,7 +103,7 @@ class CaseDistrProposal:
         index = 0
         for i in sorted (validators_map, reverse=True) : 
             if index < gVoteValidatorNum:
-                validators_map[i].update_okt_nums(gVoteOktNums)
+                validators_map[i].update_okt_nums(gDepoistOKT)
             index = index + 1
 
         #get totalShares
@@ -136,8 +136,8 @@ class CaseDistrProposal:
                 totalArp = totalArp + float(validators_map[i].APR)
             index = index + 1
         
-        csv_file.write("voteOktNums,totalARP\r")
-        csv_file.write(str(gVoteValidatorNum) +  ", " + "%.8f" % totalArp + "%" + "\r")
+        csv_file.write("depoistOKT,voteValidatorNum,totalARP\r")
+        csv_file.write(str(gDepoistOKT) +  ", " + str(gVoteValidatorNum) +  ", " + "%.8f" % totalArp + "%" + "\r")
 
         logging.info("----------end----------")
         csv_file.close()
@@ -156,3 +156,20 @@ if __name__ == '__main__':
 
     if opt == "reward":
         case.reward()
+
+    if opt == "reward_chat":
+        gVoteValidatorNum =  1
+        case.reward()
+        gVoteValidatorNum =  5
+        case.reward()
+        gVoteValidatorNum =  10
+        case.reward()
+        gVoteValidatorNum =  15
+        case.reward()
+        gVoteValidatorNum =  20
+        case.reward()
+        gVoteValidatorNum =  25
+        case.reward()
+        gVoteValidatorNum =  30
+        case.reward()
+        
