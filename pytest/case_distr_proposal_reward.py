@@ -14,7 +14,7 @@ gBlockPerYear =      7884000         # 年区块总数 365*24*60*60/4
 gBlockReward =       0.5             # 区块奖励
 gRewardsPerYear =    3942000         # 年区块奖励     7884000 * 0.5    
 gSharesPerOkt =      7341748         # 1 OKT兑换的票数
-gDepoistOKT  =      1000             # 质押的OKT个数 🏁🏁🏁🏁🏁
+gDepoistOKT  =      1000000             # 质押的OKT个数 🏁🏁🏁🏁🏁
 gVoteValidatorNum =  30              # 投票的验证节点个数 🏁🏁🏁🏁🏁
 gTopNum =            21              # 出块节点个数
 gValidatorCommission = 0             # 验证节点抽成
@@ -78,7 +78,7 @@ class CaseDistrProposal:
         logging.info(str(int(x)))
 
     def reward(self):
-        fileName = "data/vnums" + str(gVoteValidatorNum) +"_reward.csv"
+        fileName = "data/vnums" + str(gVoteValidatorNum) + "_okt" + str(gDepoistOKT) +"_reward.csv"
         csv_file = open(fileName, "w")
         
         validators = self.okcli.query_staking_validators()
@@ -86,8 +86,10 @@ class CaseDistrProposal:
         logging.info("----------start----------")
 
         #init
-        validators_map = {}
+        validators_list = []
         for v in validators:
+            # shares = self.format_decimal(v["delegator_shares"])
+            # logging.info(v["description"]["moniker"] + ", " + str(v["jailed"]) + ", " + v["operator_address"] + ", " + str(shares))
             if v["jailed"]:
                 jailed_str += "\n" + v["description"]["moniker"] + ",   " + v["operator_address"] + ",  " + v["delegator_shares"]
             else:
@@ -97,44 +99,40 @@ class CaseDistrProposal:
                 validator.address = v["operator_address"]
                 validator.shares = shares
                 validator.commissionRate = gValidatorCommission
-                validators_map[shares] = validator
-
+                validators_list.append(validator)
         #voting shares
-        index = 0
-        for i in sorted (validators_map, reverse=True) : 
+        validators_list = sorted(validators_list, key=lambda x: x.shares, reverse=True)
+        for index in range(len(validators_list)) : 
             if index < gVoteValidatorNum:
-                validators_map[i].update_okt_nums(gDepoistOKT)
-            index = index + 1
-
+                validators_list[index].update_okt_nums(gDepoistOKT)
+                # logging.info(str(index) + ", shares:" + str(validators_list[index].shares))
+        
         #get totalShares
+        validators_list = sorted(validators_list, key=lambda x: x.shares, reverse=True)
         totalShares = 0
-        for i in sorted (validators_map, reverse=True) : 
-            totalShares += validators_map[i].shares
+        for index in range(len(validators_list)) : 
+            totalShares += validators_list[index].shares
 
         # update
-        index = 0
-        for i in sorted (validators_map, reverse=True) : 
+        for index in range(len(validators_list)) : 
             if index == 0:
-                csv_file.write(validators_map[i].get_property_str() + "\r")
+                csv_file.write(validators_list[index].get_property_str() + "\r")
             if index < gTopNum:
-                validators_map[i].update_rewards_25()
-            index = index + 1
-            validators_map[i].update_all_rewards(totalShares)
-            validators_map[i].update_arp()
-            validators_map[i].update_okt_rewards()
-            csv_file.write(validators_map[i].to_str() + "\r")
+                validators_list[index].update_rewards_25()
+            validators_list[index].update_all_rewards(totalShares)
+            validators_list[index].update_arp()
+            validators_list[index].update_okt_rewards()
+            csv_file.write(validators_list[index].to_str() + "\r")
 
         csv_file.write("\r\r\r\r")
         csv_file.write("--------\r")
 
 
         # total arp
-        index = 0
         totalArp = 0
-        for i in sorted (validators_map, reverse=True) : 
+        for index in range(len(validators_list)) : 
             if index < gVoteValidatorNum:
-                totalArp = totalArp + float(validators_map[i].APR)
-            index = index + 1
+                totalArp = totalArp + float(validators_list[index].APR)
         
         csv_file.write("depoistOKT,voteValidatorNum,totalARP\r")
         csv_file.write(str(gDepoistOKT) +  ", " + str(gVoteValidatorNum) +  ", " + "%.8f" % totalArp + "%" + "\r")

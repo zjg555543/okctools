@@ -18,35 +18,64 @@ class CaseDistrProposal:
         self.okcli = rpc.OKCli("exchaind", "exchaincli", self.config["chainId"], self.config["rpc"])
 
         self.valsall = ""
-        first = True
+        self.valsall_1 = ""
+        self.valsall_2 = ""
+        self.valsall_3 = ""
+        index = 0
         for v in self.config["vals"]:
-            if first:
+            if index == 0:
                 self.valsall = v[3]
-                first = False
-            else:
+                self.valsall_1 = v[3]
+                self.valsall_2 = v[3]
+                self.valsall_3 = v[3]
+            elif index == 1:
                 self.valsall = self.valsall + "," + v[3]
-        # logging.info(self.valsall)
+                self.valsall_2 = self.valsall_2 + "," + v[3]
+                self.valsall_3 = self.valsall_3 + "," + v[3]
+            elif index == 2:
+                self.valsall = self.valsall + "," + v[3]
+                self.valsall_3 = self.valsall_3 + "," + v[3]
+            elif index == 3:
+                self.valsall = self.valsall + "," + v[3]
+            index = index + 1
+        logging.info(self.valsall)
+        logging.info(self.valsall_1)
+        logging.info(self.valsall_2)
+        logging.info(self.valsall_3)
         return
 
     def press_proxy(self, threadName, delay):
         while True:
             total = len(self.config["proxys"])
             for i in range(total):
-                logging.info("i:" + str(i))
-                self.okcli.unreg_press(self.config["proxys"][i][1])
-                self.okcli.proxy_reg_press(self.config["proxys"][i][1])
-                self.okcli.proxy_bind_press(self.config["proxys"][i][1], self.config["proxydelegators"][i][1])
-                self.okcli.withdraw_all_rewards_press(self.config["proxys"][i][1])
-                self.okcli.proxy_unbind_press(self.config["proxydelegators"][i][1])
+                # logging.info("i:" + str(i))
+                self.okcli.unreg(self.config["proxys"][i][1])
+                self.okcli.proxy_reg(self.config["proxys"][i][1])
+                self.okcli.proxy_bind(self.config["proxys"][i][1], self.config["proxydelegators"][i][1])
+                self.okcli.withdraw_all_rewards(self.config["proxys"][i][1])
+                self.okcli.proxy_unbind(self.config["proxydelegators"][i][1])
 
     def press_add_shares(self, threadName, delay):
         while True:
             total = len(self.config["delegators"])
             for i in range(total):
-                logging.info("i:" + str(i))
-                self.okcli.deposit_press("0.0001", self.config["delegators"][i][1])
-                self.okcli.add_shares_press(self.valsall, self.config["delegators"][i][1])
-                self.okcli.withdraw_all_rewards_press(self.config["delegators"][i][1])
+                # logging.info("i:" + str(i))
+                self.okcli.deposit("0.0001", self.config["delegators"][i][1])
+                mod = int(time.time()) % 3
+                vals = self.valsall
+                if mod == 0:
+                    vals = self.valsall
+                elif mod == 1:
+                     vals = self.valsall_1
+                elif mod == 2:
+                     vals = self.valsall_2
+                elif mod == 3:
+                     vals = self.valsall_3
+
+                # logging.info(vals)
+
+                self.okcli.add_shares(vals, self.config["delegators"][i][1])
+                self.okcli.withdraw_all_rewards(self.config["delegators"][i][1])
 
     def press_add_shares_2(self, threadName, index):
         while True:
@@ -57,15 +86,47 @@ class CaseDistrProposal:
                 if i >= index + 10:
                     continue
                 # logging.info(str(i))
-                # self.okcli.deposit_press("0.0001", v[0])
-                self.okcli.add_shares_press(self.valsall, self.config["press_accounts"][i][0])
-                self.okcli.withdraw_all_rewards_press(self.config["press_accounts"][i][0])
+                self.okcli.deposit("0.0001", self.config["press_accounts"][i][0])
+                mod = int(time.time()) % 3
+                vals = self.valsall
+                if mod == 0:
+                    vals = self.valsall
+                elif mod == 1:
+                     vals = self.valsall_1
+                elif mod == 2:
+                     vals = self.valsall_2
+                elif mod == 3:
+                     vals = self.valsall_3
+
+                self.okcli.add_shares(vals, self.config["press_accounts"][i][0])
+                self.okcli.withdraw_all_rewards(self.config["press_accounts"][i][0])
 
     def init_press_account(self):
          for v in self.config["press_accounts"]:
             self.okcli.recover(v[0], v[1])
             self.okcli.transfer(self.config["captain"], v[0], 10)
-            
+
+    def check_all(self):
+        total = len(self.config["proxys"])
+        for i in range(total):
+            logging.info("i:" + str(i))
+            self.okcli.unreg(self.config["proxys"][i][1])
+            self.okcli.proxy_reg(self.config["proxys"][i][1])
+            self.okcli.proxy_bind(self.config["proxys"][i][1], self.config["proxydelegators"][i][1])
+            assert self.okcli.withdraw_all_rewards(self.config["proxys"][i][1]) != -1
+            self.okcli.proxy_unbind(self.config["proxydelegators"][i][1])
+
+        total = len(self.config["delegators"])
+        for i in range(total):
+            logging.info("i:" + str(i))
+            assert self.okcli.deposit("0.0001", self.config["delegators"][i][1]) != -1
+            assert self.okcli.add_shares(self.valsall, self.config["delegators"][i][1]) != -1
+            assert self.okcli.withdraw_all_rewards(self.config["delegators"][i][1]) != -1
+
+        for i in range(len(self.config["press_accounts"])):
+            assert self.okcli.deposit("0.0001", self.config["press_accounts"][i][0]) != -1
+            assert self.okcli.add_shares(self.valsall, self.config["press_accounts"][i][0]) != -1
+            assert self.okcli.withdraw_all_rewards(self.config["press_accounts"][i][0]) !=- 1
 
     def test(self):
         # self.okcli.create_account(1)
@@ -74,8 +135,8 @@ class CaseDistrProposal:
         # self.init_press_account()
         # return
 
-        # _thread.start_new_thread(self.press_proxy, ("Thread-1", 1))
-        # _thread.start_new_thread(self.press_add_shares, ("Thread-2", 2))
+        _thread.start_new_thread(self.press_proxy, ("Thread-1", 1))
+        _thread.start_new_thread(self.press_add_shares, ("Thread-2", 2))
         for i in range(10):
              _thread.start_new_thread(self.press_add_shares_2, ("Thread-3", i * 10))
         
@@ -99,6 +160,8 @@ if __name__ == '__main__':
     opt = sys.argv[1]
     if opt == "test":
         case.test()
+    if opt == "check_all":
+        case.check_all()
     elif opt == "start":
         case.okcli.run_all_node(case.config["nodeCount"], case.config["ledgerTime"])
     elif opt == "stop":
