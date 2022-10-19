@@ -5,7 +5,7 @@
 
 # 新分支修改
 ## makefile 文件修改
-Version=v1.6.3
+Version=v1.6.4
 ## okc.profile
 OKCHAIN_TOP=/Users/oker/workspace/exchain
 ## testnet.sh
