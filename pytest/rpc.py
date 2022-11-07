@@ -93,6 +93,14 @@ class OKCli:
             # logging.info("result, cmd:" + cmd)
             self.run_node(cmd)
 
+    def run_all_raw_node(self, nums, block_time, nodes):
+        for i in range(nums):
+            proName = "exchaind"
+            cmd = "nohup %s start --home %snode%d/exchaind --p2p.seed_mode=true --p2p.allow_duplicate_ip --enable-dynamic-gp=false --rpc.enable-multi-call=true --enable-wtx=false --mempool.node_key_whitelist 0b066ca0790f27a6595560b23bf1a1193f100797,3813c7011932b18f27f172f0de2347871d27e852,6ea83a21a43c30a280a3139f6f23d737104b6975,bab6c32fa95f3a54ecb7d32869e32e85a25d2e08,testnet-node-ids --p2p.pex=false --p2p.addr_book_strict=false --p2p.seeds 0b066ca0790f27a6595560b23bf1a1193f100797@127.0.0.1:26656 --p2p.laddr tcp://127.0.0.1:%d --rpc.laddr tcp://0.0.0.0:%d --log_level main:info,iavl:info,distr:debug,x/mint:debug,staking:debug,*:error --chain-id exchain-67 --upload-delta=false --enable-gid --consensus.timeout_commit %dms --enable-blockpart-ack=false --block-part-size 16 --block-compress-type 0 --block-compress-flag 0 --block-compress-threshold 512 --append-pid=true --elapsed DeliverTxs=0,Round=1,CommitRound=1,Produce=1 --rest.laddr tcp://0.0.0.0:%d --rest.path_prefix=okexchain-test --enable-preruntx=false --rpc.enable-multi-call=true --consensus-role=v0 --keyring-backend test >%sval%d.log 2>&1 &" % (proName, nodes, i, 26656 + i * 100, 26657 + i * 100, block_time ,26659 + i * 100, nodes, i)
+            time.sleep(1)
+            # logging.info("result, cmd:" + cmd)
+            self.run_node(cmd)
+
     def run_node(self, cmd):
         result = os.popen(cmd).read()
         logging.info("result, cmd:" + cmd + ", result:" + result)
@@ -366,7 +374,7 @@ class OKCli:
             try: 
                 cmd = " exchaincli query staking delegator " + delegator  + self.node_rpc
                 result = os.popen(cmd).read()
-                logging.info("result, cmd:" + cmd + ", result:" + result)
+                # logging.info("result, cmd:" + cmd + ", result:" + result)
                 result_obj = json.loads(result)
                 return result_obj
             except: 

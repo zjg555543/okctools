@@ -1,0 +1,31 @@
+{
+  "title":"update treasures",
+  "description":"update treasures",
+  "treasures":[
+      {
+          "address": "0xeF2244eaDDBe141d7a064E790C400Eb8DaBC491f",
+          "proportion":"0.1000000000000000"
+      }, {
+          "address": "0xed09856B6F81eb478acA5372804A97fE6A969f8A",
+          "proportion":"0.1000000000000000"
+      }, {
+          "address": "0xC1c5a460336A3B80344c9672a1002092A886E500",
+          "proportion":"0.1000000000000000"
+      },
+      {
+        "address": "0x80DeD18b1a201061D0bBda65dCB2DE806DD4BCc3",
+        "proportion":"0.1000000000000000"
+      },
+      {
+        "address": "0x16A0ef3d2E07C2c846f185108C6DF571f57A546D",
+        "proportion":"0.1000000000000000"
+      }
+  ],
+  "is_added":false,
+  "deposit":[
+      {
+          "denom":"okt",
+          "amount":"100.000000000000000000"
+      }
+  ]
+}

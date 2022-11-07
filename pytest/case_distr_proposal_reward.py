@@ -10,14 +10,14 @@ import rpc
 # -*- coding: UTF-8 -*-
 
 gProductBlockTime =  4               # 出块时间 4秒
-gBlockPerYear =      7884000         # 年区块总数 365*24*60*60/4
+gBlockPerYear =      9010285         # 年区块总数 365*24*60*60/4
 gBlockReward =       0.5             # 区块奖励
-gRewardsPerYear =    3942000         # 年区块奖励     7884000 * 0.5    
+gRewardsPerYear =    4505142         # 年区块奖励     7884000 * 0.5    
 gSharesPerOkt =      7341748         # 1 OKT兑换的票数
 gDepoistOKT  =      1000             # 质押的OKT个数 🏁🏁🏁🏁🏁
-gVoteValidatorNum =  15              # 投票的验证节点个数 🏁🏁🏁🏁🏁
+gVoteValidatorNum =  0              # 投票的验证节点个数 🏁🏁🏁🏁🏁
 gTopNum =            21              # 出块节点个数
-gValidatorCommission = 0.6             # 验证节点抽成
+gValidatorCommission = 0             # 验证节点抽成
 
 class Validator:
     def __init__(self):
