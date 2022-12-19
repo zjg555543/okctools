@@ -9,13 +9,12 @@ import pybase
 import rpc
 # -*- coding: UTF-8 -*-
 
-gProductBlockTime =  4               # 出块时间 4秒
-gBlockPerYear =      9010285         # 年区块总数 365*24*60*60/4
+gBlockPerYear =      365*24*60*60/3.5  # 年区块总数
 gBlockReward =       0.5             # 区块奖励
-gRewardsPerYear =    4505142         # 年区块奖励     7884000 * 0.5    
-gSharesPerOkt =      7341748         # 1 OKT兑换的票数
-gDepoistOKT  =      1000             # 质押的OKT个数 🏁🏁🏁🏁🏁
-gVoteValidatorNum =  0              # 投票的验证节点个数 🏁🏁🏁🏁🏁
+gRewardsPerYear =    gBlockPerYear * gBlockReward   # 年区块奖励
+gSharesPerOkt =      8501174         # 1 OKT兑换的票数 need change
+gDepoistOKT  =      1             # 质押的OKT个数 
+gVoteValidatorNum =  0              # 投票的验证节点个数 
 gTopNum =            21              # 出块节点个数
 gValidatorCommission = 0             # 验证节点抽成
 
@@ -140,6 +139,154 @@ class CaseDistrProposal:
         logging.info("----------end----------")
         csv_file.close()
 
+    def format_decimal(self, num):
+        str_num = str(num)
+        if "." in str_num:
+            a, b = str(str_num).split('.')
+            return int(a)
+        else:
+            return int(str_num)
+
+    def no_office_staking(self):
+        # fileName = "data/vnums" + str(gVoteValidatorNum) + "_okt" + str(gDepoistOKT) +"_reward.csv"
+        # csv_file = open(fileName, "w")
+        
+        validators = self.okcli.query_staking_validators()
+        # jailed_str = ""
+        logging.info("----------start----------")
+
+        #非官方的delegator
+        no_office_deledator = {}
+        for v in validators:
+            # shares = self.format_decimal(v["delegator_shares"])
+            # logging.info(v["description"]["moniker"] + ", " + str(v["jailed"]) + ", " + v["operator_address"])
+            # if v["jailed"]:
+            #     jailed_str += "\n" + v["description"]["moniker"] + ",   " + v["operator_address"] + ",  " + v["delegator_shares"]
+            #     continue
+
+            # logging.info(self.format_decimal(v["min_self_delegation"]))
+
+            # 忽略掉官方信息
+            if self.is_office_v(v["operator_address"]) == True:
+                continue
+            logging.info("no office validator:" + v["operator_address"])
+            delegators = self.okcli.query_shares_added_to(v["operator_address"])
+
+            if delegators == -1 or delegators == None:
+                continue
+
+            # logging.info("delegators:" + str(delegators))
+            for d in delegators:
+                no_office_deledator[d["delegator_address"]] = True
+            # logging.info(str(no_office_deledator))
+
+        logging.info("total delegator nums:" + str(len(no_office_deledator)))
+        total_tokens = 0
+        for key, value in no_office_deledator.items():
+                # logging.info("delegator:" + d["delegator_address"])
+                dInfo = self.okcli.query_shares(key)
+                # logging.info(dInfo["delegator_address"] + "," + dInfo["tokens"])
+                total_tokens = total_tokens + self.format_decimal(dInfo["tokens"])
+                # if dInfo["is_proxy"] == True:
+                #     dList = self.okcli.query_proxy(d["delegator_address"])
+                #     logging.info("proxy-debug: v:" + v["operator_address"] + ", p:" + d["delegator_address"] + ", plist:" + str(dList))
+
+        logging.info("No office deledator tokens:" + str(total_tokens))
+    def is_office_v(self, operator):
+        for index in range(len(self.config["v-nodes"])) : 
+            if self.config["v-nodes"][index] == operator:
+                return True
+        return False
+
+    def validator_rewards(self):
+        fileName = "data/validator_rewards.csv"
+        csv_file = open(fileName, "w")
+        
+        validators = self.okcli.query_staking_validators()
+        jailed_str = ""
+        logging.info("----------start----------")
+
+        #init
+        validators_list = []
+        for v in validators:
+            # shares = self.format_decimal(v["delegator_shares"])
+            # logging.info(v["description"]["moniker"] + ", " + str(v["jailed"]) + ", " + v["operator_address"] + ", " + str(shares))
+            if v["jailed"]:
+                jailed_str += "\n" + v["description"]["moniker"] + ",   " + v["operator_address"] + ",  " + v["delegator_shares"]
+            else:
+                shares = self.format_decimal(v["delegator_shares"])
+                validator = Validator()
+                validator.name = v["description"]["moniker"]
+                validator.address = v["operator_address"]
+                validator.shares = shares
+                validator.commissionRate = gValidatorCommission
+                validators_list.append(validator)
+        #voting shares
+        validators_list = sorted(validators_list, key=lambda x: x.shares, reverse=True)
+        for index in range(len(validators_list)) : 
+            if index < gVoteValidatorNum:
+                validators_list[index].update_okt_nums(gDepoistOKT)
+                # logging.info(str(index) + ", shares:" + str(validators_list[index].shares))
+        
+        #get totalShares
+        validators_list = sorted(validators_list, key=lambda x: x.shares, reverse=True)
+        totalShares = 0
+        for index in range(len(validators_list)) : 
+            totalShares += validators_list[index].shares
+
+        # update
+        for index in range(len(validators_list)) : 
+            if index == 0:
+                csv_file.write(validators_list[index].get_property_str() + "\r")
+            if index < gTopNum:
+                validators_list[index].update_rewards_25()
+            validators_list[index].update_all_rewards(totalShares)
+            validators_list[index].update_arp()
+            validators_list[index].update_okt_rewards()
+            csv_file.write(validators_list[index].to_str() + "\r")
+
+        csv_file.write("\r\r\r\r")
+        csv_file.write("--------\r")
+
+        # total arp
+        totalArp = 0
+        for index in range(len(validators_list)) : 
+            if index < gVoteValidatorNum:
+                totalArp = totalArp + float(validators_list[index].APR)
+        
+        csv_file.write("depoistOKT,voteValidatorNum,totalARP\r")
+        csv_file.write(str(gDepoistOKT) +  ", " + str(gVoteValidatorNum) +  ", " + "%.8f" % totalArp + "%" + "\r")
+
+        logging.info("----------end----------")
+
+        office_validators_rewards = 0
+        no_office_validators_rewards = 0
+        for index in range(len(validators_list)) : 
+            # 官方节点
+            if self.is_office_v(validators_list[index].address) == True:
+                # logging.info(validators_list[index].address)
+                office_validators_rewards = office_validators_rewards + self.format_decimal(validators_list[index].rewardsPerYear)
+            else:
+                no_office_validators_rewards = no_office_validators_rewards + self.format_decimal(validators_list[index].rewardsPerYear)
+        logging.info("office_validators_rewards:" + str(office_validators_rewards))
+        logging.info("no_office_validators_rewards:" + str(no_office_validators_rewards))
+
+    def outstanding(self):
+        validators = self.okcli.query_staking_validators()
+        logging.info("----------start----------")
+
+        office_outstanding = 0
+        no_office_outstanding = 0
+        for v in validators:
+            # 官方信息
+            if self.is_office_v(v["operator_address"]) == True:
+                # logging.info("office validator:" + v["operator_address"] + ",outstand:" + self.okcli.query_outstanding(v["operator_address"]))
+                office_outstanding = office_outstanding + self.format_decimal(self.okcli.query_outstanding(v["operator_address"]))
+            else:
+                no_office_outstanding = no_office_outstanding + self.format_decimal(self.okcli.query_outstanding(v["operator_address"]))
+        logging.info("office_outstanding:" + str(office_outstanding))
+        logging.info("no_office_outstanding:" + str(no_office_outstanding))
+
 if __name__ == '__main__':
     pybase = pybase.Pybase()
 
@@ -154,6 +301,15 @@ if __name__ == '__main__':
 
     if opt == "reward":
         case.reward()
+
+    if opt == "no_office_staking":
+        case.no_office_staking()
+
+    if opt == "validator_rewards":
+        case.validator_rewards()
+
+    if opt == "outstanding":
+        case.outstanding()
 
     if opt == "reward_chat":
         gVoteValidatorNum =  1

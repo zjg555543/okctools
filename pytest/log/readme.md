@@ -22,6 +22,8 @@ OKCHAIN_TOP=/Users/oker/workspace/exchain-raw/
 - 导入超级节点账户私钥要注意格式
 
 
+exchaincli keys add --recover zzzzzz -m "local cram lens mushroom trade chalk kangaroo denial core exhaust ladder gesture" -y
+
 CAPTAIN_MNEMONIC="resource eyebrow twelve private raccoon mass renew clutch when monster taste tide"
 
 exchaincli keys add --recover delegator1 -m "resource eyebrow twelve private raccoon mass renew clutch when monster taste tide" -y

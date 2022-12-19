@@ -533,7 +533,7 @@ class OKCli:
 
         cmd = " exchaincli query distr outstanding-rewards   " + address + " " + arg  + self.node_rpc
         result = os.popen(cmd).read()
-        logging.info("result, cmd:" + cmd + ", result:" + result)
+        # logging.info("result, cmd:" + cmd + ", result:" + result)
         try:
             result_obj = json.loads(result)
         except:
@@ -563,7 +563,7 @@ class OKCli:
             try:
                 cmd = " exchaincli query staking shares-added-to   " + val + " " + self.node_rpc
                 result = os.popen(cmd).read()
-                logging.info("result, cmd:" + cmd + ", result:" + result)
+                # logging.info("result, cmd:" + cmd + ", result:" + result)
                 result_obj = json.loads(result)
                 return result_obj
             except:
