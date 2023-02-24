@@ -184,6 +184,34 @@ class OKCli:
         result = os.popen(cmd).read()
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+    
+    def submit_change_param_change(self, from_name, file, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx gov submit-proposal param-change proposal/" + file + " --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+
+        cmd = " exchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
+    
+    def submit_ext_block_update (self, from_name, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "exchaincli tx gov submit-proposal next-block-update proposal/proposal-NextBlockUpdate_025.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+
+        cmd = " exchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
     def submit_change_type_proposal_onchain(self, from_name, sim=True):
         gas = " --gas auto "
@@ -684,4 +712,25 @@ class OKCli:
         cmd = " exchaincli keys mnemonic "
         for i in range(num): 
             os.popen(cmd).read()
+
+    def query_supply(self, height = 0):
+        cmd = "exchaincli query supply total --height " + str(height) + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:" + cmd + ", result:" + result)
+
+        result_obj = json.loads(result)
+
+        return result_obj[0]["amount"]
+    
+    def query_block_supply(self, ledger = 0):
+        if ledger == 0:
+            ledger = self.get_ledger_seq()
+        
+        after = self.query_supply(ledger)
+        before = self.query_supply(ledger - 1)
+
+        a = self.format_decimal_precision(after, 4)
+        b = self.format_decimal_precision(before, 4)
+        logging.info("ledger:" + str(ledger) + "a:" + str(a) + ",b:" + str(b))
+        return a - b
 
