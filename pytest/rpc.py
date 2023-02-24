@@ -729,8 +729,8 @@ class OKCli:
         after = self.query_supply(ledger)
         before = self.query_supply(ledger - 1)
 
-        a = self.format_decimal_precision(after, 4)
-        b = self.format_decimal_precision(before, 4)
+        a = self.format_decimal_precision(after, 18)
+        b = self.format_decimal_precision(before, 18)
         logging.info("ledger:" + str(ledger) + "a:" + str(a) + ",b:" + str(b))
         return a - b
 
