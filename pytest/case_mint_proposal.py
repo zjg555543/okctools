@@ -28,48 +28,46 @@ class CaseMintProposal:
 
     def auto(self):
         # 阶段一，初始化账户信息
-        # self.init_chain_before()
-        # self.init_chain()
+        self.init_chain_before()
+        self.init_chain()
 
         # 阶段二 初始状态
         # 查询默认的出块奖励，时间参数是否符合预期
         # 发送新提案失败
-        # self.check_init_before()
-        # self.check_init()
+        self.check_init_before()
+        self.check_init()
 
+        # 阶段三，升级2个节点程序
+        # 查询默认的出块奖励，时间参数是否符合预期
+        # 向节点发送提案失败，向老节点发送提案失败
+        self.upgrade_2nodes_before()
+        self.upgrade_2nodes()
 
-        # # 阶段三，升级2个节点程序
-        # # 查询默认的出块奖励，时间参数是否符合预期
-        # # 向节点发送提案失败，向老节点发送提案失败
-        # self.upgrade_2nodes_before()
-        # self.upgrade_2nodes()
-
-        # # 阶段四，升级所有程序，达到高度隔离前
-        # # 查询默认的出块奖励，时间参数是否符合预期
-        # # 向新节点发送提案失败
-        # self.upgrade_all_nodes_before()
-        # self.upgrade_all_nodes()
+        # 阶段四，升级所有程序，达到高度隔离前
+        # 查询默认的出块奖励，时间参数是否符合预期
+        # 向新节点发送提案失败
+        self.upgrade_all_nodes_before()
+        self.upgrade_all_nodes()
 
         # 阶段五，达到高度隔离，发送提案 BlocksPerYear 变更为 120 变量
         # 查询默认的出块奖励，时间参数是否符合预期
-        # self.update_BlocksPerYear_before()
-        # self.update_BlocksPerYear()
+        self.update_BlocksPerYear_before()
+        self.update_BlocksPerYear()
 
         # 阶段六，达到高度隔离，发送提案 DeflationEpoch 变更为 9
         # 查询默认的出块奖励，时间参数是否符合预期
-        # self.update_DeflationEpoch_before()
-        # self.update_DeflationEpoch()
+        self.update_DeflationEpoch_before()
+        self.update_DeflationEpoch()
 
-        # 阶段七，发送提案 NextBlockUpdate 失败提案， block 为 0，当前区块高度+1
-        # 提案失败
+        # 阶段七，发送提案 NextBlockUpdate 失败提案， block 为 0，当前区块高度+1，普通用户提案，提案失败
         # 查询默认的出块奖励，时间参数是否符合预期
-        # self.update_NextBlockUpdate_error_before()
-        # self.update_NextBlockUpdate_error()
+        self.update_NextBlockUpdate_error_before()
+        self.update_NextBlockUpdate_error()
 
         # 阶段八，发送提案 NextBlockUpdate 100 个区块后减半，0.5->0.25
         # 查询默认的出块奖励，时间参数是否符合预期
-        # self.update_NextBlockUpdate_025_before()
-        # self.update_NextBlockUpdate_025()
+        self.update_NextBlockUpdate_025_before()
+        self.update_NextBlockUpdate_025()
 
         # 阶段九，发送提案 NextBlockUpdate 100 个区块后减半，0.25->0.125
         # 查询默认的出块奖励，时间参数是否符合预期
@@ -77,10 +75,21 @@ class CaseMintProposal:
         self.update_NextBlockUpdate_0125()
 
         # 阶段十，本地观察是否循环减半
+        self.loop()
 
     def test(self):
         result = self.okcli.query_block_supply()
         logging.info("result: " + str(result))
+
+        logging.info("result: " + str(self.okcli.get_ledger_seq()))
+
+        # result = self.okcli.query_mint_param_value("deflation_epoch")
+        # assert result == "3", result
+        # logging.info("result: " + str(result))
+        # result = self.okcli.query_mint_param_value("blocks_per_year")
+        # assert result == "10519200", result
+        # logging.info("result: " + str(result))
+
         return
 
     def init_chain_before(self):
@@ -162,22 +171,49 @@ class CaseMintProposal:
     def check_init(self):
         logging.info("------------------------check_init start--------------------------------")
         # 查询默认的出块奖励，时间参数是否符合预期
+        result = self.okcli.query_block_supply()
+        logging.info("result: " + str(result))
+        assert str(result) == "0.5", str(result)
+
+        result = self.okcli.query_mint_param_value("deflation_epoch")
+        assert result == "3", result
+        result = self.okcli.query_mint_param_value("blocks_per_year")
+        assert result == "10519200", result
+        
+
         # 发送新提案失败
+        assert self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
+        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
 
         logging.info("------------------------check_init end--------------------------------")
         return
     
     def upgrade_2nodes_before(self):
+        # 关闭两个节点并升级，2个新节点、2个旧节点
         logging.info("------------------------upgrade_2nodes_before start--------------------------------")
+        self.okcli.kill_all_process()
+        self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 2, self.config["nodes"])
+        self.okcli.wait_ledger_than(10)
         logging.info("------------------------upgrade_2nodes_before end--------------------------------")
         return
     
     def upgrade_2nodes(self):
         logging.info("------------------------upgrade_2nodes start--------------------------------")
+        # 查询默认的出块奖励，时间参数是否符合预期
+        result = self.okcli.query_block_supply()
+        logging.info("result: " + str(result))
+        assert str(result) == "0.5", str(result)
+
+        # 向新节点发送提案失败
+        assert self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
+        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
+        
+
         logging.info("------------------------upgrade_2nodes end--------------------------------")
         return
     
     def upgrade_all_nodes_before(self):
+        # 升级所有程序，达到高度隔离前
         logging.info("------------------------upgrade_all_nodes_before start--------------------------------")
         logging.info("------------------------upgrate_bin_staking_step2_before start--------------------------------")
         self.okcli.kill_all_process()
@@ -188,20 +224,39 @@ class CaseMintProposal:
     
     def upgrade_all_nodes(self):
         logging.info("------------------------upgrade_all_nodes start--------------------------------")
+        assert self.okcli.get_ledger_seq() <= self.config["upgradeLedger"], str(self.okcli.get_ledger_seq())
+
+        # 查询默认的出块奖励，时间参数是否符合预期
+        result = self.okcli.query_block_supply()
+        logging.info("result: " + str(result))
+        assert str(result) == "0.5", str(result)
+
+        result = self.okcli.query_mint_param_value("deflation_epoch")
+        assert result == "3", result
+        result = self.okcli.query_mint_param_value("blocks_per_year")
+        assert result == "10519200", result
+
+        # 向新节点发送提案失败，没有达到区块高度，无法进交易池
+        assert self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
+        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
+
+
+        self.okcli.wait_ledger(self.config["upgradeLedger"])
+
         logging.info("------------------------upgrade_all_nodes end--------------------------------")
         return
     
 
     def update_BlocksPerYear_before(self):
         logging.info("------------------------update_BlocksPerYear_block start--------------------------------")
+    
+
         logging.info("------------------------update_BlocksPerYear_block end--------------------------------")
         return
     
     def update_BlocksPerYear(self):
         logging.info("------------------------update_BlocksPerYear start--------------------------------")
         # 达到高度隔离，发送提案 BlocksPerYear 变更为 120 变量
-        # 查询默认的出块奖励，时间参数是否符合预期
-
         proposal_num = self.okcli.submit_change_param_change(self.config["vals"][0][1], "param-chanage-BlocksPerYear.json", False)
         logging.info("result:" + proposal_num)
 
@@ -211,7 +266,17 @@ class CaseMintProposal:
             self.okcli.vote(v[1], proposal_num)
 
         self.okcli.query_proposal(proposal_num)
-        self.okcli.wait_ledger_than(2)
+        self.okcli.wait_ledger(260)
+
+        # 查询默认的出块奖励，时间参数是否符合预期
+        result = self.okcli.query_block_supply()
+        logging.info("result: " + str(result))
+        assert str(result) == "0.5", str(result)
+
+        result = self.okcli.query_mint_param_value("deflation_epoch")
+        assert result == "3", result
+        result = self.okcli.query_mint_param_value("blocks_per_year")
+        assert result == "264", result
 
         logging.info("------------------------update_BlocksPerYear end--------------------------------")
         return
@@ -224,7 +289,6 @@ class CaseMintProposal:
     def update_DeflationEpoch(self):
         logging.info("------------------------update_DeflationEpoch start--------------------------------")
         # 阶段六，达到高度隔离，发送提案 DeflationEpoch 变更为 9
-        # 查询默认的出块奖励，时间参数是否符合预期
         proposal_num = self.okcli.submit_change_param_change(self.config["vals"][0][1], "param-chanage-DeflationEpoch.json", False)
         logging.info("result:" + proposal_num)
 
@@ -234,8 +298,16 @@ class CaseMintProposal:
             self.okcli.vote(v[1], proposal_num)
 
         self.okcli.query_proposal(proposal_num)
-        self.okcli.wait_ledger_than(2)
-        
+        self.okcli.wait_ledger(310)
+        # 查询默认的出块奖励，时间参数是否符合预期
+        result = self.okcli.query_block_supply()
+        logging.info("result: " + str(result))
+        assert str(result) == "0.5", str(result)
+
+        result = self.okcli.query_mint_param_value("deflation_epoch")
+        assert result == "9", result
+        result = self.okcli.query_mint_param_value("blocks_per_year")
+        assert result == "264", result
 
         logging.info("------------------------update_DeflationEpoch end--------------------------------")
         return
@@ -247,6 +319,26 @@ class CaseMintProposal:
     
     def update_NextBlockUpdate_error(self):
         logging.info("------------------------update_NextBlockUpdate_error start--------------------------------")
+        # 发送提案 NextBlockUpdate 失败提案， block 为 0，当前区块高度+1，普通用户提案，提案失败
+        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_0.json", False)
+        logging.info("result:" + proposal_num)
+
+        self.okcli.query_proposal(proposal_num)
+        
+        for v in self.config["vals"]:
+            self.okcli.vote(v[1], proposal_num)
+
+        self.okcli.query_proposal(proposal_num)
+        self.okcli.wait_ledger_than(2)
+
+        # 发送提案 NextBlockUpdate 失败提案，普通用户提案，提案失败
+        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate_025.json", False) == 100005
+
+        # 查询默认的出块奖励，时间参数是否符合预期
+        result = self.okcli.query_block_supply()
+        logging.info("result: " + str(result))
+        assert str(result) == "0.5", str(result)
+
         logging.info("------------------------update_NextBlockUpdate_error end--------------------------------")
         return
     
@@ -258,10 +350,7 @@ class CaseMintProposal:
     def update_NextBlockUpdate_025(self):
         logging.info("------------------------update_NextBlockUpdate_025 start--------------------------------")
         # 阶段八，发送提案 NextBlockUpdate 100 个区块后减半，0.5->0.25
-        # 查询默认的出块奖励，时间参数是否符合预期
-
-
-        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], False)
+        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False)
         logging.info("result:" + proposal_num)
 
         self.okcli.query_proposal(proposal_num)
@@ -271,6 +360,12 @@ class CaseMintProposal:
 
         self.okcli.query_proposal(proposal_num)
         self.okcli.wait_ledger_than(2)
+
+        # 查询默认的出块奖励，时间参数是否符合预期
+        self.okcli.wait_ledger(410)
+        result = self.okcli.query_block_supply()
+        logging.info("result: " + str(result))
+        assert str(result) == "0.25", str(result)
 
         logging.info("------------------------update_NextBlockUpdate_025 end--------------------------------")
         return
@@ -282,8 +377,8 @@ class CaseMintProposal:
     
     def update_NextBlockUpdate_0125(self):
         logging.info("------------------------update_NextBlockUpdate_0125 start--------------------------------")
-
-        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], False)
+        # 发送提案 NextBlockUpdate 100 个区块后减半，0.25->0.125
+        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False)
         logging.info("result:" + proposal_num)
 
         self.okcli.query_proposal(proposal_num)
@@ -292,9 +387,27 @@ class CaseMintProposal:
             self.okcli.vote(v[1], proposal_num)
 
         self.okcli.query_proposal(proposal_num)
-        self.okcli.wait_ledger_than(2)
+        self.okcli.wait_ledger(610)
+
+        # 查询默认的出块奖励，时间参数是否符合预期
+        result = self.okcli.query_block_supply()
+        logging.info("result: " + str(result))
+        assert str(result) == "0.125", str(result)
+
+        result = self.okcli.query_mint_param_value("deflation_epoch")
+        assert result == "9", result
+        result = self.okcli.query_mint_param_value("blocks_per_year")
+        assert result == "264", result
 
         logging.info("------------------------update_NextBlockUpdate_0125 end--------------------------------")
+        return
+
+    def loop(self):
+        self.okcli.wait_ledger(810)
+        result = self.okcli.query_block_supply()
+        logging.info("result: " + str(result))
+        assert str(result) == "0.0625", str(result)
+
         return
     
     def exit(self, stop = True):

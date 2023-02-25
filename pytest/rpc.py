@@ -199,11 +199,11 @@ class OKCli:
         result_obj = json.loads(result)
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
     
-    def submit_ext_block_update (self, from_name, sim=True):
+    def submit_ext_block_update (self, from_name, fileName, sim=True):
         gas = " --gas auto "
         if sim == False:
             gas = " --gas=30000000 "
-        cmd = "exchaincli tx gov submit-proposal next-block-update proposal/proposal-NextBlockUpdate_025.json --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
+        cmd = "exchaincli tx gov submit-proposal next-block-update proposal/" + fileName + " --from " + from_name + gas + " --gas-prices 0.0000000001okt --gas-adjustment 1.3 -y"  + self.node_rpc
         tx = self.run_tx(cmd)
         if tx == -1:
             return -1
@@ -211,6 +211,9 @@ class OKCli:
         cmd = " exchaincli query tx " + tx  + self.node_rpc
         result = os.popen(cmd).read()
         result_obj = json.loads(result)
+        if "code" in result_obj:
+            return result_obj["code"]
+
         return result_obj["logs"][0]["events"][1]["attributes"][1]["value"]
 
     def submit_change_type_proposal_onchain(self, from_name, sim=True):
@@ -726,11 +729,20 @@ class OKCli:
         if ledger == 0:
             ledger = self.get_ledger_seq()
         
-        after = self.query_supply(ledger)
         before = self.query_supply(ledger - 1)
+        after = self.query_supply(ledger)
 
         a = self.format_decimal_precision(after, 18)
         b = self.format_decimal_precision(before, 18)
         logging.info("ledger:" + str(ledger) + "a:" + str(a) + ",b:" + str(b))
         return a - b
+    
+    def query_mint_param_value(self, name):
+        cmd = "exchaincli query mint params " + self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:" + cmd + ", result:" + result)
+
+        result_obj = json.loads(result)
+
+        return result_obj[name]
 

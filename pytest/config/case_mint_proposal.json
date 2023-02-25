@@ -9,6 +9,7 @@
     "rpc": "http://127.0.0.1:26657", 
     "nodeCount": 5,
     "ledgerTime":1000,
+    "upgradeLedger": 200,
     "chainId": "exchain-67",
     "val_recover_996": true,
     "vals":[

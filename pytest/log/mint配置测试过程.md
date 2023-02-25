@@ -9,7 +9,7 @@ Version=v1.6.9
 ## okc.profile
 OKCHAIN_TOP=/Users/oker/workspace/exchain
 ## testnet.sh
-(cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus5Height=400)
+(cd ${OKCHAIN_TOP} && make install VenusHeight=1 Venus5Height=200)
 
 # 老分支修改
 ## ./testnet.sh

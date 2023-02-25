@@ -1,7 +1,7 @@
 {
   "title":"modify next block to update",
   "description":"modify next block to update",
-  "block_num":  "400",
+  "block_num":  "100",
   "deposit":[
       {
           "denom":"okt",
