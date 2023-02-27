@@ -1,18 +1,1 @@
-{
-  "title": "Change blocks per year",
-  "description": "Change blocks per year",
-  "changes": [
-    {
-      "subspace": "mint",
-      "key": "BlocksPerYear",
-      "value": "264"
-    }
-  ],
-  "deposit": [
-    {
-      "denom": "okt",
-      "amount": "100"
-    }
-  ],
-  "height": "240"
-}
+{"title": "Change blocks per year", "description": "Change blocks per year", "changes": [{"subspace": "mint", "key": "BlocksPerYear", "value": "528"}], "deposit": [{"denom": "okt", "amount": "100"}], "height": "250"}

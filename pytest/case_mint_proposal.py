@@ -75,13 +75,17 @@ class CaseMintProposal:
         self.update_NextBlockUpdate_0125()
 
         # 阶段十，本地观察是否循环减半
-        self.loop()
+        # self.loop()
 
     def test(self):
         result = self.okcli.query_block_supply()
         logging.info("result: " + str(result))
 
-        logging.info("result: " + str(self.okcli.get_ledger_seq()))
+        # logging.info("result: " + str(self.okcli.get_ledger_seq()))
+
+        # self.modify_next_block_update(1)
+        # self.modify_DeflationEpoch(1)
+        # self.modify_chanage_BlocksPerYear(1)
 
         # result = self.okcli.query_mint_param_value("deflation_epoch")
         # assert result == "3", result
@@ -182,8 +186,8 @@ class CaseMintProposal:
         
 
         # 发送新提案失败
-        assert self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
-        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
+        assert self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate.json", False) == -1
+        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate.json", False) == -1
 
         logging.info("------------------------check_init end--------------------------------")
         return
@@ -205,8 +209,8 @@ class CaseMintProposal:
         assert str(result) == "0.5", str(result)
 
         # 向新节点发送提案失败
-        assert self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
-        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
+        assert self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate.json", False) == -1
+        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate.json", False) == -1
         
 
         logging.info("------------------------upgrade_2nodes end--------------------------------")
@@ -237,8 +241,8 @@ class CaseMintProposal:
         assert result == "10519200", result
 
         # 向新节点发送提案失败，没有达到区块高度，无法进交易池
-        assert self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
-        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
+        assert self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate.json", False) == -1
+        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate.json", False) == -1
 
 
         logging.info("------------------------upgrade_all_nodes end--------------------------------")
@@ -256,7 +260,8 @@ class CaseMintProposal:
         logging.info("------------------------update_BlocksPerYear start--------------------------------")
         self.okcli.wait_ledger(self.config["upgradeLedger"])
 
-        # 达到高度隔离，发送提案 BlocksPerYear 变更为 120 变量
+        # 达到高度隔离，发送提案 BlocksPerYear 变更为 变量
+        self.modify_chanage_BlocksPerYear(int(self.okcli.get_ledger_seq()) + 50)
         proposal_num = self.okcli.submit_change_param_change(self.config["vals"][0][1], "param-chanage-BlocksPerYear.json", False)
         logging.info("result:" + proposal_num)
 
@@ -276,7 +281,7 @@ class CaseMintProposal:
         result = self.okcli.query_mint_param_value("deflation_epoch")
         assert result == "3", result
         result = self.okcli.query_mint_param_value("blocks_per_year")
-        assert result == "264", result
+        assert result == "528", result
 
         logging.info("------------------------update_BlocksPerYear end--------------------------------")
         return
@@ -289,6 +294,7 @@ class CaseMintProposal:
     def update_DeflationEpoch(self):
         logging.info("------------------------update_DeflationEpoch start--------------------------------")
         # 阶段六，达到高度隔离，发送提案 DeflationEpoch 变更为 9
+        self.modify_DeflationEpoch(int(self.okcli.get_ledger_seq()) + 50)
         proposal_num = self.okcli.submit_change_param_change(self.config["vals"][0][1], "param-chanage-DeflationEpoch.json", False)
         logging.info("result:" + proposal_num)
 
@@ -307,7 +313,7 @@ class CaseMintProposal:
         result = self.okcli.query_mint_param_value("deflation_epoch")
         assert result == "9", result
         result = self.okcli.query_mint_param_value("blocks_per_year")
-        assert result == "264", result
+        assert result == "528", result
 
         logging.info("------------------------update_DeflationEpoch end--------------------------------")
         return
@@ -319,8 +325,14 @@ class CaseMintProposal:
     
     def update_NextBlockUpdate_error(self):
         logging.info("------------------------update_NextBlockUpdate_error start--------------------------------")
-        # 发送提案 NextBlockUpdate 失败提案， block 为 0，当前区块高度+1，普通用户提案，提案失败
-        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_0.json", False)
+        # 发送提案 NextBlockUpdate 失败提案， block 为 0
+        self.okcli.wait_ledger(self.config["upgradeLedger"])
+        self.modify_next_block_update(0)
+        self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate.json", False) == -1
+
+        # 当前区块高度+5，提案成功，投票执行失败
+        self.modify_next_block_update(int(self.okcli.get_ledger_seq()) + 5)
+        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate.json", False)
         logging.info("result:" + proposal_num)
 
         self.okcli.query_proposal(proposal_num)
@@ -332,7 +344,8 @@ class CaseMintProposal:
         self.okcli.wait_ledger_than(2)
 
         # 发送提案 NextBlockUpdate 失败提案，普通用户提案，提案失败
-        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate_025.json", False) == 100005
+        self.modify_next_block_update(int(self.okcli.get_ledger_seq()) + 5)
+        assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate.json", False) == 100005
 
         # 查询默认的出块奖励，时间参数是否符合预期
         result = self.okcli.query_block_supply()
@@ -350,7 +363,8 @@ class CaseMintProposal:
     def update_NextBlockUpdate_025(self):
         logging.info("------------------------update_NextBlockUpdate_025 start--------------------------------")
         # 阶段八，发送提案 NextBlockUpdate 100 个区块后减半，0.5->0.25
-        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False)
+        self.modify_next_block_update(int(self.okcli.get_ledger_seq()) + 100)
+        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate.json", False)
         logging.info("result:" + proposal_num)
 
         self.okcli.query_proposal(proposal_num)
@@ -359,10 +373,9 @@ class CaseMintProposal:
             self.okcli.vote(v[1], proposal_num)
 
         self.okcli.query_proposal(proposal_num)
-        self.okcli.wait_ledger_than(2)
 
         # 查询默认的出块奖励，时间参数是否符合预期
-        self.okcli.wait_ledger(self.config["upgradeLedger"] + 210)
+        self.okcli.wait_ledger_than(100)
         result = self.okcli.query_block_supply()
         logging.info("result: " + str(result))
         assert str(result) == "0.25", str(result)
@@ -378,7 +391,8 @@ class CaseMintProposal:
     def update_NextBlockUpdate_0125(self):
         logging.info("------------------------update_NextBlockUpdate_0125 start--------------------------------")
         # 发送提案 NextBlockUpdate 100 个区块后减半，0.25->0.125
-        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_0125.json", False)
+        self.modify_next_block_update(int(self.okcli.get_ledger_seq()) + 100)
+        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate.json", False)
         logging.info("result:" + proposal_num)
 
         self.okcli.query_proposal(proposal_num)
@@ -387,7 +401,7 @@ class CaseMintProposal:
             self.okcli.vote(v[1], proposal_num)
 
         self.okcli.query_proposal(proposal_num)
-        self.okcli.wait_ledger(self.config["upgradeLedger"] + 410)
+        self.okcli.wait_ledger_than(100)
 
         # 查询默认的出块奖励，时间参数是否符合预期
         result = self.okcli.query_block_supply()
@@ -397,13 +411,13 @@ class CaseMintProposal:
         result = self.okcli.query_mint_param_value("deflation_epoch")
         assert result == "9", result
         result = self.okcli.query_mint_param_value("blocks_per_year")
-        assert result == "264", result
+        assert result == "528", result
 
         logging.info("------------------------update_NextBlockUpdate_0125 end--------------------------------")
         return
 
     def loop(self):
-        self.okcli.wait_ledger(self.config["upgradeLedger"] + 610)
+        self.okcli.wait_ledger(self.config["upgradeLedger"] + 810)
         result = self.okcli.query_block_supply()
         logging.info("result: " + str(result))
         assert str(result) == "0.0625", str(result)
@@ -415,6 +429,44 @@ class CaseMintProposal:
             #case.okcli.kill_all_process()
         logging.info("Please use arg eg:  auto")
         sys.exit()
+    def modify_next_block_update(self, block):
+        file = open('proposal/proposal-NextBlockUpdate.json', 'r', encoding='UTF-8')
+        next_obj = json.loads(file.read())
+        file.close()
+        next_obj["block_num"] = str(block)
+        logging.info("block_num: " + next_obj["block_num"])
+        file_str = json.dumps(next_obj)
+        file = open('proposal/proposal-NextBlockUpdate.json', 'w', encoding='UTF-8')
+        file.write(file_str)
+        file.close()
+        
+        return
+    
+    def modify_DeflationEpoch(self, block):
+        file = open('proposal/param-chanage-DeflationEpoch.json', 'r', encoding='UTF-8')
+        next_obj = json.loads(file.read())
+        file.close()
+        next_obj["height"] = str(block)
+        logging.info("height: " + next_obj["height"])
+        file_str = json.dumps(next_obj)
+        file = open('proposal/param-chanage-DeflationEpoch.json', 'w', encoding='UTF-8')
+        file.write(file_str)
+        file.close()
+        
+        return
+    
+    def modify_chanage_BlocksPerYear(self, block):
+        file = open('proposal/param-chanage-BlocksPerYear.json', 'r', encoding='UTF-8')
+        next_obj = json.loads(file.read())
+        file.close()
+        next_obj["height"] = str(block)
+        logging.info("height: " + next_obj["height"])
+        file_str = json.dumps(next_obj)
+        file = open('proposal/param-chanage-BlocksPerYear.json', 'w', encoding='UTF-8')
+        file.write(file_str)
+        file.close()
+        
+        return
 
 if __name__ == '__main__':
     pybase = pybase.Pybase()
@@ -451,3 +503,4 @@ if __name__ == '__main__':
         logging.info(str(case.okcli.get_ledger_seq()))
     else:
         case.exit()
+

@@ -1,18 +1,1 @@
-{
-  "title": "Change deflation epoch",
-  "description": "Change deflation epoch",
-  "changes": [
-    {
-      "subspace": "mint",
-      "key": "DeflationEpoch",
-      "value": "9"
-    }
-  ],
-  "deposit": [
-    {
-      "denom": "okt",
-      "amount": "100"
-    }
-  ],
-  "height": "290"
-}
+{"title": "Change deflation epoch", "description": "Change deflation epoch", "changes": [{"subspace": "mint", "key": "DeflationEpoch", "value": "9"}], "deposit": [{"denom": "okt", "amount": "100"}], "height": "310"}
