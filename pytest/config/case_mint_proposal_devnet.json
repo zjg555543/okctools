@@ -6,7 +6,7 @@
     "goBin":"/Users/oker/go/bin/",
     "nodes":"/Users/oker/workspace/nodes/",
     "initCoin": 1000000,
-    "rpc": "http://52.199.88.250:26657", 
+    "rpc": "http://3.113.237.222:26657", 
     "nodeCount": 5,
     "ledgerTime":1000,
     "upgradeLedger": 5200,
