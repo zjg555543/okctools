@@ -241,8 +241,6 @@ class CaseMintProposal:
         assert self.okcli.submit_ext_block_update(self.config["delegators"][0][1], "proposal-NextBlockUpdate_025.json", False) == -1
 
 
-        self.okcli.wait_ledger(self.config["upgradeLedger"])
-
         logging.info("------------------------upgrade_all_nodes end--------------------------------")
         return
     
@@ -256,6 +254,8 @@ class CaseMintProposal:
     
     def update_BlocksPerYear(self):
         logging.info("------------------------update_BlocksPerYear start--------------------------------")
+        self.okcli.wait_ledger(self.config["upgradeLedger"])
+
         # 达到高度隔离，发送提案 BlocksPerYear 变更为 120 变量
         proposal_num = self.okcli.submit_change_param_change(self.config["vals"][0][1], "param-chanage-BlocksPerYear.json", False)
         logging.info("result:" + proposal_num)
@@ -266,7 +266,7 @@ class CaseMintProposal:
             self.okcli.vote(v[1], proposal_num)
 
         self.okcli.query_proposal(proposal_num)
-        self.okcli.wait_ledger(260)
+        self.okcli.wait_ledger(self.config["upgradeLedger"] + 60)
 
         # 查询默认的出块奖励，时间参数是否符合预期
         result = self.okcli.query_block_supply()
@@ -298,7 +298,7 @@ class CaseMintProposal:
             self.okcli.vote(v[1], proposal_num)
 
         self.okcli.query_proposal(proposal_num)
-        self.okcli.wait_ledger(310)
+        self.okcli.wait_ledger(self.config["upgradeLedger"] + 110)
         # 查询默认的出块奖励，时间参数是否符合预期
         result = self.okcli.query_block_supply()
         logging.info("result: " + str(result))
@@ -362,7 +362,7 @@ class CaseMintProposal:
         self.okcli.wait_ledger_than(2)
 
         # 查询默认的出块奖励，时间参数是否符合预期
-        self.okcli.wait_ledger(410)
+        self.okcli.wait_ledger(self.config["upgradeLedger"] + 210)
         result = self.okcli.query_block_supply()
         logging.info("result: " + str(result))
         assert str(result) == "0.25", str(result)
@@ -378,7 +378,7 @@ class CaseMintProposal:
     def update_NextBlockUpdate_0125(self):
         logging.info("------------------------update_NextBlockUpdate_0125 start--------------------------------")
         # 发送提案 NextBlockUpdate 100 个区块后减半，0.25->0.125
-        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_025.json", False)
+        proposal_num = self.okcli.submit_ext_block_update(self.config["vals"][0][1], "proposal-NextBlockUpdate_0125.json", False)
         logging.info("result:" + proposal_num)
 
         self.okcli.query_proposal(proposal_num)
@@ -387,7 +387,7 @@ class CaseMintProposal:
             self.okcli.vote(v[1], proposal_num)
 
         self.okcli.query_proposal(proposal_num)
-        self.okcli.wait_ledger(610)
+        self.okcli.wait_ledger(self.config["upgradeLedger"] + 410)
 
         # 查询默认的出块奖励，时间参数是否符合预期
         result = self.okcli.query_block_supply()
@@ -403,7 +403,7 @@ class CaseMintProposal:
         return
 
     def loop(self):
-        self.okcli.wait_ledger(810)
+        self.okcli.wait_ledger(self.config["upgradeLedger"] + 610)
         result = self.okcli.query_block_supply()
         logging.info("result: " + str(result))
         assert str(result) == "0.0625", str(result)
