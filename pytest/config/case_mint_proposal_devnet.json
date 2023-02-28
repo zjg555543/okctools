@@ -9,7 +9,8 @@
     "rpc": "http://3.113.237.222:26657", 
     "nodeCount": 5,
     "ledgerTime":1000,
-    "upgradeLedger": 5000,
+    "upgradeLedger": 5100,
+    "blocksPerYear":8304636,
     "chainId": "exchain-64",
     "val_recover_996": false,
     "vals":[

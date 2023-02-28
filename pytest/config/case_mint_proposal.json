@@ -10,6 +10,7 @@
     "nodeCount": 5,
     "ledgerTime":1000,
     "upgradeLedger": 200,
+    "blocksPerYear":8304636,
     "chainId": "exchain-67",
     "val_recover_996": true,
     "vals":[

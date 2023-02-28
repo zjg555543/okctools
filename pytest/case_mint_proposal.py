@@ -74,25 +74,18 @@ class CaseMintProposal:
         self.update_NextBlockUpdate_0125_before()
         self.update_NextBlockUpdate_0125()
 
-        # 阶段十，本地观察是否循环减半
-        # self.loop()
-
     def test(self):
         result = self.okcli.query_block_supply()
         logging.info("result: " + str(result))
 
         # logging.info("result: " + str(self.okcli.get_ledger_seq()))
 
-        # self.modify_next_block_update(1)
-        # self.modify_DeflationEpoch(1)
-        # self.modify_chanage_BlocksPerYear(1)
-
-        # result = self.okcli.query_mint_param_value("deflation_epoch")
-        # assert result == "3", result
-        # logging.info("result: " + str(result))
-        # result = self.okcli.query_mint_param_value("blocks_per_year")
-        # assert result == "10519200", result
-        # logging.info("result: " + str(result))
+        result = self.okcli.query_mint_param_value("deflation_epoch")
+        assert result == "9", result
+        logging.info("result: " + str(result))
+        result = self.okcli.query_mint_param_value("blocks_per_year")
+        assert result == str(self.config["blocksPerYear"]), result
+        logging.info("result: " + str(result))
 
         return
 
@@ -261,7 +254,7 @@ class CaseMintProposal:
         self.okcli.wait_ledger(self.config["upgradeLedger"])
 
         # 达到高度隔离，发送提案 BlocksPerYear 变更为 变量
-        self.modify_chanage_BlocksPerYear(int(self.okcli.get_ledger_seq()) + 50)
+        self.modify_chanage_BlocksPerYear(int(self.okcli.get_ledger_seq()) + 50, self.config["blocksPerYear"])
         proposal_num = self.okcli.submit_change_param_change(self.config["vals"][0][1], "param-chanage-BlocksPerYear.json", False)
         logging.info("result:" + proposal_num)
 
@@ -281,7 +274,7 @@ class CaseMintProposal:
         result = self.okcli.query_mint_param_value("deflation_epoch")
         assert result == "3", result
         result = self.okcli.query_mint_param_value("blocks_per_year")
-        assert result == "528", result
+        assert result == str(self.config["blocksPerYear"]), result
 
         logging.info("------------------------update_BlocksPerYear end--------------------------------")
         return
@@ -313,7 +306,7 @@ class CaseMintProposal:
         result = self.okcli.query_mint_param_value("deflation_epoch")
         assert result == "9", result
         result = self.okcli.query_mint_param_value("blocks_per_year")
-        assert result == "528", result
+        assert result == str(self.config["blocksPerYear"]), result
 
         logging.info("------------------------update_DeflationEpoch end--------------------------------")
         return
@@ -411,17 +404,9 @@ class CaseMintProposal:
         result = self.okcli.query_mint_param_value("deflation_epoch")
         assert result == "9", result
         result = self.okcli.query_mint_param_value("blocks_per_year")
-        assert result == "528", result
+        assert result == str(self.config["blocksPerYear"]), result
 
         logging.info("------------------------update_NextBlockUpdate_0125 end--------------------------------")
-        return
-
-    def loop(self):
-        self.okcli.wait_ledger(self.config["upgradeLedger"] + 810)
-        result = self.okcli.query_block_supply()
-        logging.info("result: " + str(result))
-        assert str(result) == "0.0625", str(result)
-
         return
     
     def exit(self, stop = True):
@@ -455,11 +440,12 @@ class CaseMintProposal:
         
         return
     
-    def modify_chanage_BlocksPerYear(self, block):
+    def modify_chanage_BlocksPerYear(self, block, year):
         file = open('proposal/param-chanage-BlocksPerYear.json', 'r', encoding='UTF-8')
         next_obj = json.loads(file.read())
         file.close()
         next_obj["height"] = str(block)
+        next_obj["changes"][0]["value"] = str(year)
         logging.info("height: " + next_obj["height"])
         file_str = json.dumps(next_obj)
         file = open('proposal/param-chanage-BlocksPerYear.json', 'w', encoding='UTF-8')
