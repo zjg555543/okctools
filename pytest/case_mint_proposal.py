@@ -75,17 +75,24 @@ class CaseMintProposal:
         self.update_NextBlockUpdate_0125()
 
     def test(self):
+        expect_supply = 0.125
+        expect_epoch = "9"
+        expect_block_year = "8304636"
+
+        # supply
         result = self.okcli.query_block_supply()
         logging.info("result: " + str(result))
+        assert result == expect_supply, result
 
-        # logging.info("result: " + str(self.okcli.get_ledger_seq()))
-
+        # deflation_epoch
         result = self.okcli.query_mint_param_value("deflation_epoch")
-        assert result == "9", result
         logging.info("result: " + str(result))
+        assert result == expect_epoch, result
+
+        # blocks_per_year
         result = self.okcli.query_mint_param_value("blocks_per_year")
-        assert result == str(self.config["blocksPerYear"]), result
         logging.info("result: " + str(result))
+        assert result == expect_block_year, result
 
         return
 

@@ -722,8 +722,12 @@ class OKCli:
         logging.info("result, cmd:" + cmd + ", result:" + result)
 
         result_obj = json.loads(result)
+        for i in range(len(result_obj)):
+            if result_obj[i]["denom"] == "okt":
+                return result_obj[i]["amount"]
 
-        return result_obj[0]["amount"]
+        return -1
+        
     
     def query_block_supply(self, ledger = 0):
         if ledger == 0:
@@ -731,7 +735,7 @@ class OKCli:
         
         before = self.query_supply(ledger - 1)
         after = self.query_supply(ledger)
-
+        logging.info("before:" + str(before) + "after" + str(after))
         a = self.format_decimal_precision(after, 18)
         b = self.format_decimal_precision(before, 18)
         logging.info("ledger:" + str(ledger) + "a:" + str(a) + ",b:" + str(b))
