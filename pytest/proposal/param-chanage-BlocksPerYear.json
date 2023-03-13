@@ -4,11 +4,11 @@
 	"changes": [{
 		"subspace": "mint",
 		"key": "BlocksPerYear",
-		"value": "8304636"
+		"value": "100"
 	}],
 	"deposit": [{
-		"denom": "okt",
+		"denom": "okb",
 		"amount": "100"
 	}],
-	"height": "18863267"
+	"height": "100"
 }

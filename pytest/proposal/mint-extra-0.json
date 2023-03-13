@@ -1,0 +1,12 @@
+{
+    "title":"modify minted per block",
+    "description":"modify minted per block",
+    "action":"MintedPerBlock",
+    "extra": "{\"coin\":{\"denom\":\"okb\",\"amount\":\"0.000000000000000000\"}}",
+    "deposit":[
+        {
+            "denom":"okb",
+            "amount":"100.000000000000000000"
+        }
+    ]
+}

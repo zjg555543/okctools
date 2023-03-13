@@ -9,13 +9,13 @@ import pybase
 import rpc
 # -*- coding: UTF-8 -*-
 
-gBlockPerYear =      365*24*60*60/3.5  # 年区块总数
-gBlockReward =       0.5             # 区块奖励
+gBlockPerYear =      9016457  # 年区块总数
+gBlockReward =       0.125             # 区块奖励
 gRewardsPerYear =    gBlockPerYear * gBlockReward   # 年区块奖励
-gSharesPerOkt =      8501174         # 1 OKT兑换的票数 need change
+gSharesPerOkt =      7641289         # 1 OKT兑换的票数 need change
 gDepoistOKT  =      1             # 质押的OKT个数 
 gVoteValidatorNum =  0              # 投票的验证节点个数 
-gTopNum =            21              # 出块节点个数
+gTopNum =            18              # 出块节点个数
 gValidatorCommission = 0             # 验证节点抽成
 
 class Validator:
@@ -100,6 +100,7 @@ class CaseDistrProposal:
                 validator.commissionRate = gValidatorCommission
                 validators_list.append(validator)
         #voting shares
+        logging.info("legth:" + str(len(validators_list)))
         validators_list = sorted(validators_list, key=lambda x: x.shares, reverse=True)
         for index in range(len(validators_list)) : 
             if index < gVoteValidatorNum:
