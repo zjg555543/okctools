@@ -9,14 +9,14 @@ import pybase
 import rpc
 # -*- coding: UTF-8 -*-
 
-gBlockPerYear =      9016457  # 年区块总数
+gBlockPerYear =      8304636  # 年区块总数
 gBlockReward =       0.125             # 区块奖励
 gRewardsPerYear =    gBlockPerYear * gBlockReward   # 年区块奖励
-gSharesPerOkt =      7641289         # 1 OKT兑换的票数 need change
+gSharesPerOkt =      10109657         # 1 OKT兑换的票数 need change
 gDepoistOKT  =      1             # 质押的OKT个数 
-gVoteValidatorNum =  0              # 投票的验证节点个数 
-gTopNum =            18              # 出块节点个数
-gValidatorCommission = 0             # 验证节点抽成
+gVoteValidatorNum =  21              # 投票的验证节点个数 
+gTopNum =            21              # 出块节点个数
+gValidatorCommission = 0.2             # 验证节点抽成
 
 class Validator:
     def __init__(self):
