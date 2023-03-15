@@ -1,10 +1,10 @@
 {
   "title": "Withdraw Reward Enabled | Disabled",
   "description": "Will set withdraw reward enabled | disabled",
-  "enabled": false,
+  "enabled": true,
   "deposit": [
     {
-      "denom": "okt",
+      "denom": "okb",
       "amount": "100.000000000000000000"
     }
   ]

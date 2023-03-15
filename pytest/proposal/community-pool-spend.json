@@ -1,16 +1,16 @@
 {
   "title": "Community Pool Spend",
-  "description": "Pay me some okt!",
+  "description": "Pay me some okb!",
   "recipient": "ex1cftp8q8g4aa65nw9s5trwexe77d9t6cr8ndu02",
   "amount": [
     {
-      "denom": "okt",
+      "denom": "okb",
       "amount": "1"
     }
   ],
   "deposit": [
     {
-      "denom": "okt",
+      "denom": "okb",
       "amount": "11"
     }
   ]

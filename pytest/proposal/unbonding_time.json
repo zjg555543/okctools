@@ -5,14 +5,15 @@
     {
       "subspace": "staking",
       "key": "UnbondingTime",
-      "value": "21600000000000"
+      "value": "300000000000"
     }
   ],
   "deposit": [
     {
-      "denom": "okt",
+      "denom": "okb",
       "amount": "100"
     }
   ],
-  "height": "50"
+  "height": "5000"
 }
+

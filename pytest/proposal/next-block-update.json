@@ -2,7 +2,7 @@
     "title":"modify next block update",
     "description":"modify next block update",
     "action": "NextBlockUpdate",
-    "extra": "{\"block_num\":150}",
+    "extra": "{\"block_num\":5400}",
     "deposit":[
         {
             "denom":"okb",

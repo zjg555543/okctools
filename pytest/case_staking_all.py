@@ -70,7 +70,7 @@ class CaseDistrProposal:
         self.init_chain_before()
         self.init_chain()
 
-        # 阶段二，构建初始化投票交易，注意要投票给V节点
+        # 阶段二，PoA
         self.init_staking_before()
         self.init_staking()
 
@@ -261,17 +261,16 @@ class CaseDistrProposal:
     def init_chain_before(self):
         logging.info("------------------------initChainBefore start--------------------------------")
 
-        # 老版本编译
-        result = self.okcli.run_cmd("cd " + self.config["oldGitPath"] + "/dev/testnet/;./run4v1r.sh")
+        result = self.okcli.run_cmd("cd " + self.config["gitPath"] + "/dev/testnet/;./run4v1r.sh")
         time.sleep(5)
         result = self.okcli.wait_ledger(1)
         result = self.okcli.kill_all_process()
-        self.okcli.copy_node("exchaind-dev", self.config["goBin"])
-        result = self.okcli.version("exchaind-dev") 
-        assert result == self.config["oldVersion"], result
+        self.okcli.copy_node("okbchaind-dev", self.config["goBin"])
+        result = self.okcli.version("okbchaind-dev") 
+        assert result == self.config["version"], result
 
-        self.okcli.copy_node_cli("exchaincli-dev", self.config["goBin"])
-        result = self.okcli.version("exchaincli-dev") 
+        self.okcli.copy_node_cli("okbchaincli-dev", self.config["goBin"])
+        result = self.okcli.version("okbchaincli-dev") 
         assert result == self.config["oldVersion"], result
 
         # 迁移命令行和迁移文件夹，重新启动
@@ -281,7 +280,11 @@ class CaseDistrProposal:
         if self.config["nodes"] == "/":
             assert False
 
-        result = self.okcli.run_cmd("rm -rf " + self.config["nodes"] + "; mkdir " + self.config["nodes"] + ";  cp -rf " + self.config["oldGitPath"] + "/dev/testnet/cache/* " + self.config["nodes"])
+        result = self.okcli.run_cmd("rm -rf " + self.config["nodes"] + "; mkdir " + self.config["nodes"] + ";  cp -rf " + self.config["gitPath"] + "/dev/testnet/cache/* " + self.config["nodes"])
+
+        result = self.okcli.run_all_node(self.config["nodeCount"], self.config["ledgerTime"], 0, self.config["nodes"])
+        
+        logging.info("------------------------initChainBefore end--------------------------------")
 
         # 新版本编译
         result = self.okcli.run_cmd("cd " + self.config["newGitPath"] + "/dev/testnet/;./run4v1r.sh")
@@ -309,12 +312,6 @@ class CaseDistrProposal:
         for d in self.config["delegators"]:
             self.okcli.recover(d[0], d[2])
 
-        for p in self.config["proxys"]:
-            self.okcli.recover(p[0], p[2])
-
-        for p in self.config["proxydelegators"]:
-            self.okcli.recover(p[0], p[2])
-
         for v in self.config["vals"]:
             if self.config["val_recover_996"]:
                 self.okcli.recover_val(v[0], v[2])
@@ -322,34 +319,11 @@ class CaseDistrProposal:
                 self.okcli.recover(v[0], v[2])
 
         self.okcli.recover("captain",  self.config["captain-mnemonic"])
-        self.okcli.recover("delegator-ex0",  self.config["exaccounts"]["delegator-ex0"][1])
-        self.okcli.recover("delegator-ex1",  self.config["exaccounts"]["delegator-ex1"][1])
-        self.okcli.recover("delegator-ex2",  self.config["exaccounts"]["delegator-ex2"][1])
-        self.okcli.recover("proxydelegator-ex0",  self.config["exaccounts"]["proxydelegator-ex0"][1])
-        self.okcli.recover("proxydelegator-ex1",  self.config["exaccounts"]["proxydelegator-ex1"][1])
-        self.okcli.recover("proxydelegator-ex2",  self.config["exaccounts"]["proxydelegator-ex2"][1])
-        self.okcli.recover("proxy-ex0",  self.config["exaccounts"]["proxy-ex0"][1])
-        self.okcli.recover("proxy-ex1",  self.config["exaccounts"]["proxy-ex1"][1])
-        self.okcli.recover("proxy-ex2",  self.config["exaccounts"]["proxy-ex2"][1])
 
         for v in self.config["delegators"]:
             assert self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"]) != -1
-        for v in self.config["proxys"]:
-            assert self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"]) != -1
-        for v in self.config["proxydelegators"]:
-            assert self.okcli.transfer(self.config["captain"], v[1], self.config["initCoin"]) != -1
         assert self.okcli.transfer(self.config["captain"], self.config["vaAddadmin16"], self.config["initCoin"]) != -1
         
-        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex0"][0], self.config["initCoin"]) != -1
-        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex1"][0], self.config["initCoin"]) != -1
-        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["delegator-ex2"][0], self.config["initCoin"]) != -1
-        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxydelegator-ex0"][0], self.config["initCoin"]) != -1
-        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxydelegator-ex1"][0], self.config["initCoin"]) != -1
-        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxydelegator-ex2"][0], self.config["initCoin"]) != -1
-        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxy-ex0"][0], self.config["initCoin"]) != -1
-        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxy-ex1"][0], self.config["initCoin"]) != -1
-        assert self.okcli.transfer(self.config["captain"], self.config["exaccounts"]["proxy-ex2"][0], self.config["initCoin"]) != -1
-
         def do(account):
             result = self.okcli.query_account(account)
             assert self.format_decimal(result) > 0, result
@@ -357,18 +331,12 @@ class CaseDistrProposal:
         for v in self.config["delegators"]:
             do(v[1])
     
-        for v in self.config["proxys"]:
-            do(v[1])
-
-        for v in self.config["proxydelegators"]:
-            do(v[1])
-        
         do(self.config["vaAddadmin16"])
 
         logging.info("------------------------initChain end--------------------------------")
         return
     
-    def init_staking_before(self):
+    def poa_before(self):
         logging.info("------------------------initStakingBefore start--------------------------------")
         if self.single_debug:
             self.okcli.kill_all_process()
