@@ -5,7 +5,7 @@
     {
       "subspace": "staking",
       "key": "UnbondingTime",
-      "value": "300000000000"
+      "value": "600000000000"
     }
   ],
   "deposit": [
@@ -14,6 +14,6 @@
       "amount": "100"
     }
   ],
-  "height": "5000"
+  "height": "2260"
 }
 
