@@ -1,0 +1,26 @@
+{
+  "title": "propose-validator",
+  "description": "propose a validator",
+  "is_add": true,
+  "deposit": [
+    {
+      "denom": "okb",
+      "amount": "100.000000000000000000"
+    }
+  ],
+  "validator": {
+    "delegator_address": "ex1pkpma7srz5gdzrjka9wnpnxx3m5kqp337736av",
+    "description": {
+      "details": "details",
+      "identity": "identity",
+      "moniker": "node5",
+      "website": "website"
+    },
+    "min_self_delegation": {
+      "amount": "0.000000000000000000",
+      "denom": "okb"
+    },
+    "pubkey": "exvalconspub1zcjduepqhtagrcy4mdyhahxd4p5dp3pq6782djh0djueld7da4qf5sqfe04qydvgxw",
+    "validator_address": "exvaloper1pkpma7srz5gdzrjka9wnpnxx3m5kqp33gem7ek"
+  }
+}
