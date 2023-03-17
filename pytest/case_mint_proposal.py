@@ -75,8 +75,8 @@ class CaseMintProposal:
         self.update_NextBlockUpdate_0125()
 
     def test(self):
-        expect_supply = 0.125
-        expect_epoch = "9"
+        expect_supply = 0.5
+        expect_epoch = "3"
         expect_block_year = "8304636"
 
         # supply

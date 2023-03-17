@@ -6,7 +6,7 @@
     "goBin":"/Users/oker/go/bin/",
     "nodes":"/Users/oker/workspace/nodes/",
     "initCoin": 10000,
-    "rpc": "https://exchaintesttmrpc.okex.org", 
+    "rpc": "https://exchaintmrpc.okex.org", 
     "nodeCount": 5,
     "ledgerTime":1000,
     "upgradeLedger": 18861500,
