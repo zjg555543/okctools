@@ -1,0 +1,21 @@
+{
+    "title":"update",
+    "description":"update",
+    "changes":[
+      {
+        "subspace":"params",
+        "key":"MinDeposit",
+        "value": [{
+              "denom": "okb",
+              "amount": "50.000000000000000000"
+        }]
+      }
+    ],
+    "deposit": [
+      {
+        "denom": "okb",
+        "amount": "100"
+      }
+    ],
+    "height": "650"
+  }
