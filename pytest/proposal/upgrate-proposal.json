@@ -1,0 +1,13 @@
+{
+  "title": "a test upgrade",
+  "description": "Update to using evm",
+  "deposit": [
+    {
+      "denom": "okb",
+      "amount": "10000"
+    }
+  ],
+  "name": "MINT",
+  "expectHeight": "0",
+  "config": "some config string"
+}
