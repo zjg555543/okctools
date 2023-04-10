@@ -3,9 +3,9 @@
   "description":"uptdae ConsensusType",
   "changes":[
     {
-      "subspace":"staking",
-      "key":"ConsensusType",
-      "value": "poa"
+      "subspace":"evm",
+      "key":"EnableContractDeploymentWhitelist",
+      "value": false
     }
   ],
   "deposit": [
@@ -14,5 +14,5 @@
       "amount": "100"
     }
   ],
-  "height": "1100"
+  "height": "2910"
 }

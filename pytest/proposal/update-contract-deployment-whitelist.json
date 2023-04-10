@@ -1,0 +1,15 @@
+{
+  "title": "update contract proposal whitelist with a distributor address list",
+  "description": "add a distributor address list into the whitelist",
+  "distributor_addresses": [
+    "0xbbE4733d85bc2b90682147779DA49caB38C0aA1F",
+    "0x690d2880aB126Ce18c9991100826fe94bD80d49c"
+  ],
+  "is_added": false,
+  "deposit": [
+    {
+      "denom": "okb",
+      "amount": "100.000000000000000000"
+    }
+  ]
+}

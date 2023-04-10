@@ -1,0 +1,12 @@
+{
+  "title":"Update system contract address",
+  "description":"Will change the system contract address",
+  "contract_address": "0x96E797E47b689f3087D9002F180612DE72C05A6A",
+  "is_added":true,
+  "deposit": [
+    {
+      "denom": "okb",
+      "amount": "100.000000000000000000"
+    }
+  ]
+}

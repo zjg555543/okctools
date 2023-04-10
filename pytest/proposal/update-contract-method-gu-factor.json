@@ -1,0 +1,22 @@
+{
+    "title":"update contract method gu-factor proposal with a contract address list",
+    "description":"add a contract method gu-factor list into chain",
+    "contract_addresses":[
+        {
+            "address":"0x96E797E47b689f3087D9002F180612DE72C05A6A",
+            "block_methods": [
+                {
+                    "sign": "0x579be378",
+                    "extra": "{\"gu_factor\":\"5000.000000000000000000\"}"
+                }
+            ]
+        }
+    ],
+    "is_added":false,
+    "deposit":[
+        {
+            "denom":"okb",
+            "amount":"100.000000000000000000"
+        }
+    ]
+}

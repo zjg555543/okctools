@@ -1,0 +1,26 @@
+{
+  "title":"update contract blocked list proposal with a contract address list",
+  "description":"add a contract address list into the blocked list",
+  "contract_addresses":[
+      {
+          "address":"0x96E797E47b689f3087D9002F180612DE72C05A6A",
+          "block_methods": [
+              {
+                  "sign": "0x371303c0",
+                  "extra": "inc()"
+              },
+              {
+                  "sign": "0x579be378",
+                  "extra": "onc()"
+              }
+          ]
+      }
+  ],
+  "is_added":true,
+  "deposit":[
+      {
+          "denom":"okb",
+          "amount":"100.000000000000000000"
+      }
+  ]
+}

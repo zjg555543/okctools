@@ -5,13 +5,13 @@
   "amount": [
     {
       "denom": "okb",
-      "amount": "1"
+      "amount": "0.1"
     }
   ],
   "deposit": [
     {
       "denom": "okb",
-      "amount": "11"
+      "amount": "100"
     }
   ]
 }

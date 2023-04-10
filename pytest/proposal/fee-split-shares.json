@@ -1,0 +1,16 @@
+{
+  "title": "Update the fee split shares for contract",
+  "description": "Update the fee split shares",
+  "shares": [
+    {
+      "contract_addr": "0x96E797E47b689f3087D9002F180612DE72C05A6A",
+      "share": "1"
+    }
+  ],
+  "deposit": [
+    {
+      "denom": "okb",
+      "amount": "100"
+    }
+  ]
+}

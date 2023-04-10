@@ -1,0 +1,12 @@
+{
+  "title":"update contract bytecode",
+  "description":"update contract bytecode",
+  "contract":"0xae094CFEdA561Ba4cCcD7D2c1A896cc555A22449",
+  "substitute_contract":"0x57fdF8Cc6499B02fD5Bea22BcB12F51a06b2FFFe",
+  "deposit":[
+      {
+          "denom":"okb",
+          "amount":"100.000000000000000000"
+      }
+  ]
+}
