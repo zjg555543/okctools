@@ -1,0 +1,13 @@
+{
+  "title": "venus6 upgrade",
+  "description": "venus6 upgrade",
+  "deposit": [
+    {
+      "denom": "okt",
+      "amount": "100"
+    }
+  ],
+  "name": "venus6",
+  "expectHeight": "1800",
+  "config": "some config string"
+}
