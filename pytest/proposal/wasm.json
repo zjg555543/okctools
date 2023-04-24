@@ -1,0 +1,12 @@
+{
+  "title":"modify wasm gas factor",
+  "description":"modify wasm gas factor",
+  "action": "GasFactor",
+  "extra": "{\"factor\":\"0.000000000000000001\"}",
+  "deposit":[
+      {
+          "denom":"okb",
+          "amount":"100.000000000000000000"
+      }
+  ]
+}
