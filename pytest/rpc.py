@@ -751,4 +751,67 @@ class OKCli:
         result_obj = json.loads(result)
 
         return result_obj[name]
+    
+    def get_new_address(self):
+        cmd = "okbchaincli keys add temp -y "
+        result = os.popen(cmd).read()
 
+        cmd = "okbchaincli keys show temp"
+
+        result = os.popen(cmd).read()
+        # logging.info("result, cmd:" + cmd + ", result:" + result)
+
+
+        result_obj = json.loads(result)
+
+        return result_obj["eth_address"]
+    
+    def wasm_store(self, from_name, filename, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        
+        cmd = "okbchaincli tx wasm store " + filename + " --from " + from_name + gas + " --gas-prices 0.0000000001okb --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+        cmd = " okbchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][1]["attributes"][0]["value"]
+    
+    def wasm_instantiate(self, from_name, code_id, params, admin, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "okbchaincli tx wasm instantiate " + code_id + " '" + params + "' --label test1 --admin " + admin + " --from " + from_name + gas + " --gas-prices 0.0000000001okb --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+        cmd = " okbchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][0]["attributes"][0]["value"]
+    
+    def wasm_execute(self, from_name, address, params, sim=True):
+        gas = " --gas auto "
+        if sim == False:
+            gas = " --gas=30000000 "
+        cmd = "okbchaincli tx wasm execute " + address + " '" + params + "' " + " --from " + from_name + gas + " --gas-prices 0.0000000001okb --gas-adjustment 1.3 -y"  + self.node_rpc
+        tx = self.run_tx(cmd)
+        if tx == -1:
+            return -1
+        cmd = " okbchaincli query tx " + tx  + self.node_rpc
+        result = os.popen(cmd).read()
+        result_obj = json.loads(result)
+        return result_obj["logs"][0]["events"][0]["attributes"][0]["value"]
+    
+    def wasm_query(self, address, params, sim=True):
+        
+        cmd = "okbchaincli query wasm contract-state smart " + address + " '" + params + "' " +  self.node_rpc
+        result = os.popen(cmd).read()
+        logging.info("result, cmd:" + cmd + ", result:" + result)
+
+        result_obj = json.loads(result)
+
+        return result_obj
