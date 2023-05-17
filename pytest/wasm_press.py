@@ -52,7 +52,7 @@ class WasmPress:
             num = 100
             press_paras='{"add":{"spender":['
             for i in range(num): 
-                address = file.readline()
+                address = file.readline().strip('\n')
                 press_paras += '"'
                 press_paras += address
                 press_paras += '"'
