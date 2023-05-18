@@ -15,7 +15,7 @@ import os
 class WasmPress:
     def __init__(self, configObj):
         self.config = configObj
-        self.okcli = rpc.OKCli("okbchaind", "okbchaincli", self.config["chainId"], self.config["rpc"])
+        self.okcli = rpc.OKCli("exchaind", "exchaincli", self.config["chainId"], self.config["rpc"], "okt")
         return
 
     def format_decimal(self, num):
@@ -62,7 +62,7 @@ class WasmPress:
             press_paras += ']}}'
             logging.info(press_paras)
 
-            self.okcli.wasm_execute("captain", contract_address, press_paras)
+            self.okcli.wasm_execute("captain", contract_address, press_paras, False)
 
         file.close()
         self.okcli.wasm_query(contract_address, '{"get_total":{}}')
@@ -71,8 +71,8 @@ class WasmPress:
         return
     
     def press(self):
-        contract_address = "0x76171b2B4fCDF61b3E5c70A86AD17b304f17740a"
-        self.okcli.wasm_execute("captain", contract_address, '{"press":{"ascending":true}}')
+        contract_address = "0x8651e94972a56e69F3C0897d9E8faCbDAEb98386"
+        self.okcli.wasm_execute("captain", contract_address, '{"press":{"ascending":true}}', False)
         return 
 
 if __name__ == '__main__':
