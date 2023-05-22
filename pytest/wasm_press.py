@@ -15,7 +15,7 @@ import os
 class WasmPress:
     def __init__(self, configObj):
         self.config = configObj
-        self.okcli = rpc.OKCli("exchaind", "exchaincli", self.config["chainId"], self.config["rpc"], "okt")
+        self.okcli = rpc.OKCli("exchaind", "exchaincli", "exchain-67", "http://127.0.0.1:26657", "okt")
         return
 
     def format_decimal(self, num):
@@ -71,7 +71,7 @@ class WasmPress:
         return
     
     def press(self):
-        contract_address = "0x8651e94972a56e69F3C0897d9E8faCbDAEb98386"
+        contract_address = "0x530bc6503d153313B6f575048c2C35dbc6e4fb06"
         self.okcli.wasm_execute("captain", contract_address, '{"press":{"ascending":true}}', False)
         return 
 
