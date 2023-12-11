@@ -7,16 +7,24 @@ from os import system
 import sys
 import pybase
 import rpc
+import requests
+import time
 # -*- coding: UTF-8 -*-
 
-gBlockPerYear =      8304636  # 年区块总数
-gBlockReward =       0.125             # 区块奖励
-gRewardsPerYear =    gBlockPerYear * gBlockReward   # 年区块奖励
-gSharesPerOkt =      10109657         # 1 OKT兑换的票数 need change
-gDepoistOKT  =      1             # 质押的OKT个数 
-gVoteValidatorNum =  21              # 投票的验证节点个数 
-gTopNum =            21              # 出块节点个数
-gValidatorCommission = 0.2             # 验证节点抽成
+
+apiKey = "e2c9109c-ca7c-44ca-ac12-bfd5a40c2387"
+exploerUrl = "https://www.oklink.com/api/v5/explorer/block/block-fills?chainShortName=OKTC&height="
+maxBlockNum =  1000             # ******** 从浏览器获取的最大区块数
+gBlockReward =       0          # ****** 如果不配置，则通过calc_avg_rewards计算
+gSharesPerOkt =      17002349   # ****** 1 OKT兑换的票数 need change
+gValidatorCommission = 0.68         # ****** 验证节点抽成
+gBlockPerYear =      8304636        # 年区块总数
+gDepoistOKT  =      1               # 质押的OKT个数 
+gVoteValidatorNum =  21             # 投票的验证节点个数 
+gTopNum =            21             # 出块节点个数
+
+# specialValidatorCommission = 0.3   # 验证节点抽成
+gRewardsPerYear =    0               # gBlockPerYear * gBlockReward calc_avg_rewards 计算
 
 class Validator:
     def __init__(self):
@@ -42,6 +50,9 @@ class Validator:
     def update_rewards_25(self):
         self.beTop21 = True
         self.rewards25PerYear = "%.4f" % (gRewardsPerYear * 0.25 / gTopNum)
+        if gRewardsPerYear == 0:
+            logging.error("gRewardsPerYear is 0")
+            exit(0)
 
     def update_all_rewards(self, total_shares):
         self.rewards75PerYear = "%.4f" % (gRewardsPerYear * 0.75 * (self.shares / total_shares) )
@@ -77,6 +88,9 @@ class CaseDistrProposal:
         logging.info(str(int(x)))
 
     def reward(self):
+        global gRewardsPerYear
+        gRewardsPerYear =  gBlockPerYear * self.calc_avg_rewards()
+        logging.info("gRewardsPerYear:" + str(gRewardsPerYear))
         fileName = "data/vnums" + str(gVoteValidatorNum) + "_okt" + str(gDepoistOKT) +"_reward.csv"
         csv_file = open(fileName, "w")
         
@@ -99,6 +113,11 @@ class CaseDistrProposal:
                 validator.shares = shares
                 validator.commissionRate = gValidatorCommission
                 validators_list.append(validator)
+                # logging.info("validator name:" + validator.name + ", address:" + validator.address)
+                # if validator.name == "Chillcrypto":
+                #     validator.commissionRate = specialValidatorCommission
+                #     logging.info("validator name:" + validator.name + ", address:" + validator.address + ", commissionRate:" + str(validator.commissionRate))
+
         #voting shares
         logging.info("legth:" + str(len(validators_list)))
         validators_list = sorted(validators_list, key=lambda x: x.shares, reverse=True)
@@ -147,6 +166,44 @@ class CaseDistrProposal:
             return int(a)
         else:
             return int(str_num)
+        
+    def calc_avg_rewards(self):
+        if gBlockReward != 0:
+            logging.info("Using BlockReward config:" + str(gBlockReward))
+            return gBlockReward
+
+        blockNum = self.okcli.get_ledger_seq()
+        logging.info("blockNum:" + str(blockNum))
+        url = exploerUrl + str(blockNum)
+        payload = ""
+        headers = {
+            'Ok-Access-Key': apiKey,
+        }
+        
+        all_fees = 0
+        total_index = 0
+        for index in range(blockNum - maxBlockNum, blockNum):
+            logging.info("start block:" + str(index))
+            total_index = total_index + 1
+            url = exploerUrl + str(index)
+            # time.sleep(0.01)
+            response = requests.request("GET", url, headers=headers, data=payload)
+            result_obj = json.loads(response.text)
+            minefee = result_obj["data"][0]["mineReward"]
+            txfee = result_obj["data"][0]["totalFee"]
+            logging.info("minefee:" + str(minefee))
+            logging.info("txfee:" + str(txfee))
+            sum = float(minefee) + float(txfee)
+            logging.info("sum:" + str(sum))
+            all_fees = float(all_fees) + sum
+            logging.info("end block:" + str(index) + "\r")
+
+
+        logging.info("index:" + str(total_index))
+        logging.info("all_fees:" + str(all_fees))
+        avg_reward = all_fees/total_index
+        logging.info("avg reward:" + str(avg_reward))
+        return avg_reward
 
     def no_office_staking(self):
         # fileName = "data/vnums" + str(gVoteValidatorNum) + "_okt" + str(gDepoistOKT) +"_reward.csv"
@@ -311,6 +368,9 @@ if __name__ == '__main__':
 
     if opt == "outstanding":
         case.outstanding()
+    
+    if opt == "calc_avg_rewards":
+        case.calc_avg_rewards()
 
     if opt == "reward_chat":
         gVoteValidatorNum =  1
