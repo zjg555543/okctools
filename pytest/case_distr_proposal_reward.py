@@ -11,6 +11,7 @@ import requests
 import time
 # -*- coding: UTF-8 -*-
 
+# 参考页面 https://www.oklink.com/cn/oktc/block/0x09b13c4bb26f75cceacebb5a557f6389c6d5b605f132f524dff4773e7b897c3e
 
 apiKey = "e2c9109c-ca7c-44ca-ac12-bfd5a40c2387"
 exploerUrl = "https://www.oklink.com/api/v5/explorer/block/block-fills?chainShortName=OKTC&height="
@@ -193,6 +194,8 @@ class CaseDistrProposal:
             txfee = result_obj["data"][0]["totalFee"]
             logging.info("minefee:" + str(minefee))
             logging.info("txfee:" + str(txfee))
+            # TODO sum need be minused Contract Gas back fee 
+            # https://www.oklink.com/oktc/block/0x09b13c4bb26f75cceacebb5a557f6389c6d5b605f132f524dff4773e7b897c3e
             sum = float(minefee) + float(txfee)
             logging.info("sum:" + str(sum))
             all_fees = float(all_fees) + sum
